@@ -234,6 +234,8 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
+security:
+  - bearerAuth: []
 tags:
   - name: Customer
     description: |-
@@ -504,7 +506,7 @@ paths:
                   example: john.doe@gmail.com
                 is_commercial:
                   type: integer
-                  example: '1'
+                  example: 1
                 company_name:
                   type: string
                   example: Test Company
@@ -537,13 +539,13 @@ paths:
                   example: '3'
                 address[country_id]:
                   type: integer
-                  example: '1'
+                  example: 1
                 address[zip]:
                   type: integer
                   example: '123654'
                 address[lat]:
                   type: integer
-                  example: '1'
+                  example: 1
                 address[long]:
                   type: integer
                   example: '012'
@@ -567,13 +569,13 @@ paths:
                   example: '43'
                 billing[country_id]:
                   type: integer
-                  example: '1'
+                  example: 1
                 billing[zip]:
                   type: integer
                   example: '123654'
                 billing[same_as_customer_address]:
                   type: integer
-                  example: '1'
+                  example: 1
                 billing[lat]:
                   type: integer
                   example: '456'
@@ -622,17 +624,7 @@ paths:
                 rep_id:
                   type: integer
                   example: '25'
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/x-www-form-urlencoded
+      parameters: []
       responses:
         '200':
           description: OK
@@ -1138,11 +1130,40 @@ paths:
 
         > Example
       parameters:
-        - name: Authorization
-          in: header
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [phones, address, billing, rep, jobs, contacts, canvasser, call_center_rep, referred_by]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
+        - name: sort_by
+          in: query
           schema:
             type: string
-          example: Bearer {{accessToken}}
+            enum: [id, created_at, first_name, last_name]
+          required: false
+          description: Field to sort by
+        - name: sort_order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+          required: false
+          description: Sort order (ascending or descending)
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          required: false
+          description: Number of items to return (max 100)
       responses:
         '200':
           description: OK
@@ -1281,7 +1302,7 @@ paths:
                 is_commercial:
                   type: integer
                   description: '(Optional) If individual or commercial '
-                  example: '1'
+                  example: 1
                 address[address]:
                   type: string
                   description: (Optional)  Address
@@ -1297,7 +1318,7 @@ paths:
                 address[country_id]:
                   type: integer
                   description: (Optional)  Country Id
-                  example: '1'
+                  example: 1
                 address[zip]:
                   type: integer
                   description: (Optional)  Zipcode
@@ -1305,7 +1326,7 @@ paths:
                 address[lat]:
                   type: integer
                   description: '(Optional) Latitude '
-                  example: '1'
+                  example: 1
                 address[long]:
                   type: integer
                   description: '(Optional) Longitude '
@@ -1337,7 +1358,7 @@ paths:
                 billing[country_id]:
                   type: integer
                   description: (Optional)  Country Id
-                  example: '1'
+                  example: 1
                 billing[zip]:
                   type: integer
                   description: (Optional)  Zipcode
@@ -1345,7 +1366,7 @@ paths:
                 billing[same_as_customer_address]:
                   type: integer
                   description: If billing address is same as customer address
-                  example: '1'
+                  example: 1
                 billing[lat]:
                   type: integer
                   description: (Optional) Latitude
@@ -1391,16 +1412,6 @@ paths:
                   description: (Optional) Customer additional emails
                   example: john@example.com
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/x-www-form-urlencoded
         - name: customerId
           in: path
           schema:
@@ -1816,11 +1827,6 @@ paths:
 
         \* **last_name**: Contact last name
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: customerId
           in: path
           schema:
@@ -1902,11 +1908,6 @@ paths:
                   description: Optional, File Name, The character limit is 30
                   example: File Name
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -2699,11 +2700,6 @@ paths:
                   description: Optional, File Name, The character limit is 30
                   example: File Name
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -3396,11 +3392,6 @@ paths:
                   description: Optional, File Name, The character limit is 30
                   example: File Name
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -4112,16 +4103,6 @@ paths:
                   description: Optional, File Name, The character limit is 30
                   example: File Name
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: multipart/form-data
         - name: jobId
           in: path
           schema:
@@ -4814,11 +4795,6 @@ paths:
                   description: Optional, File Name, The character limit is 30
                   example: File Name
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -5508,7 +5484,7 @@ paths:
                   example: Test
                 trades[]:
                   type: integer
-                  example: '1'
+                  example: 1
                 call_required:
                   type: integer
                   example: '0'
@@ -5520,7 +5496,7 @@ paths:
                   example: '0:0:0'
                 sub_contractor_ids[]:
                   type: integer
-                  example: '1'
+                  example: 1
                 same_as_customer_address:
                   type: integer
                   example: '0'
@@ -5535,7 +5511,7 @@ paths:
                   example: '48'
                 country_id:
                   type: integer
-                  example: '1'
+                  example: 1
                 zip:
                   type: integer
                   example: '7617'
@@ -5552,7 +5528,7 @@ paths:
                   example: 15721 Carlton Oaks
                 work_types[]:
                   type: integer
-                  example: '1'
+                  example: 1
                 job_types[]:
                   type: integer
                   example: '2'
@@ -5562,17 +5538,7 @@ paths:
                 lead_number:
                   type: string
                   example: asddas
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/x-www-form-urlencoded
+      parameters: []
       responses:
         '200':
           description: OK
@@ -5917,16 +5883,12 @@ paths:
       security:
         - noauthAuth: []
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: limit
           in: query
           schema:
             type: integer
-          example: '1'
+          example: 1
+          required: false
       responses:
         '200':
           description: OK
@@ -6049,7 +6011,7 @@ paths:
                 trades[]:
                   type: integer
                   description: (Required) Array of trades Ids associates trades
-                  example: '1'
+                  example: 1
                 call_required:
                   type: integer
                   description: (Optional) (bool) send 1 for true , 0 for false
@@ -6065,7 +6027,7 @@ paths:
                 sub_contractor_ids[]:
                   type: integer
                   description: (Optional) Array of sub contractors ids
-                  example: '1'
+                  example: 1
                 same_as_customer_address:
                   type: integer
                   description: >-
@@ -6088,7 +6050,7 @@ paths:
                 address[country_id]:
                   type: integer
                   description: (Optional) Country id
-                  example: '1'
+                  example: 1
                 address[zip]:
                   type: integer
                   description: (Optional) Zip or postal code
@@ -6111,7 +6073,7 @@ paths:
                 work_types[]:
                   type: integer
                   description: (Optional) id like [1,2]
-                  example: '1'
+                  example: 1
                 job_types[]:
                   type: integer
                   description: (Optional) id like [3,4]
@@ -6125,11 +6087,6 @@ paths:
                   description: (Optional) Lead number
                   example: asddas
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -6679,11 +6636,6 @@ paths:
       security:
         - noauthAuth: []
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -6775,11 +6727,6 @@ paths:
       summary: Financial Summary
       description: Get financial summary of job
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -6872,11 +6819,6 @@ paths:
                   description: Optional, File Name, The character limit is 30
                   example: File Name
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -6952,11 +6894,6 @@ paths:
         - Job
       summary: Get Job Workflow History
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -7004,12 +6941,7 @@ paths:
                 stage:
                   type: integer
                   example: '2006909067'
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -7153,12 +7085,7 @@ paths:
                     the value is added only under the sub-attribute and not
                     under the parent attribute.**) - Optional
                   example: '20'
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -7229,11 +7156,6 @@ paths:
                     "photos" folder.
                   example: Sales Pro/Roofing
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -7289,7 +7211,7 @@ paths:
                   description: >-
                     Optional - Accepts a boolean value (1 or 0). Send 1 to mark
                     the job as taxable and 0 for non-taxable.
-                  example: '1'
+                  example: 1
                 tax_rate:
                   type: integer
                   description: >-
@@ -7304,11 +7226,6 @@ paths:
                     provided
                   example: '5'
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -7387,11 +7304,6 @@ paths:
                   description: Optional - Date of the payment, must be in Y-M-D format.
                   example: '2024-10-11'
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -7470,7 +7382,7 @@ paths:
                   example: ' 23'
                 is_commercial:
                   type: integer
-                  example: '1'
+                  example: 1
                 call_required:
                   type: integer
                   example: '0'
@@ -7509,7 +7421,7 @@ paths:
                   example: '5'
                 job[country_id]:
                   type: integer
-                  example: '1'
+                  example: 1
                 job[address_line_1]:
                   type: string
                 job[lat]:
@@ -7520,7 +7432,7 @@ paths:
                   example: '321'
                 job[alt_id]:
                   type: integer
-                  example: '1'
+                  example: 1
                 job[estimator_ids][]:
                   type: integer
                   example: '11'
@@ -7562,7 +7474,7 @@ paths:
                   example: '77375'
                 address[country_id]:
                   type: integer
-                  example: '1'
+                  example: 1
                 address[state_id]:
                   type: integer
                   example: '5'
@@ -7574,7 +7486,7 @@ paths:
                   example: '-16.978363'
                 address[same_as_customer_address]:
                   type: integer
-                  example: '1'
+                  example: 1
                 billing[place_id]:
                   type: string
                   example: ChIJ31h8CwgyR4YRzmHGl02ozio
@@ -7592,7 +7504,7 @@ paths:
                   example: '012365'
                 billing[country_id]:
                   type: integer
-                  example: '1'
+                  example: 1
                 billing[state_id]:
                   type: integer
                   example: '43'
@@ -7604,18 +7516,8 @@ paths:
                   example: '789'
                 billing[same_as_customer_address]:
                   type: integer
-                  example: '1'
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
-        - name: Content-Type
-          in: header
-          schema:
-            type: string
-          example: application/x-www-form-urlencoded
+                  example: 1
+      parameters: []
       responses:
         '200':
           description: OK
@@ -8222,12 +8124,7 @@ paths:
         > Example `?query=John`
       security:
         - noauthAuth: []
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -8337,12 +8234,7 @@ paths:
                     Required - Please provide the email address of the user to
                     check their existence.
                   example: user@jobprogress.com
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -8431,12 +8323,7 @@ paths:
         | type | Value must be either labor or sub_contractor.  <br>  <br>Send
         labor to get only labors and send sub_contractor to get only sub
         contractors |
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -8583,12 +8470,7 @@ paths:
         | **Name** | **Value** |
         | --- | --- |
         | **stage_code** | Code of a particular stage |
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -8776,12 +8658,7 @@ paths:
 
         | **company_id** | ID of a particular subscriber (Pass to get the
         country of a particular company only) |
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -8881,11 +8758,6 @@ paths:
         | **company_id** | ID of a particular subscriber (Pass to get the states
         of a particular company only) |
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: countryId
           in: path
           schema:
@@ -9339,11 +9211,6 @@ paths:
                   description: (Required) Note
                   example: Test Update
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -9419,11 +9286,6 @@ paths:
                   type: string
                   example: Test Update
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: noteId
           in: path
           schema:
@@ -9513,12 +9375,7 @@ paths:
                   type: string
                   description: Optional, File Name, The character limit is 30
                   example: File Name
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -9709,12 +9566,7 @@ paths:
 
 
         > Example `?sort_by=id&sort_order=asc`
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -9806,11 +9658,6 @@ paths:
       summary: Available Result Options For Appointment
       description: "Response\r\n============\r\n\r\n\r\nKey | Type and Description\r\n---------- | -------\r\nid | Result Option id\r\nname | Result Option name \r\ndescription | Appointment description \r\nfields | Array of fields attached with name and type\r\nactive | Status of Result Option\r\n "
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: id
           in: path
           schema:
@@ -10013,11 +9860,6 @@ paths:
                   description: Required, Max:100Char ( Result Value )
                   example: The result 2nd value / description
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: id
           in: path
           schema:
@@ -10033,11 +9875,6 @@ paths:
         - Appointments
       summary: Get Result Of Specific Appointment
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: id
           in: path
           schema:
@@ -10063,12 +9900,7 @@ paths:
 
         | **include_system_referral** | boolean(1, 0) 1 to get default referrals
         as well in the listing |
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -10147,16 +9979,22 @@ paths:
       summary: Vendor Bills Listing
       description: "This endpoint retrieves all vendor bills of the jobs.\r\n#### Request Params \r\n| Name | Value |\r\n--- | --- |\r\n| **includes[]** | Options available: `attachments, vendor, lines`\r\n\r\n> Example `includes[]=vendor&includes[]=attachments&includes[]=lines`\r\n\r\n#### includes[] Details\r\n\r\n> vendor\r\n\r\nThe Vendor information will be returned by includes in the format below:\r\n\r\n```json\r\n\"vendor\": {\r\n    \"data\": [\r\n        {\r\n            \"id\": 1,\r\n            \"first_name\": \"Punit\",\r\n            \"last_name\": \"Khitouliya\",\r\n            \"display_name\": \"Punit\",\r\n            \"origin\": \"JobProgress\"\r\n        }\r\n    ]\r\n}\r\n```\r\n\r\n#####  Vendor field detail\r\n\r\n* **id**: Vendor Id\r\n* **first_name**: Vendor First Name\r\n* **last_name**: Vendor Last Name\r\n* **display_name**: Vendor Display Name\r\n* **origin**: Vendor is created from JobProgress or Quickbooks\r\n\r\n> attachments\r\n\r\nThe Attachments information will be returned by includes in the format below::\r\n\r\n```json\r\n\"attachments\": {\r\n    \"data\": [\r\n        {\r\n            \"id\": 4424,\r\n            \"parent_id\": 3736,\r\n            \"name\": \"jassi_gill\",\r\n            \"size\": 39279,\r\n            \"mime_type\": \"application/pdf\",\r\n            \"meta\": [],\r\n            \"url\": \"https://s3.us-west-2.amazonaws.com/staging.jp.company.resources/resources/yourstardom_1582003724/vendor_bill_attachments/1603437719_790021447.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIBTK6IZBMLWXCRNA%2F20201125%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20201125T122412Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=29421ac6e37abfa53f61099fed1ebb0e448a67b59f21161a0b155ce2f7f6c15d\"\r\n        }\r\n    ]\r\n}\r\n```\r\n\r\n#####  Attachments Field Detail\r\n* **id**: Unique Attachments id\r\n* **parent_id**: Unique Parent id of attachment\r\n* **name**: Name of the attachment\r\n* **size**: Size of the attachment\r\n* **mime_type**: Mime Type of the attachment\r\n* **url**: URL of the attachment\r\n\r\n\r\n> lines\r\n```json\r\n\"lines\": {\r\n    \"data\": [\r\n        {\r\n            \"id\": 216,\r\n            \"account_id\": 1,\r\n            \"rate\": \"1230.00\",\r\n            \"description\": \"Lorem\",\r\n            \"quantity\": \"232.00\"\r\n        }\r\n    ]\r\n}\r\n```\r\n\r\n##### LINES FIELD DETAIL\r\n* **id**: Unique Line id\r\n* **account_id**: Unique Account id of Line Item\r\n* **rate**: Rate of the Line Item\r\n* **description**: Description of the Line Item\r\n* **quantity**: Quantity of the Line Item"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
             type: string
           required: true
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [attachments, vendor, lines]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
       responses:
         '200':
           description: Successful response
@@ -10172,16 +10010,30 @@ paths:
       summary: Job Invoices
       description: "This endpoint retrieves all invoices of the jobs.\r\n\r\n### Request Parameters (for filtering):-\r\n| Name | Value |\r\n| --- | --- |\r\n| **status** | open, closed and all (By Default, open status will apply)\r\n\r\n#### Request Params \r\n| Name | Value |\r\n--- | --- |\r\n| **includes[]** | Options available: `lines, custom_tax`\r\n\r\n> Example `includes[]=lines&includes[]=custom_tax`\r\n\r\n#### includes[] Details\r\n\r\n\r\n> lines\r\n```json\r\n\"lines\": {\r\n    \"data\": [\r\n        {\r\n            \"amount\": \"25.999\",\r\n            \"description\": \"Achintya Vikram\",\r\n            \"quantity\": \"25.999\",\r\n            \"product_id\": null,\r\n            \"is_chargeable\": 1,\r\n            \"work_type\": {\r\n                \"id\": 6,\r\n                \"name\": \"Insurance\",\r\n                \"color\": \"#FE6F5E\"\r\n            },\r\n            \"trade\": {\r\n                \"id\": 60,\r\n                \"name\": \"APPLIANCES\"\r\n            }\r\n        }\r\n    ]\r\n}\r\n```\r\n\r\n##### LINES FIELD DETAIL\r\n* **amount**: Amount of a line item\r\n* **description**: Description of a line item\r\n* **quantity**: Quantity of a line item\r\n* **product_id**: Product Id of a line item\r\n* **is_chargeable**: (Boolean) Is line item chargeable or not\r\n* **work_type**: Work Type of a line item\r\n* **trade**: Trade of a line item\r\n\r\n> custom_tax\r\nThe custom_tax information will be returned by includes in the format below:\r\n\r\n```json\r\n\"custom_tax\": {\r\n    \"data\": [\r\n        {\r\n            \"id\": \"25\",\r\n            \"title\": \"Achintya Vikram\",\r\n            \"tax_rate\": \"2.9\",\r\n            \"created_at\": \"2020:02:11\",\r\n            \"updated_at\": \"2020:02:11\",\r\n        }\r\n    ]\r\n}\r\n```\r\n\r\n##### LINES FIELD DETAIL\r\n* **amount**: Amount of a line item\r\n* **description**: Description of a line item\r\n* **quantity**: Quantity of a line item\r\n* **product_id**: Product Id of a line item\r\n* **is_chargeable**: (Boolean) Is line item chargeable or not\r\n* **work_type**: Work Type of a line item\r\n* **trade**: Trade of a line item"
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
             type: string
           required: true
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [open, closed, all]
+            default: open
+          required: false
+          description: Filter invoices by status (open, closed, or all)
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [lines, custom_tax]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
       responses:
         '200':
           description: Successful response
@@ -10213,11 +10065,6 @@ paths:
         > Example
         `includes[]=transfer_to_payment&includes[]=transfer_to_payment`
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: jobId
           in: path
           schema:
@@ -10759,16 +10606,12 @@ paths:
 
         > Example `?sort_by=id&sort_order=asc`
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: limit
           in: query
           schema:
             type: integer
-          example: '1'
+          example: 1
+          required: false
       responses:
         '200':
           description: OK
@@ -10809,21 +10652,23 @@ paths:
         - Proposals
       summary: Proposal Listing
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: job_id
           in: query
           schema:
             type: string
           example: '{{jobId}}'
+          required: false
         - name: includes[]
           in: query
           schema:
-            type: string
-          example: created_by
+            type: array
+            items:
+              type: string
+              enum: [created_by]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
       responses:
         '200':
           description: OK
@@ -11041,16 +10886,17 @@ paths:
         - Worksheets
       summary: Worksheet Detail (Line Items)
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: includes[]
           in: query
           schema:
-            type: string
-          example: job_proposal
+            type: array
+            items:
+              type: string
+              enum: [job]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
         - name: worksheetId
           in: path
           schema:
@@ -11344,12 +11190,7 @@ paths:
         - Materials & Labor
       summary: Suppliers
       description: This endpoint retrieves all the suppliers of company.
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -11550,7 +11391,7 @@ paths:
                 for_all_trades:
                   type: integer
                   description: (optional) (bool)
-                  example: '1'
+                  example: 1
                 trade_ids[0]:
                   type: integer
                   description: >-
@@ -11569,12 +11410,7 @@ paths:
                   type: string
                   description: (optional) To get the assigned supplier
                   example: supplier
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -11713,7 +11549,7 @@ paths:
                 for_all_trades:
                   type: integer
                   description: (optional) (bool)
-                  example: '1'
+                  example: 1
                 trade_ids[0]:
                   type: integer
                   description: >-
@@ -11733,11 +11569,6 @@ paths:
                   description: (optional) To get the assigned Supplier
                   example: supplier
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: ItemId
           in: path
           schema:
@@ -11829,11 +11660,6 @@ paths:
         - Materials & Labor
       summary: Delete Item
       parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
         - name: ItemId
           in: path
           schema:
@@ -11956,12 +11782,7 @@ paths:
                   type: integer
                   description: (Optional) (Boolean)
                   example: '0'
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -12075,12 +11896,7 @@ paths:
       tags:
         - Divisions
       summary: Divisions
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: OK
@@ -12178,12 +11994,7 @@ paths:
       tags:
         - Payment Methods
       summary: Retrieve Payment Methods
-      parameters:
-        - name: Authorization
-          in: header
-          schema:
-            type: string
-          example: Bearer {{accessToken}}
+      parameters: []
       responses:
         '200':
           description: Successful response
