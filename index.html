@@ -19,16 +19,293 @@
     
     body {
       margin: 0;
-      background: #fafafa;
+      background: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      color: #333;
+    }
+    
+    /* JobProgress typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 600;
+      line-height: 1.3;
+      color: #333;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+    
+    h1 { font-size: 28px; }
+    h2 { font-size: 24px; }
+    h3 { font-size: 20px; }
+    h4 { font-size: 18px; }
+    h5 { font-size: 16px; }
+    h6 { font-size: 14px; }
+    
+    p {
+      margin-top: 0;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+    
+    code, pre {
+      font-family: monospace;
+      font-size: 13px;
+    }
+    
+    code {
+      padding: 0;
+      background-color: transparent;
+      border-radius: 0;
+      color: #666;
+    }
+    
+    /* Main container styling */
+    .swagger-ui .wrapper {
+      padding: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    /* Object titles like in screenshot */
+    .swagger-ui .model-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      margin: 30px 0 15px;
+      padding: 0 20px;
+    }
+    
+    /* Main section titles */
+    .swagger-ui section.models h4 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      margin: 30px 0 15px;
+      padding: 0 20px;
+    }
+    
+    /* Improve models list layout */
+    .swagger-ui section.models {
+      margin: 30px 0;
+    }
+    
+    /* Fix left-side object display */
+    .swagger-ui section.models .model-container {
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: transparent;
+    }
+    
+    /* Make all objects display as tables */
+    .swagger-ui .model {
+      width: 100%;
+      padding: 0;
+    }
+    
+    /* Fix spacing for model box */
+    .swagger-ui .model-box {
+      padding: 0;
+    }
+    
+    /* Make model properties display as table */
+    .swagger-ui .model-box .model-box {
+      display: table;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Style for object headers */
+    .swagger-ui .model-title {
+      display: block;
+      width: 100%;
+      padding: 15px 20px;
+      font-size: 22px;
+      margin: 0;
+      background-color: #fff;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    /* Style for object properties */
+    .swagger-ui .model .property {
+      display: table-row;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    .swagger-ui .model .property-row {
+      display: table-row;
+    }
+    
+    /* Property name column */
+    .swagger-ui .model .property .property-name {
+      display: table-cell;
+      padding: 12px 20px;
+      width: 25%;
+      font-family: monospace;
+      font-size: 14px;
+      color: #333;
+      vertical-align: top;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    /* Property type column */
+    .swagger-ui .model .property .property-type {
+      display: table-cell;
+      padding: 12px 20px;
+      width: 15%;
+      font-family: monospace;
+      font-size: 14px;
+      color: #666;
+      vertical-align: top;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    /* Property description column */
+    .swagger-ui .model .property .property-description {
+      display: table-cell;
+      padding: 12px 20px;
+      width: 60%;
+      font-size: 14px;
+      color: #333;
+      vertical-align: top;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    /* Add table header for models */
+    .swagger-ui .model-container .model:before {
+      content: "";
+      display: table-header-group;
+    }
+    
+    /* Create table headers for models */
+    .swagger-ui .model-container .model-schema {
+      position: relative;
+    }
+    
+    /* Add Key and Description headers */
+    .swagger-ui .model-container .model-schema:before {
+      content: "Key";
+      display: block;
+      position: absolute;
+      top: -40px;
+      left: 20px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .swagger-ui .model-container .model-schema:after {
+      content: "Description";
+      display: block;
+      position: absolute;
+      top: -40px;
+      left: calc(25% + 40px);
+      font-weight: 600;
+      font-size: 14px;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Add header row */
+    .swagger-ui .model-container .model {
+      margin-top: 40px;
+      position: relative;
+    }
+    
+    /* Add horizontal line under headers */
+    .swagger-ui .model-container .model:after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: -10px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background-color: #eaeaea;
+    }
+    
+    /* Fix model container padding */
+    .swagger-ui .model-container {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    
+    /* Fix left-side spacing */
+    .swagger-ui .models {
+      padding: 0 !important;
+    }
+    
+    /* Improve model toggle */
+    .swagger-ui .model-toggle {
+      top: 15px;
+      right: 20px;
+    }
+    
+    /* Fix model box spacing */
+    .swagger-ui .model-box {
+      padding: 0 !important;
+    }
+    
+    /* Style for model header row */
+    .model-header-row {
+      display: flex;
+      width: 100%;
+      padding: 10px 0;
+      border-bottom: 1px solid #eaeaea;
+      background-color: #fff;
+    }
+    
+    .model-header-key {
+      width: 25%;
+      padding: 0 20px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .model-header-description {
+      width: 75%;
+      padding: 0 20px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Fix model toggle position */
+    .swagger-ui .model-box .model-toggle {
+      top: 15px;
+      right: 20px;
+    }
+    
+    /* Improve spacing between objects */
+    .swagger-ui .model-container {
+      margin-bottom: 30px !important;
+    }
+    
+    /* Add proper table layout to model */
+    .swagger-ui .model-schema {
+      display: table;
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
     }
     
     .topbar {
-      padding: 10px 0;
-      background-color: #1b1b1b;
+      padding: 15px 0;
+      background-color: #fff;
+      border-bottom: 1px solid #eaeaea;
     }
     
     .wrapper {
-      max-width: 1460px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 0 20px;
     }
@@ -39,29 +316,415 @@
     }
     
     .topbar-wrapper label {
-      color: white;
+      color: #333;
       margin-right: 10px;
+      font-weight: 500;
     }
     
     .topbar-wrapper input {
-      padding: 6px 10px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
+      padding: 8px 12px;
+      border-radius: 3px;
+      border: 1px solid #ddd;
       min-width: 300px;
       margin-right: 10px;
+      font-size: 14px;
     }
     
     .topbar-wrapper button {
-      padding: 6px 12px;
+      padding: 8px 15px;
       background-color: #49cc90;
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 3px;
       cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
     }
     
     .topbar-wrapper button:hover {
       background-color: #3eb27f;
+    }
+    
+    /* Add JobProgress logo styling */
+    .swagger-ui .topbar .topbar-wrapper .link {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      text-decoration: none;
+    }
+    
+    /* Custom Schema Table Styles - JobProgress Style */
+    .schema-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 0;
+      font-size: 14px;
+      background-color: #fff;
+      border: none;
+      box-shadow: none;
+    }
+    
+    .schema-table thead {
+      background-color: transparent;
+    }
+    
+    .schema-table th {
+      text-align: left;
+      padding: 12px 20px;
+      font-weight: 600;
+      color: #333;
+      border-bottom: 1px solid #eaeaea;
+      position: sticky;
+      top: 0;
+      background-color: #fff;
+      z-index: 1;
+      white-space: nowrap;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .schema-table th:first-child {
+      width: 25%;
+    }
+    
+    .schema-table th:nth-child(2) {
+      width: 15%;
+    }
+    
+    .schema-table th:nth-child(3) {
+      width: 10%;
+    }
+    
+    .schema-table th:nth-child(4) {
+      width: 40%;
+    }
+    
+    .schema-table th:nth-child(5) {
+      width: 10%;
+    }
+    
+    .schema-table td {
+      padding: 12px 20px;
+      border-bottom: 1px solid #eaeaea;
+      vertical-align: top;
+      line-height: 1.5;
+      color: #333;
+    }
+    
+    .schema-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .schema-table tr:hover {
+      background-color: #f9f9f9;
+    }
+    
+    /* No zebra striping like JobProgress */
+    .schema-table tbody tr:nth-child(even):not(.semantic-group-header) {
+      background-color: transparent;
+    }
+    
+    .field-required {
+      color: #f44336;
+      font-weight: 400;
+      margin-left: 3px;
+    }
+    
+    .field-type {
+      display: inline-block;
+      padding: 2px 0;
+      border-radius: 0;
+      background-color: transparent;
+      color: #666;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0;
+      box-shadow: none;
+      font-family: monospace;
+    }
+    
+    /* Simple styling for all types like JobProgress */
+    .field-type[data-type="string"],
+    .field-type[data-type="number"],
+    .field-type[data-type="integer"],
+    .field-type[data-type="boolean"],
+    .field-type[data-type="array"],
+    .field-type[data-type="object"] {
+      background-color: transparent;
+      color: #666;
+    }
+    
+    .field-example {
+      font-family: monospace;
+      background-color: transparent;
+      padding: 0;
+      border-radius: 0;
+      font-size: 13px;
+      color: #666;
+      word-break: break-word;
+      max-width: none;
+      display: inline;
+    }
+    
+    .field-example:hover {
+      white-space: normal;
+      max-width: none;
+      z-index: 1;
+      position: relative;
+      box-shadow: none;
+    }
+    
+    .schema-section {
+      margin: 0;
+      border: none;
+      border-radius: 0;
+      overflow: hidden;
+      box-shadow: none;
+      background-color: #fff;
+    }
+    
+    .schema-section-header {
+      background-color: #fff;
+      padding: 15px 20px;
+      font-weight: 600;
+      color: #333;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eaeaea;
+      transition: background-color 0.2s;
+      font-size: 18px;
+    }
+    
+    .schema-section-header:hover {
+      background-color: #f9f9f9;
+    }
+    
+    .schema-section-content {
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    
+    .schema-section-content.expanded {
+      max-height: 5000px; /* Increased for larger schemas */
+      transition: max-height 0.7s ease-in;
+    }
+    
+    .schema-section-toggle {
+      font-size: 16px;
+      transition: transform 0.3s;
+      color: #888;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: transparent;
+    }
+    
+    .schema-section-toggle.expanded {
+      transform: rotate(180deg);
+    }
+    
+    .nested-object {
+      margin: 0;
+      border-left: none;
+      padding-left: 20px;
+      background-color: #fff;
+      border-radius: 0;
+    }
+    
+    .field-group-header {
+      font-weight: 600;
+      color: #333;
+      padding: 15px 20px 10px;
+      margin: 0;
+      border-bottom: none;
+      font-size: 16px;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    
+    /* JobProgress style operation blocks */
+    .swagger-ui .opblock {
+      border-radius: 0;
+      box-shadow: none;
+      margin: 0;
+      border: none;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    .swagger-ui .opblock .opblock-summary {
+      padding: 15px 20px;
+      border-radius: 0;
+      border-bottom: none;
+    }
+    
+    .swagger-ui .opblock .opblock-summary-method {
+      border-radius: 3px;
+      font-weight: 600;
+      min-width: 70px;
+      text-align: center;
+      font-size: 12px;
+      padding: 5px 0;
+    }
+    
+    /* GET method styling */
+    .swagger-ui .opblock-get .opblock-summary-method {
+      background-color: #61affe;
+    }
+    
+    /* POST method styling */
+    .swagger-ui .opblock-post .opblock-summary-method {
+      background-color: #49cc90;
+    }
+    
+    /* PUT method styling */
+    .swagger-ui .opblock-put .opblock-summary-method {
+      background-color: #fca130;
+    }
+    
+    /* DELETE method styling */
+    .swagger-ui .opblock-delete .opblock-summary-method {
+      background-color: #f93e3e;
+    }
+    
+    .swagger-ui .opblock .opblock-summary-path {
+      font-family: monospace;
+      font-size: 14px;
+      font-weight: 400;
+    }
+    
+    .swagger-ui .opblock .opblock-section-header {
+      padding: 15px 20px;
+      background-color: #fff;
+      border-top: 1px solid #eaeaea;
+    }
+    
+    .swagger-ui .opblock-description-wrapper p {
+      margin: 0;
+      padding: 15px 20px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    /* Endpoint path styling */
+    .swagger-ui .opblock .opblock-summary-path-description {
+      margin-top: 5px;
+      font-size: 13px;
+      color: #666;
+    }
+    
+    /* Improve typography */
+    .swagger-ui .opblock .opblock-summary-description {
+      font-size: 14px;
+      font-weight: 400;
+      color: #555;
+    }
+    
+    .swagger-ui .opblock .opblock-summary-operation-id {
+      font-size: 13px;
+    }
+    
+    .swagger-ui .opblock-description-wrapper p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    /* Highlight required fields */
+    .swagger-ui .parameter__name.required:after {
+      content: " *";
+      color: #e53935;
+      font-weight: bold;
+    }
+    
+    /* Modal styles for nested objects/arrays */
+    .schema-modal {
+      display: block;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+    
+    .schema-modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 80%;
+      max-width: 800px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .schema-modal-header {
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .schema-modal-header span:first-child {
+      font-weight: 600;
+      color: #3b4151;
+    }
+    
+    .schema-modal-close {
+      color: #aaa;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    .schema-modal-close:hover {
+      color: #555;
+    }
+    
+    .schema-modal-body {
+      padding: 15px;
+      max-height: 60vh;
+      overflow: auto;
+    }
+    
+    .schema-modal-body pre {
+      margin: 0;
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 13px;
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    
+    .expand-nested-btn {
+      background-color: #e8f4f8;
+      color: #0d5aa7;
+      border: none;
+      border-radius: 3px;
+      padding: 3px 8px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    
+    .expand-nested-btn:hover {
+      background-color: #d0e8f0;
     }
   </style>
 </head>
@@ -81,6 +744,832 @@
 
   <script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-bundle.js"></script>
   <script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-standalone-preset.js"></script>
+  
+  <!-- Schema Table Plugin -->
+  <script>
+    // Custom plugin to transform schema displays into tables
+    const SchemaTablePlugin = function(system) {
+      return {
+        components: {
+          // Override the Models component
+          Models: (Original, system) => (props) => {
+            const ModelWrapper = () => {
+              // Wait for DOM to be ready
+              setTimeout(transformSchemas, 500);
+              return Original(props);
+            };
+            return system.React.createElement(ModelWrapper);
+          },
+          
+          // Override the schema components
+          JsonSchemaForm: (Original, system) => (props) => {
+            const SchemaFormWrapper = () => {
+              // Wait for DOM to be ready after render
+              setTimeout(transformSchemas, 500);
+              return Original(props);
+            };
+            return system.React.createElement(SchemaFormWrapper);
+          }
+        },
+        statePlugins: {
+          spec: {
+            wrapActions: {
+              // Transform schemas after operations are loaded
+              updateJsonSpec: (oriAction, system) => (...args) => {
+                const result = oriAction(...args);
+                setTimeout(transformSchemas, 1000);
+                return result;
+              }
+            }
+          }
+        }
+      };
+    };
+    
+    // Function to transform schema displays into tables
+    function transformSchemas() {
+      // Find all schema containers
+      const schemaContainers = document.querySelectorAll('.model-box, .model');
+      
+      schemaContainers.forEach(container => {
+        // Skip if already transformed
+        if (container.classList.contains('schema-transformed')) return;
+        
+        // Mark as transformed
+        container.classList.add('schema-transformed');
+        
+        // Get the schema title
+        let schemaTitle = '';
+        const titleElement = container.querySelector('.model-title');
+        if (titleElement) {
+          schemaTitle = titleElement.textContent.trim();
+        }
+        
+        // Create a section for this schema
+        const schemaSection = document.createElement('div');
+        schemaSection.className = 'schema-section';
+        
+        // Create the section header
+        const sectionHeader = document.createElement('div');
+        sectionHeader.className = 'schema-section-header';
+        sectionHeader.innerHTML = `
+          <span>${schemaTitle || 'Schema'}</span>
+          <span class="schema-section-toggle">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        `;
+        
+        // Create the section content
+        const sectionContent = document.createElement('div');
+        sectionContent.className = 'schema-section-content';
+        
+        // Find all properties in the schema
+        const properties = container.querySelectorAll('.property');
+        
+        if (properties.length > 0) {
+          // Find required fields
+          let requiredFields = [];
+          const requiredElement = container.querySelector('.required-container');
+          if (requiredElement) {
+            const requiredText = requiredElement.textContent.trim();
+            if (requiredText.includes(':')) {
+              const requiredList = requiredText.split(':')[1].trim();
+              requiredFields = requiredList.split(',').map(field => field.trim());
+            }
+          }
+          
+          // Create a table for the properties
+          const table = document.createElement('table');
+          table.className = 'schema-table';
+          
+          // Create table header
+          const thead = document.createElement('thead');
+          thead.innerHTML = `
+            <tr>
+              <th>Field Name</th>
+              <th>Type</th>
+              <th>Required</th>
+              <th>Description</th>
+              <th>Example</th>
+            </tr>
+          `;
+          table.appendChild(thead);
+          
+          // Create table body
+          const tbody = document.createElement('tbody');
+          
+          // Group properties by parent object and semantic groups
+          const propertyGroups = {};
+          const rootProperties = [];
+          
+          // Define semantic groups for common fields
+          const semanticGroups = {
+            'identification': ['id', 'uuid', 'guid', 'key', 'code'],
+            'personal': ['first_name', 'last_name', 'email', 'phone', 'address', 'user', 'username', 'password'],
+            'timestamps': ['created_at', 'updated_at', 'deleted_at', 'timestamp', 'date', 'time'],
+            'status': ['status', 'state', 'active', 'enabled', 'is_', 'has_'],
+            'financial': ['amount', 'price', 'cost', 'tax', 'total', 'discount', 'currency', 'payment'],
+            'location': ['address', 'city', 'state', 'country', 'zip', 'postal', 'location', 'lat', 'lng', 'longitude', 'latitude'],
+            'metadata': ['meta', 'tags', 'type', 'category', 'group', 'description', 'note']
+          };
+          
+          // Function to determine the semantic group of a field
+          function getSemanticGroup(name) {
+            name = name.toLowerCase();
+            
+            for (const [group, keywords] of Object.entries(semanticGroups)) {
+              for (const keyword of keywords) {
+                if (name === keyword || name.includes(keyword)) {
+                  return group;
+                }
+              }
+            }
+            
+            return 'other';
+          }
+          
+          properties.forEach(prop => {
+            const propName = prop.querySelector('.property-name')?.textContent.trim() || '';
+            const propType = prop.querySelector('.prop-type')?.textContent.trim() || '';
+            const propFormat = prop.querySelector('.prop-format')?.textContent.trim() || '';
+            const propDesc = prop.querySelector('.property-description')?.textContent.trim() || '';
+            
+            // Check if this property is required
+            const propRequired = prop.classList.contains('required') || requiredFields.includes(propName);
+            
+            // Get example value if available
+            let propExample = '';
+            const exampleElement = prop.querySelector('.prop-example');
+            if (exampleElement) {
+              propExample = exampleElement.textContent.trim().replace('Example: ', '');
+            }
+            
+            // Determine the semantic group
+            const semanticGroup = getSemanticGroup(propName);
+            
+            // Check if this is a nested property
+            const fullPath = propName.split('.');
+            
+            if (fullPath.length > 1) {
+              // This is a nested property
+              const parentPath = fullPath.slice(0, -1).join('.');
+              const actualName = fullPath[fullPath.length - 1];
+              
+              if (!propertyGroups[parentPath]) {
+                propertyGroups[parentPath] = [];
+              }
+              
+              propertyGroups[parentPath].push({
+                name: actualName,
+                type: propType,
+                format: propFormat,
+                description: propDesc,
+                required: propRequired,
+                example: propExample,
+                semanticGroup: semanticGroup
+              });
+            } else {
+              // This is a root property
+              rootProperties.push({
+                name: propName,
+                type: propType,
+                format: propFormat,
+                description: propDesc,
+                required: propRequired,
+                example: propExample,
+                semanticGroup: semanticGroup
+              });
+            }
+          });
+          
+          // Sort root properties by semantic group and then by required status
+          rootProperties.sort((a, b) => {
+            // Required fields first
+            if (a.required !== b.required) {
+              return a.required ? -1 : 1;
+            }
+            
+            // Then by semantic group
+            if (a.semanticGroup !== b.semanticGroup) {
+              // Identification fields first
+              if (a.semanticGroup === 'identification') return -1;
+              if (b.semanticGroup === 'identification') return 1;
+              
+              // Then personal info
+              if (a.semanticGroup === 'personal') return -1;
+              if (b.semanticGroup === 'personal') return 1;
+              
+              // Then status fields
+              if (a.semanticGroup === 'status') return -1;
+              if (b.semanticGroup === 'status') return 1;
+              
+              // Then by alphabetical order of semantic group
+              return a.semanticGroup.localeCompare(b.semanticGroup);
+            }
+            
+            // Finally alphabetically by name
+            return a.name.localeCompare(b.name);
+          });
+          
+          // Also sort nested properties
+          Object.keys(propertyGroups).forEach(group => {
+            propertyGroups[group].sort((a, b) => {
+              // Required fields first
+              if (a.required !== b.required) {
+                return a.required ? -1 : 1;
+              }
+              
+              // Then by semantic group
+              if (a.semanticGroup !== b.semanticGroup) {
+                return a.semanticGroup.localeCompare(b.semanticGroup);
+              }
+              
+              // Finally alphabetically by name
+              return a.name.localeCompare(b.name);
+            });
+          });
+          
+          // Add semantic group headers
+          let currentGroup = '';
+          
+          // Add root properties to the table
+          rootProperties.forEach(prop => {
+            // Add semantic group header if this is a new group
+            if (prop.semanticGroup !== currentGroup) {
+              currentGroup = prop.semanticGroup;
+              
+              // Create a group header row
+              const groupHeaderRow = document.createElement('tr');
+              groupHeaderRow.className = 'semantic-group-header';
+              groupHeaderRow.style.backgroundColor = '#f0f0f0';
+              
+              // Get a friendly name for the group
+              let groupDisplayName = currentGroup.charAt(0).toUpperCase() + currentGroup.slice(1);
+              if (groupDisplayName === 'Other') {
+                groupDisplayName = 'Additional Fields';
+              }
+              
+              groupHeaderRow.innerHTML = `
+                <td colspan="5" style="padding: 8px 15px; font-weight: 600; color: #555;">
+                  ${groupDisplayName}
+                </td>
+              `;
+              
+              tbody.appendChild(groupHeaderRow);
+            }
+            
+            const row = document.createElement('tr');
+            
+            // Highlight required fields with a different background
+            if (prop.required) {
+              row.classList.add('required-field');
+              row.style.backgroundColor = '#fff8f8';
+            }
+            
+            // Add a subtle left border with a color based on the semantic group
+            const groupColors = {
+              'identification': '#6b7ddf',
+              'personal': '#4caf50',
+              'timestamps': '#9c27b0',
+              'status': '#ff9800',
+              'financial': '#009688',
+              'location': '#e91e63',
+              'metadata': '#607d8b',
+              'other': '#9e9e9e'
+            };
+            
+            const groupColor = groupColors[prop.semanticGroup] || '#9e9e9e';
+            row.style.borderLeft = `3px solid ${groupColor}`;
+            
+            // Format the type with format if available
+            let typeDisplay = prop.type;
+            if (prop.format) {
+              typeDisplay += ` (${prop.format})`;
+            }
+            
+            // Extract the base type for styling
+            const baseType = prop.type ? prop.type.split(' ')[0].toLowerCase() : 'string';
+            
+            row.innerHTML = `
+              <td>${prop.name}${prop.required ? '<span class="field-required">*</span>' : ''}</td>
+              <td><span class="field-type" data-type="${baseType}">${typeDisplay}</span></td>
+              <td>${prop.required ? '<strong style="color: #e53935;">Yes</strong>' : 'No'}</td>
+              <td>${prop.description}</td>
+              <td>${prop.example ? `<span class="field-example">${prop.example}</span>` : ''}</td>
+            `;
+            
+            tbody.appendChild(row);
+            
+            // Check if this property has nested properties
+            const nestedProps = propertyGroups[prop.name];
+            if (nestedProps && nestedProps.length > 0) {
+              // Add a nested object indicator
+              const nestedRow = document.createElement('tr');
+              nestedRow.innerHTML = `
+                <td colspan="5">
+                  <div class="nested-object">
+                    <div class="field-group-header">${prop.name} Properties</div>
+                    <table class="schema-table">
+                      <thead>
+                        <tr>
+                          <th>Field Name</th>
+                          <th>Type</th>
+                          <th>Required</th>
+                          <th>Description</th>
+                          <th>Example</th>
+                        </tr>
+                      </thead>
+                      <tbody id="nested-tbody-${prop.name.replace(/[^a-zA-Z0-9]/g, '-')}">
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              `;
+              tbody.appendChild(nestedRow);
+              
+              // Get reference to the nested tbody
+              const nestedTbody = nestedRow.querySelector(`#nested-tbody-${prop.name.replace(/[^a-zA-Z0-9]/g, '-')}`);
+              
+              // Group nested properties by semantic group
+              let nestedCurrentGroup = '';
+              
+              // Add nested properties to the table
+              nestedProps.forEach(nestedProp => {
+                // Add semantic group header if this is a new group
+                if (nestedProp.semanticGroup !== nestedCurrentGroup) {
+                  nestedCurrentGroup = nestedProp.semanticGroup;
+                  
+                  // Create a group header row
+                  const groupHeaderRow = document.createElement('tr');
+                  groupHeaderRow.className = 'semantic-group-header';
+                  groupHeaderRow.style.backgroundColor = '#f0f0f0';
+                  
+                  // Get a friendly name for the group
+                  let groupDisplayName = nestedCurrentGroup.charAt(0).toUpperCase() + nestedCurrentGroup.slice(1);
+                  if (groupDisplayName === 'Other') {
+                    groupDisplayName = 'Additional Fields';
+                  }
+                  
+                  groupHeaderRow.innerHTML = `
+                    <td colspan="5" style="padding: 8px 15px; font-weight: 600; color: #555;">
+                      ${groupDisplayName}
+                    </td>
+                  `;
+                  
+                  nestedTbody.appendChild(groupHeaderRow);
+                }
+                
+                // Format the type with format if available
+                let nestedTypeDisplay = nestedProp.type;
+                if (nestedProp.format) {
+                  nestedTypeDisplay += ` (${nestedProp.format})`;
+                }
+                
+                // Extract the base type for styling
+                const nestedBaseType = nestedProp.type ? nestedProp.type.split(' ')[0].toLowerCase() : 'string';
+                
+                // Create the row for this property
+                const nestedPropRow = document.createElement('tr');
+                
+                // Highlight required fields with a different background
+                if (nestedProp.required) {
+                  nestedPropRow.classList.add('required-field');
+                  nestedPropRow.style.backgroundColor = '#fff8f8';
+                }
+                
+                // Add a subtle left border with a color based on the semantic group
+                const groupColors = {
+                  'identification': '#6b7ddf',
+                  'personal': '#4caf50',
+                  'timestamps': '#9c27b0',
+                  'status': '#ff9800',
+                  'financial': '#009688',
+                  'location': '#e91e63',
+                  'metadata': '#607d8b',
+                  'other': '#9e9e9e'
+                };
+                
+                const groupColor = groupColors[nestedProp.semanticGroup] || '#9e9e9e';
+                nestedPropRow.style.borderLeft = `3px solid ${groupColor}`;
+                
+                nestedPropRow.innerHTML = `
+                  <td>${nestedProp.name}${nestedProp.required ? '<span class="field-required">*</span>' : ''}</td>
+                  <td><span class="field-type" data-type="${nestedBaseType}">${nestedTypeDisplay}</span></td>
+                  <td>${nestedProp.required ? '<strong style="color: #e53935;">Yes</strong>' : 'No'}</td>
+                  <td>${nestedProp.description}</td>
+                  <td>${nestedProp.example ? `<span class="field-example">${nestedProp.example}</span>` : ''}</td>
+                `;
+                
+                nestedTbody.appendChild(nestedPropRow);
+              });
+            }
+          });
+          
+          table.appendChild(tbody);
+          sectionContent.appendChild(table);
+        }
+        
+        // Add the section to the container
+        schemaSection.appendChild(sectionHeader);
+        schemaSection.appendChild(sectionContent);
+        
+        // Replace the container content with the section
+        container.innerHTML = '';
+        container.appendChild(schemaSection);
+        
+        // Add event listener for collapsible sections
+        sectionHeader.addEventListener('click', () => {
+          sectionContent.classList.toggle('expanded');
+          sectionHeader.querySelector('.schema-section-toggle').classList.toggle('expanded');
+        });
+        
+        // Expand by default
+        sectionContent.classList.add('expanded');
+        sectionHeader.querySelector('.schema-section-toggle').classList.add('expanded');
+      });
+      
+      // Also transform response bodies
+      transformResponseBodies();
+    }
+    
+    // Function to transform response bodies
+    function transformResponseBodies() {
+      // Find all response body containers
+      const responseBodies = document.querySelectorAll('.responses-wrapper .response-col_description');
+      
+      responseBodies.forEach(container => {
+        // Skip if already transformed
+        if (container.classList.contains('response-transformed')) return;
+        
+        // Mark as transformed
+        container.classList.add('response-transformed');
+        
+        // Find JSON examples
+        const preElements = container.querySelectorAll('pre');
+        
+        preElements.forEach(pre => {
+          try {
+            // Try to parse the content as JSON
+            const content = pre.textContent.trim();
+            if (!content.startsWith('{') && !content.startsWith('[')) return;
+            
+            const jsonData = JSON.parse(content);
+            
+            // Create a collapsible section for the JSON data
+            const schemaSection = document.createElement('div');
+            schemaSection.className = 'schema-section';
+            
+            // Create the section header
+            const sectionHeader = document.createElement('div');
+            sectionHeader.className = 'schema-section-header';
+            sectionHeader.innerHTML = `
+              <span>Response Schema</span>
+              <span class="schema-section-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </span>
+            `;
+            
+            // Create the section content
+            const sectionContent = document.createElement('div');
+            sectionContent.className = 'schema-section-content';
+            
+            // Create a table for the JSON data
+            const table = document.createElement('table');
+            table.className = 'schema-table';
+            
+            // Create table header
+            const thead = document.createElement('thead');
+            thead.innerHTML = `
+              <tr>
+                <th>Field Name</th>
+                <th>Type</th>
+                <th>Value</th>
+              </tr>
+            `;
+            table.appendChild(thead);
+            
+            // Create table body
+            const tbody = document.createElement('tbody');
+            
+            // Process JSON data recursively
+            function processJsonObject(obj, parentPath = '') {
+              Object.entries(obj).forEach(([key, value]) => {
+                const fullPath = parentPath ? `${parentPath}.${key}` : key;
+                const type = Array.isArray(value) ? 'array' : typeof value;
+                
+                const row = document.createElement('tr');
+                
+                if (type === 'object' && value !== null && Object.keys(value).length > 0) {
+                  // Create a collapsible nested object
+                  row.innerHTML = `
+                    <td colspan="3">
+                      <div class="schema-section nested-object">
+                        <div class="schema-section-header">
+                          <span>${key}</span>
+                          <span class="schema-section-toggle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                          </span>
+                        </div>
+                        <div class="schema-section-content">
+                          <table class="schema-table">
+                            <thead>
+                              <tr>
+                                <th>Field Name</th>
+                                <th>Type</th>
+                                <th>Value</th>
+                              </tr>
+                            </thead>
+                            <tbody class="nested-tbody-${fullPath.replace(/\./g, '-')}"></tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </td>
+                  `;
+                  
+                  tbody.appendChild(row);
+                  
+                  // Add event listener for collapsible sections
+                  row.querySelector('.schema-section-header').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const content = row.querySelector('.schema-section-content');
+                    content.classList.toggle('expanded');
+                    row.querySelector('.schema-section-toggle').classList.toggle('expanded');
+                  });
+                  
+                  // Expand by default
+                  row.querySelector('.schema-section-content').classList.add('expanded');
+                  row.querySelector('.schema-section-toggle').classList.add('expanded');
+                  
+                  // Process nested object
+                  const nestedTbody = row.querySelector(`.nested-tbody-${fullPath.replace(/\./g, '-')}`);
+                  
+                  // Process nested object properties
+                  Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+                    const nestedType = Array.isArray(nestedValue) ? 'array' : typeof nestedValue;
+                    
+                    const nestedRow = document.createElement('tr');
+                    
+                    let valueDisplay = '';
+                    if (nestedType === 'object' && nestedValue !== null && Object.keys(nestedValue).length > 0) {
+                      valueDisplay = `<button class="expand-nested-btn" data-path="${fullPath}.${nestedKey}">View Object</button>`;
+                    } else if (nestedType === 'array' && nestedValue.length > 0) {
+                      valueDisplay = `<button class="expand-nested-btn" data-path="${fullPath}.${nestedKey}">View Array [${nestedValue.length}]</button>`;
+                    } else {
+                      valueDisplay = String(nestedValue !== null ? nestedValue : 'null');
+                    }
+                    
+                    nestedRow.innerHTML = `
+                      <td>${nestedKey}</td>
+                      <td><span class="field-type">${nestedType}</span></td>
+                      <td><span class="field-example">${valueDisplay}</span></td>
+                    `;
+                    
+                    nestedTbody.appendChild(nestedRow);
+                  });
+                } else if (type === 'array' && value.length > 0) {
+                  // Create a collapsible array
+                  row.innerHTML = `
+                    <td>${key}</td>
+                    <td><span class="field-type">array[${value.length}]</span></td>
+                    <td>
+                      <div class="schema-section">
+                        <div class="schema-section-header">
+                          <span>Array Items</span>
+                          <span class="schema-section-toggle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                          </span>
+                        </div>
+                        <div class="schema-section-content">
+                          <pre>${JSON.stringify(value, null, 2)}</pre>
+                        </div>
+                      </div>
+                    </td>
+                  `;
+                  
+                  tbody.appendChild(row);
+                  
+                  // Add event listener for collapsible sections
+                  row.querySelector('.schema-section-header').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const content = row.querySelector('.schema-section-content');
+                    content.classList.toggle('expanded');
+                    row.querySelector('.schema-section-toggle').classList.toggle('expanded');
+                  });
+                } else {
+                  // Simple value
+                  let valueDisplay = '';
+                  if (value === null) {
+                    valueDisplay = 'null';
+                  } else if (type === 'object') {
+                    valueDisplay = '{}';
+                  } else if (type === 'array') {
+                    valueDisplay = '[]';
+                  } else {
+                    valueDisplay = String(value);
+                  }
+                  
+                  row.innerHTML = `
+                    <td>${key}</td>
+                    <td><span class="field-type">${type}</span></td>
+                    <td><span class="field-example">${valueDisplay}</span></td>
+                  `;
+                  
+                  tbody.appendChild(row);
+                }
+              });
+            }
+            
+            // Process the root object
+            processJsonObject(jsonData);
+            
+            table.appendChild(tbody);
+            sectionContent.appendChild(table);
+            
+            // Add the section to the container
+            schemaSection.appendChild(sectionHeader);
+            schemaSection.appendChild(sectionContent);
+            
+            // Add event listener for collapsible sections
+            sectionHeader.addEventListener('click', () => {
+              sectionContent.classList.toggle('expanded');
+              sectionHeader.querySelector('.schema-section-toggle').classList.toggle('expanded');
+            });
+            
+            // Expand by default
+            sectionContent.classList.add('expanded');
+            sectionHeader.querySelector('.schema-section-toggle').classList.add('expanded');
+            
+            // Replace the pre element with the section
+            pre.parentNode.replaceChild(schemaSection, pre);
+            
+            // Add event listeners for expand buttons
+            document.querySelectorAll('.expand-nested-btn').forEach(btn => {
+              btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const path = btn.getAttribute('data-path').split('.');
+                let currentObj = jsonData;
+                
+                // Navigate to the nested object
+                for (const key of path) {
+                  currentObj = currentObj[key];
+                }
+                
+                // Create a modal to display the nested object
+                const modal = document.createElement('div');
+                modal.className = 'schema-modal';
+                modal.innerHTML = `
+                  <div class="schema-modal-content">
+                    <div class="schema-modal-header">
+                      <span>${path[path.length - 1]}</span>
+                      <span class="schema-modal-close">&times;</span>
+                    </div>
+                    <div class="schema-modal-body">
+                      <pre>${JSON.stringify(currentObj, null, 2)}</pre>
+                    </div>
+                  </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                // Add event listener for close button
+                modal.querySelector('.schema-modal-close').addEventListener('click', () => {
+                  document.body.removeChild(modal);
+                });
+                
+                // Close modal when clicking outside
+                modal.addEventListener('click', (e) => {
+                  if (e.target === modal) {
+                    document.body.removeChild(modal);
+                  }
+                });
+              });
+            });
+          } catch (e) {
+            // Not valid JSON, leave as is
+            console.log('Not valid JSON:', e);
+          }
+        });
+      });
+    }
+    
+    // Observe DOM changes to transform new schemas
+    function setupSchemaObserver() {
+      const observer = new MutationObserver((mutations) => {
+        let shouldTransform = false;
+        
+        mutations.forEach((mutation) => {
+          if (mutation.addedNodes.length > 0) {
+            shouldTransform = true;
+          }
+        });
+        
+        if (shouldTransform) {
+          setTimeout(transformSchemas, 500);
+        }
+      });
+      
+      // Start observing the document body for changes
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
+    
+    // Setup observer after page load
+    document.addEventListener('DOMContentLoaded', () => {
+      setupSchemaObserver();
+      
+      // Initial transform
+      setTimeout(transformSchemas, 1000);
+      
+      // Add table headers to models
+      setTimeout(enhanceModelDisplay, 1000);
+    });
+    
+    // Function to enhance model display
+    function enhanceModelDisplay() {
+      // Find all model containers
+      const modelContainers = document.querySelectorAll('.swagger-ui .model-container');
+      
+      modelContainers.forEach(container => {
+        // Skip if already processed
+        if (container.classList.contains('enhanced')) return;
+        
+        // Mark as processed
+        container.classList.add('enhanced');
+        
+        // Get the model title
+        const modelTitle = container.querySelector('.model-title');
+        if (!modelTitle) return;
+        
+        // Create header row for the table
+        const headerRow = document.createElement('div');
+        headerRow.className = 'model-header-row';
+        headerRow.innerHTML = `
+          <div class="model-header-key">Key</div>
+          <div class="model-header-description">Description</div>
+        `;
+        
+        // Insert header row after model title
+        if (modelTitle.nextSibling) {
+          container.insertBefore(headerRow, modelTitle.nextSibling);
+        }
+        
+        // Apply table styling to properties
+        const properties = container.querySelectorAll('.property');
+        properties.forEach(prop => {
+          prop.style.display = 'table-row';
+          
+          // Get property name and description
+          const propName = prop.querySelector('.property-name');
+          const propDesc = prop.querySelector('.property-description');
+          
+          if (propName) {
+            propName.style.display = 'table-cell';
+            propName.style.width = '25%';
+            propName.style.padding = '12px 20px';
+            propName.style.borderBottom = '1px solid #eaeaea';
+          }
+          
+          if (propDesc) {
+            propDesc.style.display = 'table-cell';
+            propDesc.style.width = '75%';
+            propDesc.style.padding = '12px 20px';
+            propDesc.style.borderBottom = '1px solid #eaeaea';
+          }
+        });
+      });
+      
+      // Set up observer to enhance new models as they appear
+      const observer = new MutationObserver((mutations) => {
+        let shouldEnhance = false;
+        
+        mutations.forEach((mutation) => {
+          if (mutation.addedNodes.length > 0) {
+            shouldEnhance = true;
+          }
+        });
+        
+        if (shouldEnhance) {
+          setTimeout(enhanceModelDisplay, 500);
+        }
+      });
+      
+      // Start observing the document body for changes
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
+  </script>
   <script>
     window.onload = function() {
       // Store the base URL in a global variable
@@ -96,7 +1585,8 @@
           SwaggerUIStandalonePreset
         ],
         plugins: [
-          SwaggerUIBundle.plugins.DownloadUrl
+          SwaggerUIBundle.plugins.DownloadUrl,
+          SchemaTablePlugin
         ],
         layout: "StandaloneLayout",
         // Function to handle redundant authorization parameters
