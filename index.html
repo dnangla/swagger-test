@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Swagger UI</title>
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui.css">
+  <style>
+    html {
+      box-sizing: border-box;
+      overflow: -moz-scrollbars-vertical;
+      overflow-y: scroll;
+    }
+    
+    *,
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
+    
+    body {
+      margin: 0;
+      background: #fafafa;
+    }
+    
+    .topbar {
+      padding: 10px 0;
+      background-color: #1b1b1b;
+    }
+    
+    .wrapper {
+      max-width: 1460px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .topbar-wrapper {
+      display: flex;
+      align-items: center;
+    }
+    
+    .topbar-wrapper label {
+      color: white;
+      margin-right: 10px;
+    }
+    
+    .topbar-wrapper input {
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      min-width: 300px;
+      margin-right: 10px;
+    }
+    
+    .topbar-wrapper button {
+      padding: 6px 12px;
+      background-color: #49cc90;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .topbar-wrapper button:hover {
+      background-color: #3eb27f;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="wrapper">
+      <div class="topbar-wrapper">
+        <div>
+          <label for="base-url">Base URL:</label>
+          <input id="base-url" type="text" placeholder="https://api.example.com" />
+          <button id="apply-base-url">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="swagger-ui"></div>
+
+  <script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-bundle.js"></script>
+  <script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-standalone-preset.js"></script>
+  <script>
+    window.onload = function() {
+      // Store the base URL in a global variable
+      let currentBaseUrl = '';
+      
+      // Initialize Swagger UI
+      const ui = SwaggerUIBundle({
+        url: "openapi3.yaml",
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "StandaloneLayout",
+        // Function to handle redundant authorization parameters
+        onComplete: function() {
+          // This runs after Swagger UI is fully loaded
+          try {
+            // Add a custom CSS to style authorization parameters
+            const style = document.createElement('style');
+            style.textContent = `
+              /* Style for the authorization info box */
+              .auth-info-box {
+                background-color: #e8f4f8;
+                border-left: 4px solid #1976d2;
+                padding: 10px;
+                margin-top: 5px;
+                margin-bottom: 10px;
+                font-size: 13px;
+              }
+              
+              /* Hide authorization parameter rows completely when global auth is set */
+              .auth-param-hidden {
+                display: none !important;
+              }
+              
+              /* Style for disabled auth inputs */
+              .auth-input-disabled {
+                opacity: 0.5;
+                pointer-events: none;
+              }
+            `;
+            document.head.appendChild(style);
+            
+            // Function to process auth parameters - runs initially and on DOM changes
+            function processAuthParams() {
+              // Check if we have a global auth token
+              const hasGlobalAuth = !!localStorage.getItem('swagger_auth_token');
+              
+              // Find all parameter rows in the document
+              const paramRows = document.querySelectorAll('.parameters-container tr');
+              
+              paramRows.forEach(row => {
+                // Check if this is an authorization parameter
+                const nameCell = row.querySelector('.parameters-col_name');
+                const descCell = row.querySelector('.parameters-col_description');
+                
+                if (nameCell && descCell && 
+                    (nameCell.textContent.includes('Authorization') || 
+                     descCell.textContent.includes('Authorization') || 
+                     descCell.textContent.includes('Bearer'))) {
+                  
+                  // This is an authorization parameter row
+                  if (hasGlobalAuth) {
+                    // If global auth is set, hide the parameter completely
+                    row.classList.add('auth-param-hidden');
+                  } else {
+                    // If no global auth, show with a note
+                    
+                    // Check if we've already added the info box
+                    if (!row.querySelector('.auth-info-box')) {
+                      // Create info box with instructions
+                      const infoBox = document.createElement('div');
+                      infoBox.className = 'auth-info-box';
+                      infoBox.innerHTML = '<strong>Note:</strong> For better experience, set authorization globally using the <strong>Authorize</strong> button at the top instead of filling this field.';
+                      
+                      // Add the info box after the input
+                      const inputCell = row.querySelector('.parameters-col_description');
+                      if (inputCell) {
+                        inputCell.appendChild(infoBox);
+                      }
+                    }
+                  }
+                }
+              });
+              
+              // Also handle the authorization inputs
+              const authInputs = document.querySelectorAll('input[placeholder*="authorization" i], input[placeholder*="bearer" i]');
+              authInputs.forEach(input => {
+                if (hasGlobalAuth) {
+                  // Disable the input if global auth is set
+                  input.classList.add('auth-input-disabled');
+                  input.setAttribute('disabled', 'disabled');
+                  input.setAttribute('placeholder', 'Using global authorization');
+                }
+              });
+            }
+            
+            // Run initially
+            processAuthParams();
+            
+            // Set up a mutation observer to handle dynamically loaded content
+            const observer = new MutationObserver(function(mutations) {
+              processAuthParams();
+            });
+            
+            // Start observing the document with the configured parameters
+            observer.observe(document.body, { 
+              childList: true, 
+              subtree: true 
+            });
+            
+          } catch (e) {
+            console.error('Error setting up UI customizations:', e);
+          }
+        },
+        requestInterceptor: (req) => {
+          // Log the request for debugging
+          console.log('Original request:', JSON.stringify(req));
+          
+          // Apply baseURL to the request
+          if (currentBaseUrl) {
+            // Handle both the URL and the request body (for curl examples)
+            if (req.url && typeof req.url === 'string') {
+              // Replace {{baseurl}} placeholder in URLs
+              req.url = req.url.replace(/\{\{baseurl\}\}/g, currentBaseUrl);
+              
+              // Fix double protocol issue (http://https://)
+              req.url = req.url.replace(/^(https?:\/\/)(https?:\/\/)/, '$2');
+              
+              // Also handle URLs that start with /
+              if (req.url.startsWith('/')) {
+                // Remove trailing slash from baseURL if present
+                const baseUrlForJoin = currentBaseUrl.endsWith('/') ? 
+                  currentBaseUrl.slice(0, -1) : currentBaseUrl;
+                req.url = baseUrlForJoin + req.url;
+              }
+            }
+            
+            // Update the displayed curl commands
+            if (req.body && typeof req.body === 'string') {
+              // Replace {{baseurl}} placeholder
+              req.body = req.body.replace(/\{\{baseurl\}\}/g, currentBaseUrl);
+              
+              // Fix double protocol issue in curl commands
+              req.body = req.body.replace(/'(https?:\/\/)(https?:\/\/)/g, "'$2");
+              
+              // Fix curl commands with form-encoded JSON
+              if (req.body.includes('curl -X') && req.body.includes('-H \'Content-Type: application/x-www-form-urlencoded\'')) {
+                try {
+                  // Extract all the form-encoded data
+                  const formDataMatch = req.body.match(/-d '([^']+)'/);
+                  if (formDataMatch && formDataMatch[1]) {
+                    const formData = formDataMatch[1];
+                    
+                    // Check if this is a JSON request that's been form-encoded
+                    // Look for patterns like JSON keys and values in the form data
+                    const hasJsonStructure = formData.includes('first_name') || 
+                                            formData.includes('last_name') || 
+                                            formData.includes('email') ||
+                                            formData.includes('company_name');
+                    
+                    if (hasJsonStructure) {
+                      // Try to extract the actual JSON from the request body
+                      // First, check if it's in the request body model
+                      let jsonBody = '';
+                      
+                      // Try to find the JSON in the Swagger UI DOM
+                      try {
+                        const textareas = document.querySelectorAll('textarea.body-param__text');
+                        textareas.forEach(textarea => {
+                          if (textarea.value && textarea.value.includes('{') && textarea.value.includes('}')) {
+                            // This looks like our JSON body
+                            jsonBody = textarea.value;
+                          }
+                        });
+                      } catch (domErr) {
+                        console.error('Error finding JSON in DOM:', domErr);
+                      }
+                      
+                      // If we found JSON in the DOM, use it
+                      if (jsonBody) {
+                        // Now replace the form data with the JSON
+                        // And change the Content-Type to application/json
+                        req.body = req.body.replace(
+                          /-H 'Content-Type: application\/x-www-form-urlencoded'/,
+                          "-H 'Content-Type: application/json'"
+                        );
+                        
+                        // Replace the form data with the JSON string
+                        req.body = req.body.replace(
+                          /-d '[^']+'/,
+                          `-d '${jsonBody}'`
+                        );
+                      } else {
+                        // Fallback: Try to reconstruct the JSON from the form data
+                        // This is a more complex approach for when we can't find the original JSON
+                        
+                        // Check if it's the specific pattern we've seen
+                        if (formData.match(/^\d+=%7B/)) {
+                          // This is likely JSON that's been form-encoded with numbers as keys
+                          // Try to reconstruct by decoding each part
+                          
+                          // First, handle the case where the first character is missing
+                          let reconstructedJson = '{';
+                          
+                          // Extract all parts and join them
+                          const parts = formData.split('&');
+                          
+                          // Each part is in the format "number=encodedChar"
+                          for (let i = 1; i < parts.length; i++) { // Skip the first part which is just '{'
+                            const part = parts[i];
+                            const match = part.match(/\d+=(.+)/);
+                            if (match && match[1]) {
+                              reconstructedJson += decodeURIComponent(match[1]);
+                            }
+                          }
+                          
+                          // Now replace the form data with the reconstructed JSON
+                          // And change the Content-Type to application/json
+                          req.body = req.body.replace(
+                            /-H 'Content-Type: application\/x-www-form-urlencoded'/,
+                            "-H 'Content-Type: application/json'"
+                          );
+                          
+                          // Replace the form data with the JSON string
+                          req.body = req.body.replace(
+                            /-d '[^']+'/,
+                            `-d '${reconstructedJson}'`
+                          );
+                        }
+                      }
+                    }
+                  }
+                } catch (e) {
+                  console.error('Error fixing curl command:', e);
+                }
+              }
+              
+              // Add authorization token to curl commands if it exists
+              const authToken = localStorage.getItem('swagger_auth_token');
+              if (authToken && req.body.includes('curl -X')) {
+                // Check if the Authorization header is already present
+                if (!req.body.includes('-H \'Authorization:')) {
+                  // Insert the Authorization header after the last -H line
+                  const lastHeaderPos = req.body.lastIndexOf('-H ');
+                  if (lastHeaderPos !== -1) {
+                    const insertPos = req.body.indexOf("'\\", lastHeaderPos) + 2;
+                    if (insertPos > 2) {
+                      const beforeInsert = req.body.substring(0, insertPos);
+                      const afterInsert = req.body.substring(insertPos);
+                      req.body = beforeInsert + "\n  -H 'Authorization: " + authToken + "' \\" + afterInsert;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          
+          // Add authorization header to actual requests
+          const authToken = localStorage.getItem('swagger_auth_token');
+          if (authToken && req.headers) {
+            req.headers['Authorization'] = authToken;
+          }
+          
+          // Fix Content-Type for JSON request bodies
+          if (req.body && typeof req.body === 'string') {
+            // Check if this is a JSON request that's being sent as form data
+            try {
+              // If the headers indicate form data but the body looks like it should be JSON
+              if (req.headers && req.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+                // Try to detect if this is actually JSON content being form-encoded
+                const jsonPattern = /(%7B|\{).*(%7D|\})/;
+                const hasJsonKeys = req.body.includes('first_name') || 
+                                   req.body.includes('last_name') || 
+                                   req.body.includes('email') ||
+                                   req.body.includes('company_name');
+                
+                if (jsonPattern.test(req.body) || hasJsonKeys) {
+                  console.log('Detected JSON in form data, attempting to convert...');
+                  
+                  // Change the Content-Type header to JSON
+                  req.headers['Content-Type'] = 'application/json';
+                  
+                  // First, try to get the JSON from the textarea in the UI
+                  let jsonBody = '';
+                  try {
+                    const textareas = document.querySelectorAll('textarea.body-param__text');
+                    textareas.forEach(textarea => {
+                      if (textarea.value && textarea.value.includes('{') && textarea.value.includes('}')) {
+                        // This looks like our JSON body
+                        jsonBody = textarea.value;
+                      }
+                    });
+                  } catch (domErr) {
+                    console.error('Error finding JSON in DOM:', domErr);
+                  }
+                  
+                  if (jsonBody) {
+                    console.log('Found JSON in textarea:', jsonBody);
+                    // Use the JSON from the textarea
+                    req.body = jsonBody;
+                  } else {
+                    // Try to extract the JSON from the form-encoded data
+                    try {
+                      // If the body is form-encoded with numbered keys
+                      if (req.body.match(/^\d+=/)) {
+                        console.log('Detected numbered form data, reconstructing JSON...');
+                        
+                        // First character is often missing, add it back
+                        let reconstructedJson = '{';
+                        
+                        // Extract all parts and join them
+                        const parts = req.body.split('&');
+                        
+                        // Each part is in the format "number=encodedChar"
+                        for (let i = 1; i < parts.length; i++) { // Skip the first part
+                          const part = parts[i];
+                          const match = part.match(/\d+=(.+)/);
+                          if (match && match[1]) {
+                            reconstructedJson += decodeURIComponent(match[1]);
+                          }
+                        }
+                        
+                        console.log('Reconstructed JSON:', reconstructedJson);
+                        req.body = reconstructedJson;
+                      } else {
+                        // For other form-encoded JSON
+                        const match = req.body.match(jsonPattern);
+                        if (match) {
+                          // We found what looks like JSON, now decode it
+                          let jsonStr = decodeURIComponent(match[0]);
+                          // If it's still encoded, try again
+                          if (jsonStr.includes('%')) {
+                            jsonStr = decodeURIComponent(jsonStr);
+                          }
+                          console.log('Extracted JSON from pattern:', jsonStr);
+                          // Set the body to the decoded JSON
+                          req.body = jsonStr;
+                        }
+                      }
+                    } catch (e) {
+                      console.error('Error converting form data to JSON:', e);
+                    }
+                  }
+                }
+              }
+            } catch (e) {
+              console.error('Error processing request body:', e);
+            }
+          }
+          
+          console.log('Modified request:', JSON.stringify(req));
+          return req;
+        },
+        responseInterceptor: (res) => {
+          // Also handle response URLs for consistent display
+          if (res && res.url && typeof res.url === 'string' && currentBaseUrl) {
+            res.url = res.url.replace(/\{\{baseurl\}\}/g, currentBaseUrl);
+          }
+          return res;
+        }
+      });
+      
+      window.ui = ui;
+      
+      // Handle apply button click
+      document.getElementById('apply-base-url').addEventListener('click', function() {
+        currentBaseUrl = document.getElementById('base-url').value.trim();
+        
+        // Store in localStorage for persistence
+        if (currentBaseUrl) {
+          localStorage.setItem('swagger_baseurl', currentBaseUrl);
+        } else {
+          localStorage.removeItem('swagger_baseurl');
+        }
+        
+        alert('Base URL set to: ' + (currentBaseUrl || 'None (using relative paths)'));
+        
+        // Force reload the page to ensure all components use the new baseURL
+        window.location.reload();
+      });
+      
+      // Load saved baseURL from localStorage if available
+      const savedBaseUrl = localStorage.getItem('swagger_baseurl');
+      if (savedBaseUrl) {
+        document.getElementById('base-url').value = savedBaseUrl;
+        currentBaseUrl = savedBaseUrl;
+        console.log('Loaded saved baseURL:', savedBaseUrl);
+      }
+      
+      // Monitor for authorization changes
+      const originalAuthorize = ui.authActions.authorize;
+      ui.authActions.authorize = function(payload) {
+        console.log('Authorization payload:', payload);
+        
+        // Store the token in localStorage
+        try {
+          // Extract the token from the payload
+          const authData = Object.values(payload)[0];
+          if (authData && authData.value) {
+            // Store the full token including the scheme (Bearer, etc.)
+            const scheme = authData.schema?.type === 'apiKey' ? '' : 
+                          (authData.schema?.scheme ? authData.schema.scheme + ' ' : 'Bearer ');
+            const token = scheme + authData.value;
+            localStorage.setItem('swagger_auth_token', token);
+            console.log('Saved auth token:', token);
+            
+            // Show confirmation to user
+            alert('Authorization token set successfully! This will be used for all API requests.');
+            
+            // Reload the page to ensure all components use the new token
+            window.location.reload();
+          }
+        } catch (e) {
+          console.error('Error storing auth token:', e);
+        }
+        
+        return originalAuthorize.apply(this, arguments);
+      };
+      
+      // Also handle logout to clear the token
+      const originalLogout = ui.authActions.logout;
+      ui.authActions.logout = function(payload) {
+        console.log('Logout payload:', payload);
+        localStorage.removeItem('swagger_auth_token');
+        console.log('Cleared auth token');
+        alert('Authorization token cleared.');
+        
+        // Reload the page to ensure all components update
+        window.location.reload();
+        
+        return originalLogout.apply(this, arguments);
+      };
+      
+      // Add a notification about global authorization if needed
+      setTimeout(() => {
+        const authToken = localStorage.getItem('swagger_auth_token');
+        if (!authToken) {
+          // Create a notification banner
+          const banner = document.createElement('div');
+          banner.style.backgroundColor = '#ff9800';
+          banner.style.color = 'white';
+          banner.style.padding = '10px';
+          banner.style.textAlign = 'center';
+          banner.style.position = 'fixed';
+          banner.style.top = '0';
+          banner.style.left = '0';
+          banner.style.right = '0';
+          banner.style.zIndex = '9999';
+          banner.innerHTML = '<strong>Note:</strong> Please set global authorization using the Authorize button at the top. Individual authorization parameters in requests are for information only.';
+          
+          // Add a close button
+          const closeBtn = document.createElement('button');
+          closeBtn.innerHTML = '&times;';
+          closeBtn.style.marginLeft = '10px';
+          closeBtn.style.background = 'transparent';
+          closeBtn.style.border = 'none';
+          closeBtn.style.color = 'white';
+          closeBtn.style.fontSize = '20px';
+          closeBtn.style.cursor = 'pointer';
+          closeBtn.onclick = function() {
+            document.body.removeChild(banner);
+          };
+          banner.appendChild(closeBtn);
+          
+          document.body.appendChild(banner);
+        }
+      }, 1000);
+    };
+  </script>
+</body>
+</html>
