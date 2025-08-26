@@ -63,6 +63,14 @@
     .topbar-wrapper button:hover {
       background-color: #3eb27f;
     }
+    
+    #logout-button {
+      background-color: #f44336 !important;
+    }
+    
+    #logout-button:hover {
+      background-color: #da190b !important;
+    }
   </style>
 </head>
 <body>
@@ -73,6 +81,7 @@
           <label for="base-url">Base URL:</label>
           <input id="base-url" type="text" placeholder="https://api.example.com" />
           <button id="apply-base-url">Apply</button>
+          <button id="logout-button" style="display: none; margin-left: 20px; background-color: #f44336;">Log out</button>
         </div>
       </div>
     </div>
@@ -132,7 +141,7 @@
             // Function to process auth parameters - runs initially and on DOM changes
             function processAuthParams() {
               // Check if we have a global auth token
-              const hasGlobalAuth = !!localStorage.getItem('swagger_auth_token');
+              const hasGlobalAuth = !!sessionStorage.getItem('swagger_auth_token');
               
               // Find all parameter rows in the document
               const paramRows = document.querySelectorAll('.parameters-container tr');
@@ -325,7 +334,7 @@
               }
               
               // Add authorization token to curl commands if it exists
-              const authToken = localStorage.getItem('swagger_auth_token');
+              const authToken = sessionStorage.getItem('swagger_auth_token');
               if (authToken && req.body.includes('curl -X')) {
                 // Check if the Authorization header is already present
                 if (!req.body.includes('-H \'Authorization:')) {
@@ -345,7 +354,7 @@
           }
           
           // Add authorization header to actual requests
-          const authToken = localStorage.getItem('swagger_auth_token');
+          const authToken = sessionStorage.getItem('swagger_auth_token');
           if (authToken && req.headers) {
             req.headers['Authorization'] = authToken;
           }
@@ -455,11 +464,11 @@
       document.getElementById('apply-base-url').addEventListener('click', function() {
         currentBaseUrl = document.getElementById('base-url').value.trim();
         
-        // Store in localStorage for persistence
+        // Store in sessionStorage for consistency
         if (currentBaseUrl) {
-          localStorage.setItem('swagger_baseurl', currentBaseUrl);
+          sessionStorage.setItem('swagger_baseurl', currentBaseUrl);
         } else {
-          localStorage.removeItem('swagger_baseurl');
+          sessionStorage.removeItem('swagger_baseurl');
         }
         
         alert('Base URL set to: ' + (currentBaseUrl || 'None (using relative paths)'));
@@ -468,20 +477,51 @@
         window.location.reload();
       });
       
-      // Load saved baseURL from localStorage if available
-      const savedBaseUrl = localStorage.getItem('swagger_baseurl');
+      // Load saved baseURL from sessionStorage if available
+      const savedBaseUrl = sessionStorage.getItem('swagger_baseurl');
       if (savedBaseUrl) {
         document.getElementById('base-url').value = savedBaseUrl;
         currentBaseUrl = savedBaseUrl;
         console.log('Loaded saved baseURL:', savedBaseUrl);
       }
       
+      // Function to update logout button visibility
+      function updateLogoutButtonVisibility() {
+        const authToken = sessionStorage.getItem('swagger_auth_token');
+        const logoutButton = document.getElementById('logout-button');
+        if (authToken) {
+          logoutButton.style.display = 'inline-block';
+        } else {
+          logoutButton.style.display = 'none';
+        }
+      }
+      
+      // Handle logout button click
+      document.getElementById('logout-button').addEventListener('click', function() {
+        // Clear both token and baseURL from sessionStorage
+        sessionStorage.removeItem('swagger_auth_token');
+        sessionStorage.removeItem('swagger_baseurl');
+        console.log('Cleared auth token and baseURL from sessionStorage');
+        
+        // Update UI immediately
+        updateLogoutButtonVisibility();
+        
+        // Show confirmation to user
+        alert('Successfully logged out. Authorization details have been cleared.');
+        
+        // Reload the page to ensure all components update
+        window.location.reload();
+      });
+      
+      // Initialize logout button visibility
+      updateLogoutButtonVisibility();
+      
       // Monitor for authorization changes
       const originalAuthorize = ui.authActions.authorize;
       ui.authActions.authorize = function(payload) {
         console.log('Authorization payload:', payload);
         
-        // Store the token in localStorage
+        // Store the token in sessionStorage
         try {
           // Extract the token from the payload
           const authData = Object.values(payload)[0];
@@ -490,11 +530,14 @@
             const scheme = authData.schema?.type === 'apiKey' ? '' : 
                           (authData.schema?.scheme ? authData.schema.scheme + ' ' : 'Bearer ');
             const token = scheme + authData.value;
-            localStorage.setItem('swagger_auth_token', token);
+            sessionStorage.setItem('swagger_auth_token', token);
             console.log('Saved auth token:', token);
             
             // Show confirmation to user
             alert('Authorization token set successfully! This will be used for all API requests.');
+            
+            // Update logout button visibility
+            updateLogoutButtonVisibility();
             
             // Reload the page to ensure all components use the new token
             window.location.reload();
@@ -510,9 +553,14 @@
       const originalLogout = ui.authActions.logout;
       ui.authActions.logout = function(payload) {
         console.log('Logout payload:', payload);
-        localStorage.removeItem('swagger_auth_token');
-        console.log('Cleared auth token');
-        alert('Authorization token cleared.');
+        sessionStorage.removeItem('swagger_auth_token');
+        sessionStorage.removeItem('swagger_baseurl');
+        console.log('Cleared auth token and baseURL');
+        
+        // Update logout button visibility
+        updateLogoutButtonVisibility();
+        
+        alert('Authorization details cleared.');
         
         // Reload the page to ensure all components update
         window.location.reload();
@@ -522,7 +570,7 @@
       
       // Add a notification about global authorization if needed
       setTimeout(() => {
-        const authToken = localStorage.getItem('swagger_auth_token');
+        const authToken = sessionStorage.getItem('swagger_auth_token');
         if (!authToken) {
           // Create a notification banner
           const banner = document.createElement('div');
@@ -535,7 +583,7 @@
           banner.style.left = '0';
           banner.style.right = '0';
           banner.style.zIndex = '9999';
-          banner.innerHTML = '<strong>Note:</strong> Please set global authorization using the Authorize button at the top. Individual authorization parameters in requests are for information only.';
+          banner.innerHTML = '<strong>Note:</strong> Please set global authorization using the Authorize button at the top.';
           
           // Add a close button
           const closeBtn = document.createElement('button');
