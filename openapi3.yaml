@@ -1832,6 +1832,17 @@ paths:
           schema:
             type: string
           required: true
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [phones, address, billing, rep, jobs, contacts, canvasser, call_center_rep, referred_by]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
       responses:
         '200':
           description: OK
@@ -5883,6 +5894,17 @@ paths:
       security:
         - noauthAuth: []
       parameters:
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [address, estimators, reps, customer, sub_contractors, projects, work_types, trades, division, deleted_by]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
         - name: limit
           in: query
           schema:
@@ -6641,6 +6663,17 @@ paths:
           schema:
             type: string
           required: true
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [address, estimators, reps, customer, sub_contractors, projects, work_types, trades, job_notes, division]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
       responses:
         '200':
           description: OK
@@ -7852,6 +7885,17 @@ paths:
           schema:
             type: string
           example: Bearer {{accessToken}}
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [work_types, attributes.unit, attributes.sub_attributes.unit]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
       responses:
         '200':
           description: OK
@@ -8124,7 +8168,18 @@ paths:
         > Example `?query=John`
       security:
         - noauthAuth: []
-      parameters: []
+      parameters:
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [profile]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
       responses:
         '200':
           description: OK
@@ -8318,12 +8373,23 @@ paths:
         | query | Search user by email, first name or last name |
 
         | with_deactivated | <br><br>boolean(1, 0) 1 to get Both active/inactive
-        sub contractors in the listing<br><br> |
+        sub         contractors in the listing<br><br> |
 
         | type | Value must be either labor or sub_contractor.  <br>  <br>Send
         labor to get only labors and send sub_contractor to get only sub
         contractors |
-      parameters: []
+      parameters:
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [role]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
       responses:
         '200':
           description: OK
@@ -9129,6 +9195,17 @@ paths:
           schema:
             type: string
           required: true
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [created_by, modified_by]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
       responses:
         '200':
           description: OK
@@ -9566,7 +9643,18 @@ paths:
 
 
         > Example `?sort_by=id&sort_order=asc`
-      parameters: []
+      parameters:
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [user, attendees, jobs, result_option, reminders, customer]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
       responses:
         '200':
           description: OK
@@ -10070,6 +10158,17 @@ paths:
           schema:
             type: string
           required: true
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [transfer_from_payment, transfer_to_payment]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
       responses:
         '200':
           description: Successful response
@@ -10612,6 +10711,17 @@ paths:
             type: integer
           example: 1
           required: false
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [created_by, modified_by, sub_contractors, reps, trades, work_types, work_crew_notes, reminders, job, customer]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
       responses:
         '200':
           description: OK
@@ -10892,7 +11002,7 @@ paths:
             type: array
             items:
               type: string
-              enum: [job]
+              enum: [job_proposal]
           style: form
           explode: true
           required: false
@@ -11896,7 +12006,18 @@ paths:
       tags:
         - Divisions
       summary: Divisions
-      parameters: []
+      parameters:
+        - name: includes[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [address]
+          style: form
+          explode: true
+          required: false
+          description: Include related data in the response (select multiple values)
       responses:
         '200':
           description: OK
