@@ -2897,6 +2897,7 @@
         // Base URL management
         document.getElementById('apply-base-url').addEventListener('click', () => {
           let baseUrl = document.getElementById('base-url').value.trim();
+          console.log('Applying base URL:', baseUrl);
           
           if (baseUrl) {
             // Normalize the base URL
@@ -2913,9 +2914,11 @@
             
             this.currentBaseUrl = baseUrl;
             sessionStorage.setItem('swagger_baseurl', baseUrl);
+            console.log('Base URL set to:', baseUrl);
           } else {
             this.currentBaseUrl = '';
             sessionStorage.removeItem('swagger_baseurl');
+            console.log('Base URL cleared');
           }
           
           // Show feedback
@@ -2931,11 +2934,13 @@
         // Authorization management
         document.getElementById('authorize-button').addEventListener('click', () => {
           const authToken = document.getElementById('auth-token').value.trim();
+          console.log('Applying auth token:', authToken ? 'Token provided' : 'No token');
           
           if (authToken) {
             // Ensure token has Bearer prefix if not already present
             const formattedToken = authToken.startsWith('Bearer ') ? authToken : `Bearer ${authToken}`;
             sessionStorage.setItem('swagger_auth_token', formattedToken);
+            console.log('Auth token set successfully');
             this.showFeedback('Authorization token set successfully!', '#49cc90');
             this.updateLogoutButtonVisibility();
             
@@ -2946,6 +2951,7 @@
             }
           } else {
             sessionStorage.removeItem('swagger_auth_token');
+            console.log('Auth token cleared');
             this.showFeedback('Authorization token cleared!', '#f44336');
             this.updateLogoutButtonVisibility();
           }
@@ -3081,23 +3087,30 @@
       }
       
       loadSavedSettings() {
+        console.log('Loading saved settings...');
+        
         // Load saved base URL
         const savedBaseUrl = sessionStorage.getItem('swagger_baseurl');
+        console.log('Saved base URL:', savedBaseUrl);
         if (savedBaseUrl) {
           document.getElementById('base-url').value = savedBaseUrl;
           this.currentBaseUrl = savedBaseUrl;
+          console.log('Loaded base URL:', savedBaseUrl);
         }
         
         // Load saved auth token
         const savedAuthToken = sessionStorage.getItem('swagger_auth_token');
+        console.log('Saved auth token:', savedAuthToken ? 'Token present' : 'No token');
         if (savedAuthToken) {
           // Remove Bearer prefix for display
           const displayToken = savedAuthToken.replace('Bearer ', '');
           document.getElementById('auth-token').value = displayToken;
+          console.log('Loaded auth token for display');
         }
         
         // Update logout button visibility
         this.updateLogoutButtonVisibility();
+        console.log('Settings loaded successfully');
       }
       
       showFeedback(message, color) {
