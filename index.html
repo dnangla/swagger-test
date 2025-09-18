@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Swagger UI</title>
+  <title>Leap API Documentation</title>
   <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui.css">
   <style>
     html {
@@ -20,11 +20,15 @@
     body {
       margin: 0;
       background: #fafafa;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     
     .topbar {
       padding: 10px 0;
       background-color: #1b1b1b;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
     
     .wrapper {
@@ -36,19 +40,34 @@
     .topbar-wrapper {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+    
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     
     .topbar-wrapper label {
       color: white;
-      margin-right: 10px;
+      white-space: nowrap;
     }
     
     .topbar-wrapper input {
       padding: 6px 10px;
       border-radius: 4px;
       border: 1px solid #ccc;
-      min-width: 300px;
-      margin-right: 10px;
+      min-width: 250px;
     }
     
     .topbar-wrapper button {
@@ -58,6 +77,7 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      white-space: nowrap;
     }
     
     .topbar-wrapper button:hover {
@@ -71,373 +91,2719 @@
     #logout-button:hover {
       background-color: #da190b !important;
     }
+    
+    #authorize-button {
+      background-color: #49cc90 !important;
+    }
+    
+    #authorize-button:hover {
+      background-color: #3eb27f !important;
+    }
+    
+    /* Main Layout */
+    .main-container {
+      display: flex;
+      height: calc(100vh - 60px);
+    }
+    
+    /* Sidebar Styles */
+    .sidebar {
+      width: 320px;
+      background: white;
+      border-right: 1px solid #e8e8e8;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid #e8e8e8;
+      background: #f8f9fa;
+    }
+    
+    .sidebar-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 10px 0;
+      color: #333;
+    }
+    
+    .search-box {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    
+    .search-box:focus {
+      outline: none;
+      border-color: #49cc90;
+      box-shadow: 0 0 0 2px rgba(73, 204, 144, 0.1);
+    }
+    
+    /* Navigation Styles */
+    .nav-section {
+      padding: 10px 0;
+    }
+    
+    .nav-item {
+      position: relative;
+    }
+    
+    .child-nav-item {
+      margin-left: 20px;
+      margin-bottom: 2px;
+    }
+    
+    .child-nav-item .nav-folder {
+      background-color: #f8f9fa;
+      border-left: 2px solid #e8e8e8;
+    }
+    
+    .nav-folder {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
+      user-select: none;
+    }
+    
+    .nav-folder:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .nav-folder.active {
+      background-color: #fafafa;
+      border-left-color: #fafafa;
+      ;
+    }
+    
+    .nav-folder.loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    
+    .folder-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      transition: transform 0.3s ease;
+    }
+    
+    .folder-icon.expanded {
+      transform: rotate(90deg);
+    }
+    
+    .folder-name {
+      flex: 1;
+      font-weight: 500;
+      color: #333;
+    }
+    
+    .endpoint-count {
+      font-size: 12px;
+      color: #666;
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+    
+    /* Endpoint List Styles */
+    .endpoint-list {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      background-color: #fafafa;
+    }
+    
+    .endpoint-list.expanded {
+      max-height: 2000px; /* Adjust based on your needs */
+    }
+    
+    .endpoint-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 20px 8px 44px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
+    }
+    
+    .endpoint-item:hover {
+      background-color: #f8f9fa;
+      padding-left: 48px;
+    }
+    
+    .endpoint-item.active {
+      background-color: rgba(73, 204, 144, 0.15);
+      border-left-color: #49cc90;
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(73, 204, 144, 0.2);
+    }
+
+    .endpoint-item.active:hover {
+      background-color: rgba(73, 204, 144, 0.2);
+    }
+    
+    /* HTTP Method Badges */
+    .http-method {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-right: 8px;
+      min-width: 60px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    
+    .http-method.get {
+      background-color: rgba(97, 175, 254, 0.1);
+      color: #61affe;  /* Swagger UI GET color */
+    }
+    
+    .http-method.post {
+      background-color: rgba(73, 204, 144, 0.1);
+      color: #49cc90;  /* Swagger UI POST color */
+    }
+    
+    .http-method.put {
+      background-color: rgba(252, 161, 48, 0.1);
+      color: #fca130;  /* Swagger UI PUT color */
+    }
+    
+    .http-method.patch {
+      background-color: rgba(80, 227, 194, 0.1);
+      color: #50e3c2;  /* Swagger UI PATCH color */
+    }
+    
+    .http-method.delete {
+      background-color: rgba(249, 62, 62, 0.1);
+      color: #f93e3e;  /* Swagger UI DELETE color */
+    }
+    
+    .http-method.head {
+      background-color: rgba(144, 18, 254, 0.1);
+      color: #9012fe;  /* Swagger UI HEAD color */
+    }
+    
+    .http-method.options {
+      background-color: rgba(13, 90, 167, 0.1);
+      color: #0d5aa7;  /* Swagger UI OPTIONS color */
+    }
+    
+    .endpoint-path {
+      flex: 1;
+      font-size: 13px;
+      color: #3b4151;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .loading-indicator {
+      width: 16px;
+      height: 16px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #49cc90;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Content Area Styles */
+    .content-area {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .content-header {
+      padding: 20px;
+      background: white;
+      border-bottom: 1px solid #e8e8e8;
+      flex-shrink: 0;
+    }
+    
+    .breadcrumb {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    
+    .content-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0;
+      color: #333;
+    }
+    
+    .swagger-container {
+      flex: 1;
+      overflow: auto;
+    }
+    
+    /* Status Messages */
+    .status-message {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      text-align: center;
+      color: #666;
+      font-size: 16px;
+    }
+    
+    .error-message {
+      color: #d32f2f;
+      background: #ffebee;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 6px;
+      border: 1px solid #ffcdd2;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 280px;
+      }
+      
+      .topbar-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .topbar-left, .topbar-right {
+        justify-content: center;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+        height: auto;
+      }
+      
+      .sidebar {
+        width: 100%;
+        max-height: 300px;
+      }
+      
+      .wrapper {
+        padding: 0 10px;
+      }
+      
+      .topbar-wrapper input {
+        min-width: 200px;
+      }
+    }
+    
+    /* Swagger UI Customizations */
+    .swagger-ui .wrapper {
+      max-width: none;
+      padding: 20px;
+    }
+    
+    /* Hide OpenAPI version display */
+    .swagger-ui .version-pragma,
+    .swagger-ui .version-stamp {
+      display: none !important;
+    }
+    
+    .swagger-ui .info {
+      margin: 0 0 20px 0;
+    }
+    
+    /* Hide authorization sections in operations */
+    .swagger-ui .auth-wrapper,
+    .swagger-ui .authorization__btn {
+      display: none !important;
+    }
+    
+    /* Fix content overflow (inherited from original) */
+    .swagger-ui table {
+      table-layout: auto;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      width: 100%;
+    }
+    
+    .swagger-ui table td,
+    .swagger-ui table th {
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      vertical-align: top;
+    }
+    
+    .swagger-ui .response-col_links,
+    .swagger-ui .response-col_status {
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .swagger-ui .response-col_description {
+      overflow-wrap: break-word;
+      white-space: normal;
+      max-width: 400px;
+    }
+    
+    .swagger-ui .parameters-col_description {
+      overflow-wrap: break-word;
+      white-space: normal;
+      max-width: 350px;
+    }
+    
+    .swagger-ui .highlight-code,
+    .swagger-ui .microlight {
+      overflow-x: auto;
+      max-width: 100%;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      background: #41444e;
+      border-radius: 4px;
+      padding: 10px;
+    }
+    
+    /* Custom folder icons using CSS */
+    .folder-icon::before {
+      content: '▶';
+      display: block;
+      font-size: 12px;
+      color: #666;
+    }
+    
+    .folder-icon.expanded::before {
+      content: '▼';
+    }
+    
+    /* Special icon for introduction */
+    #introduction-button .folder-icon::before {
+      content: '📖';
+      font-size: 16px;
+    }
+    
+    #introduction-button .folder-icon {
+      margin-top: -2px;
+    }
+    
+    /* Search highlighting */
+    .search-highlight {
+      background-color: #fff3cd;
+      padding: 1px 2px;
+      border-radius: 2px;
+    }
+    
+    .no-results {
+      padding: 20px;
+      text-align: center;
+      color: #666;
+      font-style: italic;
+    }
+
+    /* Group Header Styles */
+    .tag-group {
+      margin-bottom: 10px;
+    }
+
+    .group-header {
+      display: none; /* Hide group headers to remove dividers */
+      padding: 12px 20px;
+      font-weight: 600;
+      color: #3b4151;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e8e8e8;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Introduction Navigation Bar Styles */
+    .intro-nav-container {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: white;
+      border-bottom: 1px solid #e8e8e8;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin: 0 -20px 20px -20px;
+      transition: all 0.3s ease;
+    }
+    
+    /* Scrolling effect for navigation bar */
+    .intro-nav-container.scrolling {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #d1d5db;
+    }
+
+    .intro-nav-bar {
+      display: flex;
+      overflow-x: auto;
+      padding: 0 20px;
+      background: white;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .intro-nav-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .intro-nav-item {
+      flex-shrink: 0;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .intro-nav-item:hover {
+      color: #333;
+      background-color: #f8f9fa;
+    }
+
+    .intro-nav-item.active {
+      color: #49cc90;
+      border-bottom-color: #49cc90;
+      background-color: rgba(73, 204, 144, 0.05);
+    }
+
+    /* Smooth scroll behavior for introduction content */
+    .swagger-ui .wrapper {
+      scroll-behavior: smooth;
+    }
+
+    /* Section spacing for better navigation */
+    .swagger-ui .info h2,
+    .swagger-ui .info h3 {
+      scroll-margin-top: 80px;
+      padding-top: 20px;
+    }
+
+    /* Code Generation Styles */
+    .code-generation-container {
+      margin: 15px 0;
+      border: 1px solid #e8e8e8;
+      border-radius: 6px;
+      background: #fafafa;
+    }
+
+    .code-generation-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid #e8e8e8;
+      background: #f8f9fa;
+      border-radius: 6px 6px 0 0;
+    }
+
+    .code-generation-title {
+      font-weight: 600;
+      color: #3b4151;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .language-selector {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .language-selector label {
+      font-size: 12px;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .language-selector select {
+      padding: 4px 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 12px;
+      background: white;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .language-selector select:focus {
+      outline: none;
+      border-color: #49cc90;
+      box-shadow: 0 0 0 2px rgba(73, 204, 144, 0.1);
+    }
+
+    .code-generation-content {
+      position: relative;
+    }
+
+    .code-snippet {
+      background: #2d3748;
+      color: #e2e8f0;
+      padding: 16px;
+      margin: 0;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 13px;
+      line-height: 1.4;
+      overflow-x: auto;
+      white-space: pre;
+      border-radius: 0 0 6px 6px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .copy-button {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #4a5568;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .copy-button:hover {
+      background: #2d3748;
+    }
+
+    .copy-button.copied {
+      background: #49cc90;
+    }
+
+    .copy-button.copied::after {
+      content: ' ✓';
+    }
+
+    /* Syntax highlighting */
+    .code-snippet .keyword { color: #f7fafc; font-weight: bold; }
+    .code-snippet .string { color: #68d391; }
+    .code-snippet .number { color: #fbb6ce; }
+    .code-snippet .comment { color: #a0aec0; font-style: italic; }
+    .code-snippet .method { color: #63b3ed; font-weight: bold; }
+    .code-snippet .url { color: #faf089; }
+    .code-snippet .header { color: #f6ad55; }
+
+    /* Smooth transitions for operation blocks */
+    .opblock {
+      transition: all 0.3s ease-in-out;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .opblock.is-open {
+      transform: translateY(0);
+      opacity: 1;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .opblock.is-closed {
+      transform: translateY(-10px);
+      opacity: 0.8;
+    }
+
+    /* Highlight the active operation */
+    .opblock.is-open .opblock-summary {
+      background-color: rgba(73, 204, 144, 0.05);
+      border-left: 4px solid #49cc90;
+    }
+
+    /* Smooth expand/collapse for endpoint lists */
+    .endpoint-list {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out;
+      background-color: #fafafa;
+    }
+
+    .endpoint-list.expanded {
+      max-height: 2000px; /* Adjust based on your needs */
+    }
+
+    /* JSON Syntax Highlighting for All Code Blocks */
+    .swagger-ui .highlight-code .hljs-attr,
+    .swagger-ui .highlight-code .hljs-string:first-child,
+    .swagger-ui pre code .hljs-attr {
+      color: #00d4ff !important;
+      font-weight: bold !important;
+    }
+
+    .swagger-ui .highlight-code .hljs-string:not(:first-child),
+    .swagger-ui pre code .hljs-string {
+      color: #009900 !important;
+    }
+
+    .swagger-ui .highlight-code .hljs-number,
+    .swagger-ui pre code .hljs-number {
+      color: #cc6600 !important;
+    }
+
+    /* Enhanced JSON highlighting for code blocks only (not inline code) */
+    .swagger-ui .renderedMarkdown pre code,
+    .swagger-ui .response-col_description pre code,
+    .swagger-ui .request-body pre code,
+    .swagger-ui .model-example pre code,
+    .swagger-ui .example pre code,
+    .swagger-ui .microlight,
+    .swagger-ui pre.microlight,
+    .json-example,
+    .response-example pre code,
+    .request-example pre code,
+    code.language-json,
+    pre.language-json code,
+    /* Documentation sections - only pre code blocks, not inline code */
+    .swagger-ui .info pre code,
+    .swagger-ui .description pre code,
+    .swagger-ui .markdown pre code,
+    .swagger-ui .info .renderedMarkdown pre code,
+    .swagger-ui .description .renderedMarkdown pre code,
+    .swagger-ui .tag-description pre code,
+    .swagger-ui .opblock-description pre code {
+      background: #2d3748 !important;
+      color: #e2e8f0 !important;
+      padding: 16px !important;
+      border-radius: 6px !important;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+      font-size: 13px !important;
+      line-height: 1.4 !important;
+      position: relative;
+    }
+    
+    /* Keep inline code elements with default styling */
+    .swagger-ui .info code:not(pre code),
+    .swagger-ui .description code:not(pre code),
+    .swagger-ui .markdown code:not(pre code),
+    .swagger-ui .renderedMarkdown code:not(pre code),
+    .swagger-ui .tag-description code:not(pre code),
+    .swagger-ui .opblock-description code:not(pre code) {
+      background: initial !important;
+      color: initial !important;
+      padding: initial !important;
+      border-radius: initial !important;
+      font-family: initial !important;
+      font-size: initial !important;
+      line-height: initial !important;
+    }
+
+    /* Override default code block styling for JSON containers (pre blocks only) */
+    .swagger-ui .markdown pre,
+    .swagger-ui .renderedMarkdown pre,
+    .swagger-ui .response-col_description pre,
+    .swagger-ui .request-body pre,
+    .swagger-ui .model-example pre,
+    .swagger-ui .example pre,
+    .json-example pre,
+    .response-example pre,
+    .request-example pre,
+    pre.language-json,
+    /* Documentation sections - only pre blocks */
+    .swagger-ui .info pre,
+    .swagger-ui .description pre,
+    .swagger-ui .info .renderedMarkdown pre,
+    .swagger-ui .description .renderedMarkdown pre,
+    .swagger-ui .tag-description pre,
+    .swagger-ui .opblock-description pre {
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+
+    /* JSON Color Classes - Enhanced for all contexts */
+    .json-key,
+    .swagger-ui .json-key,
+    .swagger-ui pre .json-key,
+    .swagger-ui code .json-key {
+      color: #00d4ff !important;
+      font-weight: bold !important;
+    }
+
+    .json-string,
+    .swagger-ui .json-string,
+    .swagger-ui pre .json-string,
+    .swagger-ui code .json-string {
+      color: #009900 !important;
+    }
+
+    .json-number,
+    .swagger-ui .json-number,
+    .swagger-ui pre .json-number,
+    .swagger-ui code .json-number {
+      color: #cc6600 !important;
+    }
+
+    .json-boolean,
+    .swagger-ui .json-boolean,
+    .swagger-ui pre .json-boolean,
+    .swagger-ui code .json-boolean {
+      color: #d73a49 !important;
+    }
+
+    .json-null,
+    .swagger-ui .json-null,
+    .swagger-ui pre .json-null,
+    .swagger-ui code .json-null {
+      color: #6f42c1 !important;
+    }
+
+    .json-punctuation,
+    .swagger-ui .json-punctuation,
+    .swagger-ui pre .json-punctuation,
+    .swagger-ui code .json-punctuation {
+      color: #a0aec0 !important;
+    }
+
+    /* Ensure JSON highlighting overrides any default styles - Enhanced for documentation */
+    .swagger-ui pre code .json-key,
+    .swagger-ui .renderedMarkdown pre code .json-key,
+    .swagger-ui .response-col_description pre code .json-key,
+    .swagger-ui .request-body pre code .json-key,
+    .swagger-ui .model-example pre code .json-key,
+    .swagger-ui .example pre code .json-key,
+    .swagger-ui .info pre code .json-key,
+    .swagger-ui .description pre code .json-key,
+    .swagger-ui .tag-description pre code .json-key,
+    .swagger-ui .opblock-description pre code .json-key {
+      color: #00d4ff !important;
+      font-weight: bold !important;
+    }
+
+    .swagger-ui pre code .json-string,
+    .swagger-ui .renderedMarkdown pre code .json-string,
+    .swagger-ui .response-col_description pre code .json-string,
+    .swagger-ui .request-body pre code .json-string,
+    .swagger-ui .model-example pre code .json-string,
+    .swagger-ui .example pre code .json-string,
+    .swagger-ui .info pre code .json-string,
+    .swagger-ui .description pre code .json-string,
+    .swagger-ui .tag-description pre code .json-string,
+    .swagger-ui .opblock-description pre code .json-string {
+      color: #009900 !important;
+    }
+
+    .swagger-ui pre code .json-number,
+    .swagger-ui .renderedMarkdown pre code .json-number,
+    .swagger-ui .response-col_description pre code .json-number,
+    .swagger-ui .request-body pre code .json-number,
+    .swagger-ui .model-example pre code .json-number,
+    .swagger-ui .example pre code .json-number,
+    .swagger-ui .info pre code .json-number,
+    .swagger-ui .description pre code .json-number,
+    .swagger-ui .tag-description pre code .json-number,
+    .swagger-ui .opblock-description pre code .json-number {
+      color: #cc6600 !important;
+    }
+
+    .swagger-ui pre code .json-boolean,
+    .swagger-ui .renderedMarkdown pre code .json-boolean,
+    .swagger-ui .response-col_description pre code .json-boolean,
+    .swagger-ui .request-body pre code .json-boolean,
+    .swagger-ui .model-example pre code .json-boolean,
+    .swagger-ui .example pre code .json-boolean,
+    .swagger-ui .info pre code .json-boolean,
+    .swagger-ui .description pre code .json-boolean,
+    .swagger-ui .tag-description pre code .json-boolean,
+    .swagger-ui .opblock-description pre code .json-boolean {
+      color: #d73a49 !important;
+    }
+
+    .swagger-ui pre code .json-null,
+    .swagger-ui .renderedMarkdown pre code .json-null,
+    .swagger-ui .response-col_description pre code .json-null,
+    .swagger-ui .request-body pre code .json-null,
+    .swagger-ui .model-example pre code .json-null,
+    .swagger-ui .example pre code .json-null,
+    .swagger-ui .info pre code .json-null,
+    .swagger-ui .description pre code .json-null,
+    .swagger-ui .tag-description pre code .json-null,
+    .swagger-ui .opblock-description pre code .json-null {
+      color: #6f42c1 !important;
+    }
+
+    .swagger-ui pre code .json-punctuation,
+    .swagger-ui .renderedMarkdown pre code .json-punctuation,
+    .swagger-ui .response-col_description pre code .json-punctuation,
+    .swagger-ui .request-body pre code .json-punctuation,
+    .swagger-ui .model-example pre code .json-punctuation,
+    .swagger-ui .example pre code .json-punctuation,
+    .swagger-ui .info pre code .json-punctuation,
+    .swagger-ui .description pre code .json-punctuation,
+    .swagger-ui .tag-description pre code .json-punctuation,
+    .swagger-ui .opblock-description pre code .json-punctuation {
+      color: #a0aec0 !important;
+    }
   </style>
 </head>
 <body>
   <div class="topbar">
     <div class="wrapper">
       <div class="topbar-wrapper">
-        <div>
+        <div class="topbar-left">
           <label for="base-url">Base URL:</label>
           <input id="base-url" type="text" placeholder="https://api.example.com" />
           <button id="apply-base-url">Apply</button>
-          <button id="logout-button" style="display: none; margin-left: 20px; background-color: #f44336;">Log out</button>
+          <label for="auth-token" style="margin-left: 20px;">Authorization:</label>
+          <input id="auth-token" type="text" placeholder="Bearer your-token-here" style="min-width: 300px;" />
+          <button id="authorize-button">Authorize</button>
+        </div>
+        <div class="topbar-right">
+          <button id="logout-button" style="display: none;">Log out</button>
         </div>
       </div>
     </div>
   </div>
-  <div id="swagger-ui"></div>
+
+  <div class="main-container">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Leap API Documentation</h2>
+        <input type="text" class="search-box" id="search-box" placeholder="Search endpoints...">
+        <div class="nav-section">
+          <div class="nav-item">
+            <div id="introduction-button" class="nav-folder">
+              <div class="folder-icon"></div>
+              <div class="folder-name">Introduction</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="nav-section" id="navigation">
+        <!-- Navigation items will be populated dynamically -->
+      </div>
+    </div>
+    
+    <div class="content-area">
+      <div class="content-header" style="display: none;">
+        <div class="breadcrumb" id="breadcrumb"></div>
+        <h1 class="content-title" id="content-title">Welcome to Leap API Documentation</h1>
+      </div>
+      
+      <div class="swagger-container">
+        <div id="swagger-ui">
+          <div class="status-message">
+            <div>Select a section from the sidebar to view API documentation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-bundle.js"></script>
   <script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-standalone-preset.js"></script>
   <script>
-    window.onload = function() {
-      // Store the base URL in a global variable
-      let currentBaseUrl = '';
+    // Code Generation Library
+    class CodeGenerator {
+      constructor() {
+        this.languages = {
+          'curl': 'cURL',
+          'javascript-fetch': 'JavaScript (Fetch)',
+          'javascript-axios': 'JavaScript (Axios)',
+          'python-requests': 'Python (Requests)',
+          'php-curl': 'PHP (cURL)',
+          'java-okhttp': 'Java (OkHttp)',
+          'csharp-httpclient': 'C# (HttpClient)',
+          'ruby-net-http': 'Ruby (Net::HTTP)',
+          'go-http': 'Go (net/http)'
+        };
+      }
+
+      generateCode(language, request) {
+        const generators = {
+          'curl': this.generateCurl,
+          'javascript-fetch': this.generateJavaScriptFetch,
+          'javascript-axios': this.generateJavaScriptAxios,
+          'python-requests': this.generatePythonRequests,
+          'php-curl': this.generatePhpCurl,
+          'java-okhttp': this.generateJavaOkHttp,
+          'csharp-httpclient': this.generateCSharpHttpClient,
+          'ruby-net-http': this.generateRubyNetHttp,
+          'go-http': this.generateGoHttp
+        };
+
+        const generator = generators[language];
+        if (!generator) {
+          return 'Language not supported';
+        }
+
+        return generator.call(this, request);
+      }
+
+      generateCurl(request) {
+        let curl = `curl -X ${request.method.toUpperCase()} "${request.url}"`;
+        
+        if (request.headers && Object.keys(request.headers).length > 0) {
+          Object.entries(request.headers).forEach(([key, value]) => {
+            curl += ` \\\n  -H "${key}: ${value}"`;
+          });
+        }
+
+        if (request.body) {
+          const bodyStr = typeof request.body === 'string' ? request.body : JSON.stringify(request.body, null, 2);
+          curl += ` \\\n  -d '${bodyStr}'`;
+        }
+
+        return curl;
+      }
+
+      generateJavaScriptFetch(request) {
+        let code = `const url = "${request.url}";\n`;
+        
+        const options = {
+          method: request.method.toUpperCase()
+        };
+
+        if (request.headers && Object.keys(request.headers).length > 0) {
+          options.headers = request.headers;
+        }
+
+        if (request.body) {
+          options.body = typeof request.body === 'string' ? request.body : JSON.stringify(request.body);
+        }
+
+        code += `const options = ${JSON.stringify(options, null, 2)};\n\n`;
+        code += `fetch(url, options)\n`;
+        code += `  .then(response => response.json())\n`;
+        code += `  .then(data => console.log(data))\n`;
+        code += `  .catch(error => console.error('Error:', error));`;
+
+        return code;
+      }
+
+      generateJavaScriptAxios(request) {
+        let code = `const axios = require('axios');\n\n`;
+        
+        const config = {
+          method: request.method.toLowerCase(),
+          url: request.url
+        };
+
+        if (request.headers && Object.keys(request.headers).length > 0) {
+          config.headers = request.headers;
+        }
+
+        if (request.body) {
+          config.data = typeof request.body === 'string' ? JSON.parse(request.body) : request.body;
+        }
+
+        code += `const config = ${JSON.stringify(config, null, 2)};\n\n`;
+        code += `axios(config)\n`;
+        code += `  .then(response => console.log(response.data))\n`;
+        code += `  .catch(error => console.error('Error:', error));`;
+
+        return code;
+      }
+
+      generatePythonRequests(request) {
+        let code = `import requests\nimport json\n\n`;
+        code += `url = "${request.url}"\n`;
+
+        if (request.headers && Object.keys(request.headers).length > 0) {
+          code += `headers = ${JSON.stringify(request.headers, null, 2).replace(/"/g, "'")}\n`;
+        }
+
+        if (request.body) {
+          const bodyStr = typeof request.body === 'string' ? request.body : JSON.stringify(request.body, null, 2);
+          code += `data = '''${bodyStr}'''\n`;
+        }
+
+        code += `\nresponse = requests.${request.method.toLowerCase()}(url`;
+        
+        if (request.headers && Object.keys(request.headers).length > 0) {
+          code += `, headers=headers`;
+        }
+        
+        if (request.body) {
+          code += `, data=data`;
+        }
+        
+        code += `)\n`;
+        code += `print(response.json())`;
+
+        return code;
+      }
+
+      generatePhpCurl(request) {
+        let code = `<?php\n\n`;
+        code += `$curl = curl_init();\n\n`;
+        code += `curl_setopt_array($curl, [\n`;
+        code += `    CURLOPT_URL => "${request.url}",\n`;
+        code += `    CURLOPT_RETURNTRANSFER => true,\n`;
+        code += `    CURLOPT_ENCODING => "",\n`;
+        code += `    CURLOPT_MAXREDIRS => 10,\n`;
+        code += `    CURLOPT_TIMEOUT => 30,\n`;
+        code += `    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n`;
+        code += `    CURLOPT_CUSTOMREQUEST => "${request.method.toUpperCase()}",\n`;
+
+        if (request.body) {
+          const bodyStr = typeof request.body === 'string' ? request.body : JSON.stringify(request.body);
+          code += `    CURLOPT_POSTFIELDS => '${bodyStr}',\n`;
+        }
+
+        if (request.headers && Object.keys(request.headers).length > 0) {
+          code += `    CURLOPT_HTTPHEADER => [\n`;
+          Object.entries(request.headers).forEach(([key, value]) => {
+            code += `        "${key}: ${value}",\n`;
+          });
+          code += `    ],\n`;
+        }
+
+        code += `]);\n\n`;
+        code += `$response = curl_exec($curl);\n`;
+        code += `$err = curl_error($curl);\n\n`;
+        code += `curl_close($curl);\n\n`;
+        code += `if ($err) {\n`;
+        code += `    echo "cURL Error #:" . $err;\n`;
+        code += `} else {\n`;
+        code += `    echo $response;\n`;
+        code += `}\n`;
+        code += `?>`;
+
+        return code;
+      }
+
+      generateJavaOkHttp(request) {
+        let code = `import okhttp3.*;\nimport java.io.IOException;\n\n`;
+        code += `public class ApiRequest {\n`;
+        code += `    public static void main(String[] args) throws IOException {\n`;
+        code += `        OkHttpClient client = new OkHttpClient();\n\n`;
+
+        if (request.body) {
+          const bodyStr = typeof request.body === 'string' ? request.body : JSON.stringify(request.body);
+          code += `        MediaType mediaType = MediaType.parse("application/json");\n`;
+          code += `        RequestBody body = RequestBody.create(mediaType, "${bodyStr.replace(/"/g, '\\"')}");\n`;
+        }
+
+        code += `        Request.Builder requestBuilder = new Request.Builder()\n`;
+        code += `            .url("${request.url}")\n`;
+        code += `            .method("${request.method.toUpperCase()}", ${request.body ? 'body' : 'null'})\n`;
+
+        if (request.headers && Object.keys(request.headers).length > 0) {
+          Object.entries(request.headers).forEach(([key, value]) => {
+            code += `            .addHeader("${key}", "${value}")\n`;
+          });
+        }
+
+        code += `            .build();\n\n`;
+        code += `        Response response = client.newCall(requestBuilder.build()).execute();\n`;
+        code += `        System.out.println(response.body().string());\n`;
+        code += `    }\n`;
+        code += `}`;
+
+        return code;
+      }
+
+      generateCSharpHttpClient(request) {
+        let code = `using System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\n`;
+        code += `class Program\n{\n`;
+        code += `    static async Task Main(string[] args)\n    {\n`;
+        code += `        using (HttpClient client = new HttpClient())\n        {\n`;
+
+        if (request.headers && Object.keys(request.headers).length > 0) {
+          Object.entries(request.headers).forEach(([key, value]) => {
+            if (key.toLowerCase() !== 'content-type') {
+              code += `            client.DefaultRequestHeaders.Add("${key}", "${value}");\n`;
+            }
+          });
+        }
+
+        if (request.body) {
+          const bodyStr = typeof request.body === 'string' ? request.body : JSON.stringify(request.body);
+          code += `            var json = @"${bodyStr.replace(/"/g, '""')}";\n`;
+          code += `            var content = new StringContent(json, Encoding.UTF8, "application/json");\n`;
+        }
+
+        const method = request.method.toLowerCase();
+        const methodCall = method === 'get' ? 'GetAsync' : 
+                          method === 'post' ? 'PostAsync' : 
+                          method === 'put' ? 'PutAsync' : 
+                          method === 'delete' ? 'DeleteAsync' : 'SendAsync';
+
+        if (request.body && (method === 'post' || method === 'put')) {
+          code += `            HttpResponseMessage response = await client.${methodCall}("${request.url}", content);\n`;
+        } else {
+          code += `            HttpResponseMessage response = await client.${methodCall}("${request.url}");\n`;
+        }
+
+        code += `            string responseBody = await response.Content.ReadAsStringAsync();\n`;
+        code += `            Console.WriteLine(responseBody);\n`;
+        code += `        }\n`;
+        code += `    }\n`;
+        code += `}`;
+
+        return code;
+      }
+
+      generateRubyNetHttp(request) {
+        let code = `require 'net/http'\nrequire 'json'\n\n`;
+        code += `uri = URI('${request.url}')\n`;
+        code += `http = Net::HTTP.new(uri.host, uri.port)\n`;
+        
+        if (request.url.startsWith('https')) {
+          code += `http.use_ssl = true\n`;
+        }
+        
+        code += `\nrequest = Net::HTTP::${request.method.charAt(0).toUpperCase() + request.method.slice(1).toLowerCase()}.new(uri)\n`;
+
+        if (request.headers && Object.keys(request.headers).length > 0) {
+          Object.entries(request.headers).forEach(([key, value]) => {
+            code += `request['${key}'] = '${value}'\n`;
+          });
+        }
+
+        if (request.body) {
+          const bodyStr = typeof request.body === 'string' ? request.body : JSON.stringify(request.body);
+          code += `request.body = '${bodyStr}'\n`;
+        }
+
+        code += `\nresponse = http.request(request)\nputs response.body`;
+
+        return code;
+      }
+
+      generateGoHttp(request) {
+        let code = `package main\n\nimport (\n    "fmt"\n    "net/http"\n    "io/ioutil"\n`;
+        
+        if (request.body) {
+          code += `    "strings"\n`;
+        }
+        
+        code += `)\n\nfunc main() {\n`;
+        code += `    url := "${request.url}"\n`;
+
+        if (request.body) {
+          const bodyStr = typeof request.body === 'string' ? request.body : JSON.stringify(request.body);
+          code += `    payload := strings.NewReader(\`${bodyStr}\`)\n`;
+          code += `    req, _ := http.NewRequest("${request.method.toUpperCase()}", url, payload)\n`;
+        } else {
+          code += `    req, _ := http.NewRequest("${request.method.toUpperCase()}", url, nil)\n`;
+        }
+
+        if (request.headers && Object.keys(request.headers).length > 0) {
+          Object.entries(request.headers).forEach(([key, value]) => {
+            code += `    req.Header.Add("${key}", "${value}")\n`;
+          });
+        }
+
+        code += `\n    res, _ := http.DefaultClient.Do(req)\n`;
+        code += `    defer res.Body.Close()\n`;
+        code += `    body, _ := ioutil.ReadAll(res.Body)\n`;
+        code += `    fmt.Println(string(body))\n`;
+        code += `}`;
+
+        return code;
+      }
+
+      applySyntaxHighlighting(code, language) {
+        // Basic syntax highlighting for better readability
+        let highlighted = code;
+        
+        // Common patterns
+        const patterns = {
+          string: /(["'])((?:\\.|(?!\1)[^\\])*?)\1/g,
+          number: /\b\d+\.?\d*\b/g,
+          comment: /(\/\/.*$|\/\*[\s\S]*?\*\/|#.*$)/gm,
+          keyword: /\b(const|let|var|function|class|import|from|require|def|class|if|else|for|while|try|catch|finally|async|await|return|new|this|super|extends|implements|public|private|protected|static|final|abstract|interface|enum|package|using|namespace|struct|type|func|var|const|import|export|default)\b/g,
+          method: /\b(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS|fetch|axios|requests|curl_exec|HttpClient|OkHttpClient)\b/g,
+          url: /(https?:\/\/[^\s"']+)/g,
+          header: /([A-Z][a-zA-Z-]*):([^,\n]+)/g
+        };
+
+        Object.entries(patterns).forEach(([className, pattern]) => {
+          highlighted = highlighted.replace(pattern, `<span class="${className}">$&</span>`);
+        });
+
+        return highlighted;
+      }
+    }
+
+    class ApiDocumentation {
+      constructor() {
+        this.currentBaseUrl = '';
+        this.loadedSpecs = new Map();
+        this.allTags = [];
+        this.currentTag = null;
+        this.swaggerUI = null;
+        this.docBasePath = this.getDocumentationBasePath();
+        this.pendingRender = false;
+        this.loadingRequests = new Set(); // Track ongoing requests
+        this.navigationRendering = false; // Prevent multiple navigation renders
+        this.isIntroductionActive = false; // Track if introduction is currently displayed
+        this.codeGenerator = new CodeGenerator(); // Initialize code generator
+        
+        this.init();
+      }
       
-      // Initialize Swagger UI
-      const ui = SwaggerUIBundle({
-        url: "openapi3.yaml",
-        dom_id: '#swagger-ui',
-        deepLinking: true,
-        presets: [
-          SwaggerUIBundle.presets.apis,
-          SwaggerUIStandalonePreset
-        ],
-        plugins: [
-          SwaggerUIBundle.plugins.DownloadUrl
-        ],
-        layout: "StandaloneLayout",
-        // Function to handle redundant authorization parameters
-        onComplete: function() {
-          // This runs after Swagger UI is fully loaded
-          try {
-            // Add a custom CSS to style authorization parameters
-            const style = document.createElement('style');
-            style.textContent = `
-              /* Style for the authorization info box */
-              .auth-info-box {
-                background-color: #e8f4f8;
-                border-left: 4px solid #1976d2;
-                padding: 10px;
-                margin-top: 5px;
-                margin-bottom: 10px;
-                font-size: 13px;
-              }
-              
-              /* Hide authorization parameter rows completely when global auth is set */
-              .auth-param-hidden {
-                display: none !important;
-              }
-              
-              /* Style for disabled auth inputs */
-              .auth-input-disabled {
-                opacity: 0.5;
-                pointer-events: none;
-              }
-            `;
-            document.head.appendChild(style);
+      getDocumentationBasePath() {
+        // Determine the correct base path for API requests based on current URL
+        const currentPath = window.location.pathname;
+        console.log('Current path:', currentPath);
+        
+        let basePath;
+        if (currentPath.includes('/api/swagger')) {
+          basePath = '/api/swagger/api/';
+        } else if (currentPath.includes('/api/docs')) {
+          basePath = '/api/docs/';  // Fixed: should point to /api/docs/ (Laravel route)
+        } else if (currentPath.includes('/swagger')) {
+          basePath = '/public/swagger/api/';
+        } else if (currentPath.includes('/docs')) {
+          basePath = '/public/swagger/api/';
+        } else {
+          // Default fallback - point to public/swagger/api
+          basePath = '/public/swagger/api/';
+        }
+        
+        console.log('Returning base path:', basePath);
+        return basePath;
+      }
+      
+      async fetchSpec(filename) {
+        // Prevent duplicate requests for the same file
+        if (this.loadingRequests.has(filename)) {
+          // Wait for the ongoing request to complete
+          while (this.loadingRequests.has(filename)) {
+            await new Promise(resolve => setTimeout(resolve, 50));
+          }
+          return this.loadedSpecs.get(filename);
+        }
+        
+        // Check if already cached
+        if (this.loadedSpecs.has(filename)) {
+          return this.loadedSpecs.get(filename);
+        }
+
+        // Mark as loading
+        this.loadingRequests.add(filename);
+        
+        try {
+          console.log('Fetching spec:', filename);
+          console.log('docBasePath:', this.docBasePath);
+          console.log('Full URL:', `${this.docBasePath}${filename}`);
+          
+          const response = await fetch(`${this.docBasePath}${filename}`);
+          console.log('Response status:', response.status);
+          console.log('Response ok:', response.ok);
+          
+          if (!response.ok) {
+            throw new Error(`Failed to load ${filename}: ${response.status} ${response.statusText}`);
+          }
+          
+          const spec = await response.json();
+          console.log('Spec loaded successfully:', spec);
+          
+          // Cache the spec
+          this.loadedSpecs.set(filename, spec);
+          
+          return spec;
+        } catch (error) {
+          console.error(`Error fetching ${filename}:`, error);
+          throw error;
+        } finally {
+          // Remove from loading set
+          this.loadingRequests.delete(filename);
+        }
+      }
+      
+      async init() {
+        try {
+          // Load initial data
+          await this.loadTagsList();
+          this.setupEventListeners();
+          this.loadSavedSettings();
+          
+          // Show introduction immediately
+          await this.showIntroduction();
+          
+          // Remove any loading or status messages
+          const statusMessage = document.querySelector('.status-message');
+          if (statusMessage) {
+            statusMessage.remove();
+          }
+        } catch (error) {
+          console.error('Failed to initialize API documentation:', error);
+          this.showError('Failed to load API documentation. Please try again.');
+        }
+      }
+      
+      async loadTagsList() {
+        try {
+          // Use centralized fetch method to prevent duplicates
+          const data = await this.fetchSpec('index.json');
+          
+          if (!data.tags || !Array.isArray(data.tags)) {
+            throw new Error('Invalid tags data structure');
+          }
+          
+          this.allTags = data.tags;
+          
+          await this.renderNavigation();
+        } catch (error) {
+          console.error('Error loading tags list:', error);
+          this.showError(`Failed to load API documentation: ${error.message}`);
+          throw error;
+        }
+      }
+      
+      async renderNavigation() {
+        // Prevent multiple simultaneous renders
+        if (this.navigationRendering) {
+          return;
+        }
+        
+        this.navigationRendering = true;
+        
+        try {
+          const navigation = document.getElementById('navigation');
+          navigation.innerHTML = '';
+          
+          // Group tags for better organization
+          const groupedTags = this.groupTags();
+          
+          for (const [group, tags] of Object.entries(groupedTags)) {
+            const groupElement = document.createElement('div');
+            groupElement.className = 'tag-group';
             
-            // Function to process auth parameters - runs initially and on DOM changes
-            function processAuthParams() {
-              // Check if we have a global auth token
-              const hasGlobalAuth = !!sessionStorage.getItem('swagger_auth_token');
+            // No group headers needed for clean hierarchical structure
+            
+            for (const tag of tags) {
+              const navItem = await this.createNavItem(tag);
+              groupElement.appendChild(navItem);
+            }
+            
+            navigation.appendChild(groupElement);
+          }
+        } finally {
+          this.navigationRendering = false;
+        }
+      }
+      
+      groupTags() {
+        const groups = { main: [] };
+        const parentTags = new Map(); // Map parent name to parent tag object
+        const childTags = new Map(); // Map parent name to array of child tags
+        const processedParents = new Set(); // Track which parents we've already added
+        
+        // First pass: identify parent tags and group children
+        this.allTags.forEach(tag => {
+          if (tag.name.includes('>')) {
+            // This is a child tag
+            const [parent] = tag.name.split('>').map(s => s.trim());
+            if (!childTags.has(parent)) {
+              childTags.set(parent, []);
+            }
+            childTags.get(parent).push(tag);
+          } else {
+            // Check if this tag has children
+            const hasChildren = this.allTags.some(t => t.name.startsWith(tag.name + ' >'));
+            if (hasChildren) {
+              parentTags.set(tag.name, tag);
+            }
+          }
+        });
+        
+        // Second pass: maintain original order from allTags
+        this.allTags.forEach(tag => {
+          if (!tag.name.includes('>')) {
+            // This is a potential parent or standalone tag
+            const hasChildren = parentTags.has(tag.name);
+            
+            if (hasChildren && !processedParents.has(tag.name)) {
+              // Add the parent tag with children info
+              const parentWithChildren = {
+                ...tag,
+                children: childTags.get(tag.name) || []
+              };
+              groups.main.push(parentWithChildren);
+              processedParents.add(tag.name);
+            } else if (!hasChildren) {
+              // Standalone tag
+              groups.main.push(tag);
+            }
+          }
+        });
+        
+        return groups;
+      }
+      
+      async createNavItem(tag) {
+        const navItem = document.createElement('div');
+        navItem.className = 'nav-item';
+        
+        const navFolder = document.createElement('div');
+        navFolder.className = 'nav-folder';
+        navFolder.dataset.tag = tag.name;
+        navFolder.dataset.filename = tag.filename;
+        
+        const folderIcon = document.createElement('div');
+        folderIcon.className = 'folder-icon';
+        
+        const folderName = document.createElement('div');
+        folderName.className = 'folder-name';
+        // Remove "Job >" prefix from child folders for cleaner display
+        const displayName = tag.name.includes('>') ? 
+          tag.name.split('>').map(s => s.trim()).slice(1).join(' > ') : 
+          tag.name;
+        folderName.textContent = displayName;
+        
+        const endpointCount = document.createElement('div');
+        endpointCount.className = 'endpoint-count';
+        endpointCount.textContent = `${tag.endpointCount} endpoint${tag.endpointCount !== 1 ? 's' : ''}`;
+        
+        navFolder.appendChild(folderIcon);
+        navFolder.appendChild(folderName);
+        navFolder.appendChild(endpointCount);
+        
+        // Create endpoint list container
+        const endpointList = document.createElement('div');
+        endpointList.className = 'endpoint-list';
+        
+        // Handle child folders (for hierarchical structure)
+        if (tag.children && tag.children.length > 0) {
+          // Create child folders first
+          for (const childTag of tag.children) {
+            const childNavItem = await this.createNavItem(childTag);
+            childNavItem.classList.add('child-nav-item');
+            endpointList.appendChild(childNavItem);
+          }
+        }
+        
+        // Use centralized fetch method to prevent duplicates
+        let spec;
+        try {
+          spec = await this.fetchSpec(tag.filename);
+        } catch (error) {
+          console.error(`Error loading endpoints for ${tag.name}:`, error);
+        }
+
+        if (spec && spec.paths) {
+          let endpointCount = 0;
+          const endpointItems = [];
+          
+          Object.entries(spec.paths).forEach(([path, methods]) => {
+            Object.entries(methods).forEach(([method, details]) => {
+              endpointCount++;
+              const endpointItem = document.createElement('div');
+              endpointItem.className = 'endpoint-item';
               
-              // Find all parameter rows in the document
-              const paramRows = document.querySelectorAll('.parameters-container tr');
+              const methodBadge = document.createElement('span');
+              methodBadge.className = `http-method ${method.toLowerCase()}`;
+              methodBadge.textContent = method;
               
-              paramRows.forEach(row => {
-                // Check if this is an authorization parameter
-                const nameCell = row.querySelector('.parameters-col_name');
-                const descCell = row.querySelector('.parameters-col_description');
+              const pathText = document.createElement('span');
+              pathText.className = 'endpoint-path';
+              // Extract the operation summary or a friendly name from the path
+              const summary = details.summary || this.getEndpointFriendlyName(path);
+              pathText.textContent = summary;
+              
+              endpointItem.appendChild(methodBadge);
+              endpointItem.appendChild(pathText);
+              
+              endpointItem.addEventListener('click', (e) => {
+                e.stopPropagation();
                 
-                if (nameCell && descCell && 
-                    (nameCell.textContent.includes('Authorization') || 
-                     descCell.textContent.includes('Authorization') || 
-                     descCell.textContent.includes('Bearer'))) {
-                  
-                  // This is an authorization parameter row
-                  if (hasGlobalAuth) {
-                    // If global auth is set, hide the parameter completely
-                    row.classList.add('auth-param-hidden');
-                  } else {
-                    // If no global auth, show with a note
-                    
-                    // Check if we've already added the info box
-                    if (!row.querySelector('.auth-info-box')) {
-                      // Create info box with instructions
-                      const infoBox = document.createElement('div');
-                      infoBox.className = 'auth-info-box';
-                      infoBox.innerHTML = '<strong>Note:</strong> For better experience, set authorization globally using the <strong>Authorize</strong> button at the top instead of filling this field.';
-                      
-                      // Add the info box after the input
-                      const inputCell = row.querySelector('.parameters-col_description');
-                      if (inputCell) {
-                        inputCell.appendChild(infoBox);
-                      }
-                    }
-                  }
+                // Check if this endpoint is already active and expanded
+                const isAlreadyActive = endpointItem.classList.contains('active');
+                
+                this.loadTagDocumentation(tag, path);
+                
+                // Update active state
+                document.querySelectorAll('.endpoint-item').forEach(item => item.classList.remove('active'));
+                endpointItem.classList.add('active');
+                
+                // If it's already active, don't re-expand (keep current state)
+                if (!isAlreadyActive) {
+                  // Store the target path and method for expansion after Swagger UI renders
+                  this.targetPathForExpansion = path;
+                  this.targetMethodForExpansion = method;
                 }
               });
               
-              // Also handle the authorization inputs
-              const authInputs = document.querySelectorAll('input[placeholder*="authorization" i], input[placeholder*="bearer" i]');
-              authInputs.forEach(input => {
-                if (hasGlobalAuth) {
-                  // Disable the input if global auth is set
-                  input.classList.add('auth-input-disabled');
-                  input.setAttribute('disabled', 'disabled');
-                  input.setAttribute('placeholder', 'Using global authorization');
+              // Add double-click handler to collapse if already expanded
+              endpointItem.addEventListener('dblclick', (e) => {
+                e.stopPropagation();
+                if (endpointItem.classList.contains('active')) {
+                  // Remove active state
+                  endpointItem.classList.remove('active');
+                  // Clear any stored target path
+                  this.targetPathForExpansion = null;
+                  // Collapse the operation in the main panel
+                  this.collapseOperationByPath(path);
                 }
               });
-            }
-            
-            // Run initially
-            processAuthParams();
-            
-            // Set up a mutation observer to handle dynamically loaded content
-            const observer = new MutationObserver(function(mutations) {
-              processAuthParams();
+              
+              endpointItems.push(endpointItem);
             });
-            
-            // Start observing the document with the configured parameters
-            observer.observe(document.body, { 
-              childList: true, 
-              subtree: true 
-            });
-            
-          } catch (e) {
-            console.error('Error setting up UI customizations:', e);
+          });
+
+          // Update the endpoint count in the folder
+          const endpointCountElem = navFolder.querySelector('.endpoint-count');
+          if (endpointCountElem) {
+            endpointCountElem.textContent = `${endpointCount} endpoint${endpointCount !== 1 ? 's' : ''}`;
           }
-        },
-        requestInterceptor: (req) => {
-          // Log the request for debugging
-          console.log('Original request:', JSON.stringify(req));
+
+          // Add all endpoint items to the list
+          endpointItems.forEach(item => {
+            endpointList.appendChild(item);
+          });
+        }
+        
+        // Toggle endpoint list on folder click
+        navFolder.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isExpanded = folderIcon.classList.contains('expanded');
           
-          // Apply baseURL to the request
-          if (currentBaseUrl) {
-            // Handle both the URL and the request body (for curl examples)
-            if (req.url && typeof req.url === 'string') {
-              // Replace {{baseurl}} placeholder in URLs
-              req.url = req.url.replace(/\{\{baseurl\}\}/g, currentBaseUrl);
+          // Close other folders, but preserve parent-child relationships
+          document.querySelectorAll('.folder-icon.expanded').forEach(icon => {
+            if (icon !== folderIcon) {
+              const iconTag = icon.closest('.nav-folder').dataset.tag;
+              const currentTag = tag.name;
               
-              // Fix double protocol issue (http://https://)
-              req.url = req.url.replace(/^(https?:\/\/)(https?:\/\/)/, '$2');
+              // Don't close if this is a parent-child relationship
+              const isParentChild = (iconTag && currentTag.startsWith(iconTag + ' >')) || 
+                                   (currentTag && iconTag.startsWith(currentTag + ' >'));
               
-              // Also handle URLs that start with /
-              if (req.url.startsWith('/')) {
-                // Remove trailing slash from baseURL if present
-                const baseUrlForJoin = currentBaseUrl.endsWith('/') ? 
-                  currentBaseUrl.slice(0, -1) : currentBaseUrl;
-                req.url = baseUrlForJoin + req.url;
+              if (!isParentChild) {
+                icon.classList.remove('expanded');
+                icon.closest('.nav-item').querySelector('.endpoint-list').classList.remove('expanded');
               }
             }
-            
-            // Update the displayed curl commands
-            if (req.body && typeof req.body === 'string') {
-              // Replace {{baseurl}} placeholder
-              req.body = req.body.replace(/\{\{baseurl\}\}/g, currentBaseUrl);
-              
-              // Fix double protocol issue in curl commands
-              req.body = req.body.replace(/'(https?:\/\/)(https?:\/\/)/g, "'$2");
-              
-              // Fix curl commands with form-encoded JSON
-              if (req.body.includes('curl -X') && req.body.includes('-H \'Content-Type: application/x-www-form-urlencoded\'')) {
-                try {
-                  // Extract all the form-encoded data
-                  const formDataMatch = req.body.match(/-d '([^']+)'/);
-                  if (formDataMatch && formDataMatch[1]) {
-                    const formData = formDataMatch[1];
-                    
-                    // Check if this is a JSON request that's been form-encoded
-                    // Look for patterns like JSON keys and values in the form data
-                    const hasJsonStructure = formData.includes('first_name') || 
-                                            formData.includes('last_name') || 
-                                            formData.includes('email') ||
-                                            formData.includes('company_name');
-                    
-                    if (hasJsonStructure) {
-                      // Try to extract the actual JSON from the request body
-                      // First, check if it's in the request body model
-                      let jsonBody = '';
-                      
-                      // Try to find the JSON in the Swagger UI DOM
-                      try {
-                        const textareas = document.querySelectorAll('textarea.body-param__text');
-                        textareas.forEach(textarea => {
-                          if (textarea.value && textarea.value.includes('{') && textarea.value.includes('}')) {
-                            // This looks like our JSON body
-                            jsonBody = textarea.value;
-                          }
-                        });
-                      } catch (domErr) {
-                        console.error('Error finding JSON in DOM:', domErr);
-                      }
-                      
-                      // If we found JSON in the DOM, use it
-                      if (jsonBody) {
-                        // Now replace the form data with the JSON
-                        // And change the Content-Type to application/json
-                        req.body = req.body.replace(
-                          /-H 'Content-Type: application\/x-www-form-urlencoded'/,
-                          "-H 'Content-Type: application/json'"
-                        );
-                        
-                        // Replace the form data with the JSON string
-                        req.body = req.body.replace(
-                          /-d '[^']+'/,
-                          `-d '${jsonBody}'`
-                        );
-                      } else {
-                        // Fallback: Try to reconstruct the JSON from the form data
-                        // This is a more complex approach for when we can't find the original JSON
-                        
-                        // Check if it's the specific pattern we've seen
-                        if (formData.match(/^\d+=%7B/)) {
-                          // This is likely JSON that's been form-encoded with numbers as keys
-                          // Try to reconstruct by decoding each part
-                          
-                          // First, handle the case where the first character is missing
-                          let reconstructedJson = '{';
-                          
-                          // Extract all parts and join them
-                          const parts = formData.split('&');
-                          
-                          // Each part is in the format "number=encodedChar"
-                          for (let i = 1; i < parts.length; i++) { // Skip the first part which is just '{'
-                            const part = parts[i];
-                            const match = part.match(/\d+=(.+)/);
-                            if (match && match[1]) {
-                              reconstructedJson += decodeURIComponent(match[1]);
-                            }
-                          }
-                          
-                          // Now replace the form data with the reconstructed JSON
-                          // And change the Content-Type to application/json
-                          req.body = req.body.replace(
-                            /-H 'Content-Type: application\/x-www-form-urlencoded'/,
-                            "-H 'Content-Type: application/json'"
-                          );
-                          
-                          // Replace the form data with the JSON string
-                          req.body = req.body.replace(
-                            /-d '[^']+'/,
-                            `-d '${reconstructedJson}'`
-                          );
-                        }
-                      }
-                    }
-                  }
-                } catch (e) {
-                  console.error('Error fixing curl command:', e);
-                }
-              }
-              
-              // Add authorization token to curl commands if it exists
-              const authToken = sessionStorage.getItem('swagger_auth_token');
-              if (authToken && req.body.includes('curl -X')) {
-                // Check if the Authorization header is already present
-                if (!req.body.includes('-H \'Authorization:')) {
-                  // Insert the Authorization header after the last -H line
-                  const lastHeaderPos = req.body.lastIndexOf('-H ');
-                  if (lastHeaderPos !== -1) {
-                    const insertPos = req.body.indexOf("'\\", lastHeaderPos) + 2;
-                    if (insertPos > 2) {
-                      const beforeInsert = req.body.substring(0, insertPos);
-                      const afterInsert = req.body.substring(insertPos);
-                      req.body = beforeInsert + "\n  -H 'Authorization: " + authToken + "' \\" + afterInsert;
-                    }
-                  }
-                }
+          });
+          
+          // Toggle current folder
+          folderIcon.classList.toggle('expanded');
+          endpointList.classList.toggle('expanded');
+          
+          // If this is a child folder being expanded, ensure parent stays expanded
+          if (!isExpanded && tag.name.includes('>')) {
+            const [parentName] = tag.name.split('>').map(s => s.trim());
+            const parentFolder = document.querySelector(`[data-tag="${parentName}"]`);
+            if (parentFolder) {
+              const parentIcon = parentFolder.querySelector('.folder-icon');
+              const parentList = parentFolder.closest('.nav-item').querySelector('.endpoint-list');
+              if (parentIcon && parentList) {
+                parentIcon.classList.add('expanded');
+                parentList.classList.add('expanded');
               }
             }
           }
           
-          // Add authorization header to actual requests
+          // Only load documentation if expanding and not already loaded
+          if (!isExpanded && !document.querySelector(`[data-tag="${tag.name}"].active`)) {
+            this.loadTagDocumentation(tag);
+          }
+        });
+        
+        navItem.appendChild(navFolder);
+        navItem.appendChild(endpointList);
+        return navItem;
+      }
+      
+      async loadTagDocumentation(tag, targetPath = null) {
+        // Prevent multiple rapid clicks
+        if (this.pendingRender) {
+          return;
+        }
+        
+        this.pendingRender = true;
+        
+        try {
+          // Clean up introduction navigation when switching to other sections
+          this.isIntroductionActive = false;
+          this.removeIntroductionNavigation();
+          
+          // Update UI state
+          this.setActiveTag(tag.name);
+          document.title = tag.name; // Update page title to just the tag name
+          
+          // If a specific endpoint is targeted, scroll to it after render
+          if (targetPath) {
+            setTimeout(() => {
+              const selector = `[data-path="${targetPath}"]`;
+              const element = document.querySelector(selector);
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }, 100);
+          } else {
+            // Check if there's a previously expanded operation for this tag
+            const expandedStates = JSON.parse(localStorage.getItem('swaggerExpandedStates') || '{}');
+            const tagPaths = Object.keys(expandedStates).filter(path => 
+              this.isPathInTag(path, tag)
+            );
+            
+            if (tagPaths.length > 0) {
+              // Restore the last expanded path for this tag
+              const lastExpandedPath = tagPaths[tagPaths.length - 1];
+              this.targetPathForExpansion = lastExpandedPath;
+            }
+          }
+          
+          // Show loading state only if we need to fetch (not cached)
+          if (!this.loadedSpecs.has(tag.filename)) {
+            this.showLoading();
+          }
+          
+          // Use centralized fetch method to prevent duplicates
+          const spec = await this.fetchSpec(tag.filename);
+          
+          // Render Swagger UI with the spec (either from cache or newly loaded)
+          this.renderSwaggerUI(spec);
+          
+        } catch (error) {
+          console.error(`Error loading documentation for ${tag.name}:`, error);
+          this.showError(`Failed to load documentation for ${tag.name}. Please try again.`);
+        } finally {
+          this.pendingRender = false;
+        }
+      }
+      
+      async showIntroduction() {
+        try {
+          // Remove active state from all nav items
+          document.querySelectorAll('.nav-folder').forEach(el => {
+            el.classList.remove('active');
+          });
+          
+          // Add active state to introduction button
+          const introButton = document.getElementById('introduction-button');
+          introButton.classList.add('active');
+          
+          // Show loading state only if we need to fetch (not cached)
+          if (!this.loadedSpecs.has('introduction.json')) {
+            this.showLoading();
+          }
+          
+          // Use centralized fetch method to prevent duplicates
+          const spec = await this.fetchSpec('introduction.json');
+          
+          // Render the introduction
+          this.renderSwaggerUI(spec);
+          
+          document.title = 'Introduction';
+          this.isIntroductionActive = true;
+          
+          // Add introduction navigation bar after a short delay to ensure content is rendered
+          setTimeout(() => {
+            this.createIntroductionNavigation();
+          }, 500);
+          
+          // Update content header
+          const contentHeader = document.querySelector('.content-header');
+          if (contentHeader) {
+            contentHeader.style.display = 'block';
+            const breadcrumb = document.getElementById('breadcrumb');
+            const contentTitle = document.getElementById('content-title');
+            if (breadcrumb) breadcrumb.textContent = 'Home';
+            if (contentTitle) contentTitle.textContent = 'Introduction';
+          }
+        } catch (error) {
+          console.error('Error loading introduction:', error);
+          this.showError('Failed to load introduction. Please try again.');
+        } finally {
+          // Clear any loading states
+          this.pendingRender = false;
+        }
+      }
+      
+      createIntroductionNavigation() {
+        if (!this.isIntroductionActive) return;
+        
+        // Remove existing navigation if present
+        this.removeIntroductionNavigation();
+        
+        // Wait for Swagger UI to fully render
+        const checkForContent = () => {
+          const swaggerWrapper = document.querySelector('.swagger-ui .wrapper');
+          if (!swaggerWrapper) {
+            setTimeout(checkForContent, 100);
+            return;
+          }
+          
+          // Find all section headers in the introduction
+          const sections = this.findIntroductionSections(swaggerWrapper);
+          
+          if (sections.length === 0) {
+            setTimeout(checkForContent, 100);
+            return;
+          }
+          
+          // Create navigation bar
+          const navContainer = document.createElement('div');
+          navContainer.className = 'intro-nav-container';
+          navContainer.id = 'intro-nav-container';
+          
+          const navBar = document.createElement('div');
+          navBar.className = 'intro-nav-bar';
+          
+          // Create navigation items
+          sections.forEach((section, index) => {
+            const navItem = document.createElement('div');
+            navItem.className = 'intro-nav-item';
+            navItem.textContent = section.title;
+            navItem.dataset.sectionId = section.id;
+            
+            // Add click handler for smooth scrolling
+            navItem.addEventListener('click', () => {
+              this.scrollToSection(section.element);
+              this.setActiveNavItem(navItem);
+            });
+            
+            navBar.appendChild(navItem);
+            
+            // Set first item as active initially
+            if (index === 0) {
+              navItem.classList.add('active');
+            }
+          });
+          
+          navContainer.appendChild(navBar);
+          
+          // Insert navigation bar at the top of the content
+          swaggerWrapper.insertBefore(navContainer, swaggerWrapper.firstChild);
+          
+          // Set up intersection observer for scroll spy
+          this.setupIntroductionScrollSpy(sections);
+        };
+        
+        checkForContent();
+      }
+      
+      findIntroductionSections(container) {
+        const sections = [];
+        
+        // Define the sections we're looking for
+        const targetSections = [
+          'API Base URL',
+          'Authentication', 
+          'Includes[]',
+          'Data Limit',
+          'Errors',
+          'Webhooks',
+          'Need help ?'
+        ];
+        
+        // Find headers that match our target sections
+        const headers = container.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        
+        headers.forEach((header, index) => {
+          const headerText = header.textContent.trim();
+          
+          // Skip "Base URL" h5 header to avoid duplicate with "API Base URL"
+          if (headerText === 'Base URL' && header.tagName.toLowerCase() === 'h5') {
+            return;
+          }
+          
+          // Check if this header matches any of our target sections
+          const matchedSection = targetSections.find(section => {
+            if (section === 'API Base URL') {
+              return headerText === 'API Base URL';
+            }
+            return headerText.toLowerCase().includes(section.toLowerCase()) ||
+                   section.toLowerCase().includes(headerText.toLowerCase());
+          });
+          
+          if (matchedSection || targetSections.some(section => 
+            this.normalizeText(headerText) === this.normalizeText(section)
+          )) {
+            const sectionId = `intro-section-${index}`;
+            header.id = sectionId;
+            
+            sections.push({
+              id: sectionId,
+              title: headerText,
+              element: header
+            });
+          }
+        });
+        
+        // If we didn't find the expected sections, fall back to all h1 headers (main sections)
+        if (sections.length === 0) {
+          const fallbackHeaders = container.querySelectorAll('h1');
+          fallbackHeaders.forEach((header, index) => {
+            const sectionId = `intro-section-${index}`;
+            header.id = sectionId;
+            
+            sections.push({
+              id: sectionId,
+              title: header.textContent.trim(),
+              element: header
+            });
+          });
+        }
+        
+        return sections;
+      }
+      
+      normalizeText(text) {
+        return text.toLowerCase().replace(/[^a-z0-9]/g, '');
+      }
+      
+      scrollToSection(element) {
+        if (!element) return;
+        
+        const container = document.querySelector('.swagger-container');
+        if (container) {
+          // Find the actual heading element for this section
+          let headingElement = element;
+          
+          // If the element is not a heading, try to find the closest heading above it
+          if (!headingElement.matches('h1, h2, h3, h4, h5, h6')) {
+            // Look for a heading element that contains or precedes this element
+            const allHeadings = container.querySelectorAll('h1, h2, h3, h4, h5, h6');
+            for (let i = allHeadings.length - 1; i >= 0; i--) {
+              const heading = allHeadings[i];
+              if (heading.offsetTop <= element.offsetTop) {
+                headingElement = heading;
+                break;
+              }
+            }
+          }
+          
+          // Calculate scroll position to show the heading below the sticky navigation bar
+          const introNavBar = document.querySelector('.intro-nav-container');
+          const navBarHeight = introNavBar ? introNavBar.offsetHeight : 44; // Get actual nav bar height
+          
+          // Add extra padding to ensure the heading is visible below the frozen navigation bar
+          const extraPadding = 150; // Much larger padding to ensure heading is clearly visible below nav bar
+          const targetScrollTop = headingElement.offsetTop - navBarHeight - extraPadding;
+          
+          container.scrollTo({
+            top: Math.max(0, targetScrollTop),
+            behavior: 'smooth'
+          });
+          
+          // Update active navigation immediately and after scroll completes
+          const navItem = document.querySelector(`[data-section-id="${element.id}"]`);
+          if (navItem) {
+            this.setActiveNavItem(navItem);
+          }
+          
+          // Also update after scrolling completes to handle any scroll adjustments
+          setTimeout(() => {
+            if (navItem) {
+              this.setActiveNavItem(navItem);
+            }
+          }, 600); // Slightly longer wait for smooth scroll to complete
+        }
+      }
+      
+      setActiveNavItem(activeItem) {
+        // Remove active class from all items
+        document.querySelectorAll('.intro-nav-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        
+        // Add active class to clicked item
+        if (activeItem) {
+          activeItem.classList.add('active');
+        }
+      }
+      
+      setupIntroductionScrollSpy(sections) {
+        // Store sections for scroll detection
+        this.introSections = sections;
+        
+        // Use scroll event instead of intersection observer for more precise control
+        const container = document.querySelector('.swagger-container');
+        if (!container) return;
+        
+        // Remove existing scroll listener if any
+        if (this.scrollSpyHandler) {
+          container.removeEventListener('scroll', this.scrollSpyHandler);
+        }
+        
+        // Create simplified scroll spy handler
+        this.scrollSpyHandler = () => {
+          const scrollTop = container.scrollTop;
+          const introNavBar = document.querySelector('.intro-nav-container');
+          const navBarHeight = introNavBar ? introNavBar.offsetHeight : 44;
+          
+          // Find the section that is currently at the top of the viewport
+          let activeSection = null;
+          
+          // Check sections from bottom to top to find the current one
+          for (let i = sections.length - 1; i >= 0; i--) {
+            const section = sections[i];
+            const element = section.element;
+            
+            if (element && element.offsetTop <= scrollTop + navBarHeight + 50) {
+              activeSection = section;
+              break;
+            }
+          }
+          
+          // Use first section if at the very top
+          if (!activeSection && sections.length > 0) {
+            activeSection = sections[0];
+          }
+          
+          // Update active navigation item
+          if (activeSection) {
+            const navItem = document.querySelector(`[data-section-id="${activeSection.id}"]`);
+            if (navItem && !navItem.classList.contains('active')) {
+              this.setActiveNavItem(navItem);
+            }
+          }
+        };
+        
+        // Add scroll listener with throttling and scroll effects
+        let scrollTimeout;
+        let scrollEffectTimeout;
+        
+        container.addEventListener('scroll', () => {
+          // Add scrolling effect to navigation bar
+          this.addScrollingEffect();
+          
+          // Clear existing timeout for scroll effect removal
+          if (scrollEffectTimeout) {
+            clearTimeout(scrollEffectTimeout);
+          }
+          
+          // Remove scrolling effect after user stops scrolling
+          scrollEffectTimeout = setTimeout(() => {
+            this.removeScrollingEffect();
+          }, 150);
+          
+          // Handle scroll spy with throttling
+          if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+          }
+          scrollTimeout = setTimeout(this.scrollSpyHandler, 50);
+        });
+        
+        // Initial call to set active section
+        setTimeout(this.scrollSpyHandler, 100);
+      }
+      
+      addScrollingEffect() {
+        const navContainer = document.getElementById('intro-nav-container');
+        if (navContainer && !navContainer.classList.contains('scrolling')) {
+          navContainer.classList.add('scrolling');
+        }
+      }
+      
+      removeScrollingEffect() {
+        const navContainer = document.getElementById('intro-nav-container');
+        if (navContainer && navContainer.classList.contains('scrolling')) {
+          navContainer.classList.remove('scrolling');
+        }
+      }
+      
+      removeIntroductionNavigation() {
+        const existingNav = document.getElementById('intro-nav-container');
+        if (existingNav) {
+          existingNav.remove();
+        }
+        
+        // Clean up scroll listener
+        if (this.scrollSpyHandler) {
+          const container = document.querySelector('.swagger-container');
+          if (container) {
+            container.removeEventListener('scroll', this.scrollSpyHandler);
+          }
+          this.scrollSpyHandler = null;
+        }
+        
+        // Clear sections reference
+        this.introSections = null;
+      }
+      
+      renderSwaggerUI(spec) {
+        // Create a deep copy of the spec to avoid mutations
+        const specCopy = JSON.parse(JSON.stringify(spec));
+        
+        // Ensure servers section exists and apply base URL
+        if (this.currentBaseUrl) {
+          // If no servers section exists, create one with the base URL
+          if (!specCopy.servers || specCopy.servers.length === 0) {
+            specCopy.servers = [
+              {
+                url: this.currentBaseUrl,
+                description: 'API Server'
+              }
+            ];
+          } else {
+            // Update existing servers with base URL replacement
+            specCopy.servers = specCopy.servers.map(server => {
+              let serverUrl = server.url.replace(/\{\{baseurl\}\}/g, this.currentBaseUrl);
+              
+              // Clean up any double protocols
+              serverUrl = serverUrl.replace(/^https?:\/\/(https?:\/\/)/, '$1');
+              serverUrl = serverUrl.replace(/^(https?:\/\/)+/, 'https://');
+              
+              return {
+                ...server,
+                url: serverUrl
+              };
+            });
+          }
+        } else {
+          // If no base URL is set but servers section is missing, add a default placeholder
+          if (!specCopy.servers || specCopy.servers.length === 0) {
+            specCopy.servers = [
+              {
+                url: 'https://api.jobprogress.com/api/v3',
+                description: 'Default Leap API Server'
+              }
+            ];
+          }
+        }
+        
+        // Ensure paths are unique by removing any duplicates
+        if (specCopy.paths) {
+          const uniquePaths = {};
+          Object.entries(specCopy.paths).forEach(([path, methods]) => {
+            if (!uniquePaths[path]) {
+              uniquePaths[path] = methods;
+            }
+          });
+          specCopy.paths = uniquePaths;
+        }
+        
+        // Create a completely new container to avoid React DOM conflicts
+        this.createFreshSwaggerContainer();
+        
+        // Destroy previous SwaggerUI instance if it exists
+        if (this.swaggerUI && typeof this.swaggerUI.getSystem === 'function') {
+          const system = this.swaggerUI.getSystem();
+          system.specActions.updateSpec(null);
+        }
+        
+        // Initialize with the fresh container and unique spec
+        this.initSwaggerUI(specCopy);
+      }
+
+      createCodeGenerationUI(operationElement, operationData) {
+        // Check if code generation UI already exists
+        if (operationElement.querySelector('.code-generation-container')) {
+          return;
+        }
+
+        // Create the main container
+        const codeGenContainer = document.createElement('div');
+        codeGenContainer.className = 'code-generation-container';
+
+        // Create header with language selector
+        const header = document.createElement('div');
+        header.className = 'code-generation-header';
+
+        const title = document.createElement('h4');
+        title.className = 'code-generation-title';
+        title.textContent = 'Code Examples';
+
+        const languageSelector = document.createElement('div');
+        languageSelector.className = 'language-selector';
+
+        const label = document.createElement('label');
+        label.textContent = 'Language:';
+
+        const select = document.createElement('select');
+        Object.entries(this.codeGenerator.languages).forEach(([key, value]) => {
+          const option = document.createElement('option');
+          option.value = key;
+          option.textContent = value;
+          select.appendChild(option);
+        });
+
+        languageSelector.appendChild(label);
+        languageSelector.appendChild(select);
+
+        header.appendChild(title);
+        header.appendChild(languageSelector);
+
+        // Create content area
+        const content = document.createElement('div');
+        content.className = 'code-generation-content';
+
+        const codeSnippet = document.createElement('pre');
+        codeSnippet.className = 'code-snippet';
+
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-button';
+        copyButton.textContent = 'Copy';
+
+        content.appendChild(codeSnippet);
+        content.appendChild(copyButton);
+
+        codeGenContainer.appendChild(header);
+        codeGenContainer.appendChild(content);
+
+        // Generate initial code
+        this.updateCodeSnippet(codeGenContainer, operationData, select.value);
+
+        // Add event listeners
+        select.addEventListener('change', (e) => {
+          this.updateCodeSnippet(codeGenContainer, operationData, e.target.value);
+        });
+
+        copyButton.addEventListener('click', () => {
+          this.copyCodeToClipboard(codeSnippet, copyButton);
+        });
+
+        // Insert the code generation UI after the operation
+        const insertionPoint = operationElement.querySelector('.opblock-body') || 
+                              operationElement.querySelector('.responses-wrapper') || 
+                              operationElement;
+        
+        if (insertionPoint.nextSibling) {
+          insertionPoint.parentNode.insertBefore(codeGenContainer, insertionPoint.nextSibling);
+        } else {
+          insertionPoint.parentNode.appendChild(codeGenContainer);
+        }
+      }
+
+      updateCodeSnippet(container, operationData, language) {
+        const codeSnippet = container.querySelector('.code-snippet');
+        const request = this.buildRequestFromOperation(operationData);
+        const code = this.codeGenerator.generateCode(language, request);
+        const highlightedCode = this.codeGenerator.applySyntaxHighlighting(code, language);
+        
+        codeSnippet.innerHTML = highlightedCode;
+      }
+
+      buildRequestFromOperation(operationData) {
+        const request = {
+          method: operationData.method || 'GET',
+          url: this.buildUrlFromOperation(operationData),
+          headers: this.buildHeadersFromOperation(operationData),
+          body: this.buildBodyFromOperation(operationData)
+        };
+
+        return request;
+      }
+
+      buildUrlFromOperation(operationData) {
+        let baseUrl = this.currentBaseUrl || 'https://api.jobprogress.com/api/v3';
+        let path = operationData.path || '';
+
+        // Replace path parameters with example values
+        if (operationData.parameters) {
+          operationData.parameters.forEach(param => {
+            if (param.in === 'path') {
+              const placeholder = `{${param.name}}`;
+              const exampleValue = param.example || param.schema?.example || `{${param.name}}`;
+              path = path.replace(placeholder, exampleValue);
+            }
+          });
+        }
+
+        // Add query parameters
+        const queryParams = [];
+        if (operationData.parameters) {
+          operationData.parameters.forEach(param => {
+            if (param.in === 'query' && param.example) {
+              queryParams.push(`${param.name}=${encodeURIComponent(param.example)}`);
+            }
+          });
+        }
+
+        let fullUrl = baseUrl + path;
+        if (queryParams.length > 0) {
+          fullUrl += '?' + queryParams.join('&');
+        }
+
+        return fullUrl;
+      }
+
+      buildHeadersFromOperation(operationData) {
+        const headers = {};
+
+        // Add authorization header if available
+        const authToken = sessionStorage.getItem('swagger_auth_token');
+        if (authToken) {
+          headers['Authorization'] = authToken;
+        }
+
+        // Add content-type for requests with body
+        if (operationData.requestBody) {
+          headers['Content-Type'] = 'application/json';
+        }
+
+        // Add any custom headers from parameters
+        if (operationData.parameters) {
+          operationData.parameters.forEach(param => {
+            if (param.in === 'header' && param.example) {
+              headers[param.name] = param.example;
+            }
+          });
+        }
+
+        return headers;
+      }
+
+      buildBodyFromOperation(operationData) {
+        if (!operationData.requestBody) {
+          return null;
+        }
+
+        // Try to get example from request body schema
+        const content = operationData.requestBody.content;
+        if (content && content['application/json']) {
+          const schema = content['application/json'].schema;
+          if (schema && schema.example) {
+            return schema.example;
+          }
+          
+          // Generate example from schema properties
+          if (schema && schema.properties) {
+            const example = {};
+            Object.entries(schema.properties).forEach(([key, prop]) => {
+              if (prop.example !== undefined) {
+                example[key] = prop.example;
+              } else if (prop.type === 'string') {
+                example[key] = `example_${key}`;
+              } else if (prop.type === 'number' || prop.type === 'integer') {
+                example[key] = 123;
+              } else if (prop.type === 'boolean') {
+                example[key] = true;
+              }
+            });
+            return example;
+          }
+        }
+
+        return null;
+      }
+
+      copyCodeToClipboard(codeElement, buttonElement) {
+        const code = codeElement.textContent;
+        
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(code).then(() => {
+            this.showCopyFeedback(buttonElement);
+          }).catch(err => {
+            console.error('Failed to copy code:', err);
+            this.fallbackCopyToClipboard(code, buttonElement);
+          });
+        } else {
+          this.fallbackCopyToClipboard(code, buttonElement);
+        }
+      }
+
+      fallbackCopyToClipboard(text, buttonElement) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          document.execCommand('copy');
+          this.showCopyFeedback(buttonElement);
+        } catch (err) {
+          console.error('Fallback copy failed:', err);
+        }
+        
+        document.body.removeChild(textArea);
+      }
+
+      showCopyFeedback(buttonElement) {
+        const originalText = buttonElement.textContent;
+        buttonElement.textContent = 'Copied';
+        buttonElement.classList.add('copied');
+        
+        setTimeout(() => {
+          buttonElement.textContent = originalText;
+          buttonElement.classList.remove('copied');
+        }, 2000);
+      }
+      
+      createFreshSwaggerContainer() {
+        const parentContainer = document.querySelector('.swagger-container');
+        const oldContainer = document.getElementById('swagger-ui');
+        
+        // Clean up any existing observers
+        if (this.operationObserver) {
+          this.operationObserver.disconnect();
+          this.operationObserver = null;
+        }
+        
+        // Remove the old container completely
+        if (oldContainer) {
+          oldContainer.remove();
+        }
+        
+        // Create a brand new container
+        const newContainer = document.createElement('div');
+        newContainer.id = 'swagger-ui';
+        parentContainer.appendChild(newContainer);
+        
+        // Reset the SwaggerUI instance
+        this.swaggerUI = null;
+      }
+      
+      initSwaggerUI(spec) {
+        // Disable deep linking to avoid the whitespace warnings
+        this.swaggerUI = SwaggerUIBundle({
+          spec: {
+            ...spec,
+            info: {
+              ...spec.info,
+              title: spec.info?.title?.replace(/^Leap API - /, '') || ''
+            }
+          },
+          dom_id: '#swagger-ui',
+          deepLinking: false,  // Disable deep linking to avoid warnings
+          presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIStandalonePreset
+          ],
+          plugins: [
+            SwaggerUIBundle.plugins.DownloadUrl
+          ],
+          layout: "BaseLayout",
+          requestInterceptor: this.createRequestInterceptor(),
+          responseInterceptor: this.createResponseInterceptor(),
+          showCommonExtensions: false,
+          displayOperationId: false,
+          docExpansion: "list",
+          filter: false,
+          onComplete: () => {
+            // Remove any remaining auth elements
+            this.hideAuthElements();
+            // Add code generation UI to operations
+            this.addCodeGenerationToOperations(spec);
+            
+            // Expand the target operation if one was clicked from sidebar
+            if (this.targetPathForExpansion) {
+              this.expandOperationByPath(this.targetPathForExpansion, this.targetMethodForExpansion);
+              this.targetPathForExpansion = null; // Reset after use
+              this.targetMethodForExpansion = null; // Reset after use
+            } else {
+              // Restore previously expanded states if no new target
+              this.restoreExpandedStates();
+            }
+          },
+          onFailure: (err) => {
+            console.error('Swagger UI failed to load:', err);
+          }
+        });
+      }
+      
+      hideAuthElements() {
+        // Additional cleanup to ensure no auth elements are shown
+        setTimeout(() => {
+          const authElements = document.querySelectorAll('.auth-wrapper, .authorization__btn, .scheme-container, .auth-container');
+          authElements.forEach(element => {
+            element.style.display = 'none';
+          });
+        }, 100);
+      }
+
+      addCodeGenerationToOperations(spec) {
+        // Wait for Swagger UI to fully render
+        setTimeout(() => {
+          const operations = document.querySelectorAll('.opblock');
+          
+          operations.forEach(operation => {
+            // Skip if code generation already added
+            if (operation.querySelector('.code-generation-container')) {
+              return;
+            }
+
+            // Extract operation data
+            const operationData = this.extractOperationData(operation, spec);
+            if (operationData) {
+              this.createCodeGenerationUI(operation, operationData);
+            }
+          });
+
+          // Also observe for dynamically added operations (when user expands/collapses)
+          this.observeOperationChanges(spec);
+        }, 500);
+      }
+
+      observeOperationChanges(spec) {
+        const swaggerContainer = document.getElementById('swagger-ui');
+        if (!swaggerContainer) return;
+
+        // Create a mutation observer to watch for new operations
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+              if (node.nodeType === Node.ELEMENT_NODE) {
+                // Check if this is an operation block or contains operation blocks
+                const operations = node.classList?.contains('opblock') ? 
+                  [node] : 
+                  node.querySelectorAll?.('.opblock') || [];
+
+                operations.forEach(operation => {
+                  if (!operation.querySelector('.code-generation-container')) {
+                    const operationData = this.extractOperationData(operation, spec);
+                    if (operationData) {
+                      // Add a small delay to ensure the operation is fully rendered
+                      setTimeout(() => {
+                        this.createCodeGenerationUI(operation, operationData);
+                      }, 100);
+                    }
+                  }
+                });
+              }
+            });
+          });
+        });
+
+        observer.observe(swaggerContainer, {
+          childList: true,
+          subtree: true
+        });
+
+        // Store observer reference for cleanup
+        this.operationObserver = observer;
+      }
+
+      expandOperationByPath(targetPath, targetMethod = null) {
+        if (!targetPath) return;
+        
+        // Wait for operations to be fully rendered
+        setTimeout(() => {
+          const operations = document.querySelectorAll('.opblock');
+          
+          let targetOperation = null;
+          
+          operations.forEach(operation => {
+            const pathElement = operation.querySelector('.opblock-summary-path');
+            const methodElement = operation.querySelector('.opblock-summary-method');
+            
+            if (pathElement && methodElement) {
+              const pathText = pathElement.textContent.trim();
+              const methodText = methodElement.textContent.trim().toLowerCase();
+              
+              // If we have both path and method, match both
+              if (targetMethod) {
+                if (pathText === targetPath && methodText === targetMethod.toLowerCase()) {
+                  targetOperation = operation;
+                }
+              } else {
+                // Fallback to just path matching (for backward compatibility)
+                if (pathText === targetPath) {
+                  targetOperation = operation;
+                }
+              }
+            }
+          });
+          
+          if (targetOperation) {
+            // Find the expand/collapse button and click it if not already expanded
+            const expandButton = targetOperation.querySelector('.opblock-summary-method');
+            if (expandButton) {
+              const isExpanded = targetOperation.getAttribute('aria-expanded') === 'true';
+              
+              if (!isExpanded) {
+                expandButton.click();
+              }
+              
+              // Add smooth transition class
+              targetOperation.classList.add('is-open');
+              
+              // Scroll to the operation
+              targetOperation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              
+              // Store the expanded state in localStorage for persistence
+              this.saveExpandedState(targetPath);
+            }
+          }
+          
+          // Collapse other operations
+          operations.forEach(operation => {
+            if (operation !== targetOperation) {
+              const expandButton = operation.querySelector('.opblock-summary-method');
+              if (expandButton) {
+                const isExpanded = operation.getAttribute('aria-expanded') === 'true';
+                if (isExpanded) {
+                  expandButton.click();
+                }
+                operation.classList.remove('is-open');
+              }
+            }
+          });
+        }, 1000); // Wait for Swagger UI to fully render
+      }
+
+      saveExpandedState(path) {
+        try {
+          const expandedStates = JSON.parse(localStorage.getItem('swaggerExpandedStates') || '{}');
+          expandedStates[path] = true;
+          localStorage.setItem('swaggerExpandedStates', JSON.stringify(expandedStates));
+        } catch (error) {
+          console.warn('Could not save expanded state:', error);
+        }
+      }
+
+      restoreExpandedStates() {
+        try {
+          const expandedStates = JSON.parse(localStorage.getItem('swaggerExpandedStates') || '{}');
+          const expandedPaths = Object.keys(expandedStates).filter(path => expandedStates[path]);
+          
+          if (expandedPaths.length > 0) {
+            // Restore the last expanded path
+            const lastExpandedPath = expandedPaths[expandedPaths.length - 1];
+            this.expandOperationByPath(lastExpandedPath);
+          }
+        } catch (error) {
+          console.warn('Could not restore expanded states:', error);
+        }
+      }
+
+      collapseOperationByPath(targetPath) {
+        if (!targetPath) return;
+        
+        setTimeout(() => {
+          const operations = document.querySelectorAll('.opblock');
+          
+          operations.forEach(operation => {
+            const pathElement = operation.querySelector('.opblock-summary-path');
+            if (pathElement && pathElement.textContent.trim() === targetPath) {
+              // Find the expand/collapse button and click it if expanded
+              const expandButton = operation.querySelector('.opblock-summary-method');
+              if (expandButton) {
+                const isExpanded = operation.getAttribute('aria-expanded') === 'true';
+                if (isExpanded) {
+                  expandButton.click();
+                }
+                operation.classList.remove('is-open');
+                
+                // Remove from localStorage
+                this.removeExpandedState(targetPath);
+              }
+            }
+          });
+        }, 500);
+      }
+
+      removeExpandedState(path) {
+        try {
+          const expandedStates = JSON.parse(localStorage.getItem('swaggerExpandedStates') || '{}');
+          delete expandedStates[path];
+          localStorage.setItem('swaggerExpandedStates', JSON.stringify(expandedStates));
+        } catch (error) {
+          console.warn('Could not remove expanded state:', error);
+        }
+      }
+
+      isPathInTag(path, tag) {
+        // Check if a path belongs to a specific tag
+        // This is a simple check - you might want to enhance this based on your API structure
+        try {
+          const spec = this.loadedSpecs.get(tag.filename);
+          if (spec && spec.paths && spec.paths[path]) {
+            const pathMethods = spec.paths[path];
+            // Check if any method in this path has the tag
+            return Object.values(pathMethods).some(method => 
+              method.tags && method.tags.includes(tag.name)
+            );
+          }
+        } catch (error) {
+          console.warn('Could not check if path belongs to tag:', error);
+        }
+        return false;
+      }
+
+      extractOperationData(operationElement, spec) {
+        try {
+          // Get the operation path and method from the DOM
+          const pathElement = operationElement.querySelector('.opblock-summary-path');
+          const methodElement = operationElement.querySelector('.opblock-summary-method');
+          
+          if (!pathElement || !methodElement) {
+            return null;
+          }
+
+          const path = pathElement.textContent.trim();
+          const method = methodElement.textContent.trim().toLowerCase();
+
+          // Find the operation in the spec
+          if (spec.paths && spec.paths[path] && spec.paths[path][method]) {
+            const operation = spec.paths[path][method];
+            
+            return {
+              path: path,
+              method: method,
+              summary: operation.summary,
+              parameters: operation.parameters || [],
+              requestBody: operation.requestBody,
+              responses: operation.responses
+            };
+          }
+
+          return null;
+        } catch (error) {
+          console.error('Error extracting operation data:', error);
+          return null;
+        }
+      }
+      
+      createRequestInterceptor() {
+        return (req) => {
+          // Apply base URL with improved handling
+          if (this.currentBaseUrl && req.url && typeof req.url === 'string') {
+            // Replace {{baseurl}} placeholder
+            req.url = req.url.replace(/\{\{baseurl\}\}/g, this.currentBaseUrl);
+            
+            // Fix double protocol issues (e.g., http://https://domain.com)
+            req.url = req.url.replace(/^https?:\/\/(https?:\/\/)/, '$1');
+            
+            // Handle relative URLs
+            if (req.url.startsWith('/') && this.currentBaseUrl) {
+              const cleanBaseUrl = this.currentBaseUrl.endsWith('/') ? 
+                this.currentBaseUrl.slice(0, -1) : this.currentBaseUrl;
+              req.url = cleanBaseUrl + req.url;
+            }
+            
+            // Final cleanup for any remaining double protocols
+            req.url = req.url.replace(/^(https?:\/\/)+/, 'https://');
+          }
+          
+          // Add authorization header
           const authToken = sessionStorage.getItem('swagger_auth_token');
           if (authToken && req.headers) {
             req.headers['Authorization'] = authToken;
           }
           
-          // Fix Content-Type for JSON request bodies
+          // Handle JSON content type
           if (req.body && typeof req.body === 'string') {
-            // Check if this is a JSON request that's being sent as form data
             try {
-              // If the headers indicate form data but the body looks like it should be JSON
               if (req.headers && req.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
-                // Try to detect if this is actually JSON content being form-encoded
                 const jsonPattern = /(%7B|\{).*(%7D|\})/;
-                const hasJsonKeys = req.body.includes('first_name') || 
-                                   req.body.includes('last_name') || 
-                                   req.body.includes('email') ||
-                                   req.body.includes('company_name');
-                
-                if (jsonPattern.test(req.body) || hasJsonKeys) {
-                  console.log('Detected JSON in form data, attempting to convert...');
-                  
-                  // Change the Content-Type header to JSON
+                if (jsonPattern.test(req.body)) {
                   req.headers['Content-Type'] = 'application/json';
                   
-                  // First, try to get the JSON from the textarea in the UI
+                  // Try to get JSON from textarea
+                  const textareas = document.querySelectorAll('textarea.body-param__text');
                   let jsonBody = '';
-                  try {
-                    const textareas = document.querySelectorAll('textarea.body-param__text');
-                    textareas.forEach(textarea => {
-                      if (textarea.value && textarea.value.includes('{') && textarea.value.includes('}')) {
-                        // This looks like our JSON body
-                        jsonBody = textarea.value;
-                      }
-                    });
-                  } catch (domErr) {
-                    console.error('Error finding JSON in DOM:', domErr);
-                  }
+                  textareas.forEach(textarea => {
+                    if (textarea.value && textarea.value.includes('{')) {
+                      jsonBody = textarea.value;
+                    }
+                  });
                   
                   if (jsonBody) {
-                    console.log('Found JSON in textarea:', jsonBody);
-                    // Use the JSON from the textarea
                     req.body = jsonBody;
-                  } else {
-                    // Try to extract the JSON from the form-encoded data
-                    try {
-                      // If the body is form-encoded with numbered keys
-                      if (req.body.match(/^\d+=/)) {
-                        console.log('Detected numbered form data, reconstructing JSON...');
-                        
-                        // First character is often missing, add it back
-                        let reconstructedJson = '{';
-                        
-                        // Extract all parts and join them
-                        const parts = req.body.split('&');
-                        
-                        // Each part is in the format "number=encodedChar"
-                        for (let i = 1; i < parts.length; i++) { // Skip the first part
-                          const part = parts[i];
-                          const match = part.match(/\d+=(.+)/);
-                          if (match && match[1]) {
-                            reconstructedJson += decodeURIComponent(match[1]);
-                          }
-                        }
-                        
-                        console.log('Reconstructed JSON:', reconstructedJson);
-                        req.body = reconstructedJson;
-                      } else {
-                        // For other form-encoded JSON
-                        const match = req.body.match(jsonPattern);
-                        if (match) {
-                          // We found what looks like JSON, now decode it
-                          let jsonStr = decodeURIComponent(match[0]);
-                          // If it's still encoded, try again
-                          if (jsonStr.includes('%')) {
-                            jsonStr = decodeURIComponent(jsonStr);
-                          }
-                          console.log('Extracted JSON from pattern:', jsonStr);
-                          // Set the body to the decoded JSON
-                          req.body = jsonStr;
-                        }
-                      }
-                    } catch (e) {
-                      console.error('Error converting form data to JSON:', e);
-                    }
                   }
                 }
               }
@@ -446,162 +2812,520 @@
             }
           }
           
-          console.log('Modified request:', JSON.stringify(req));
           return req;
-        },
-        responseInterceptor: (res) => {
-          // Also handle response URLs for consistent display
-          if (res && res.url && typeof res.url === 'string' && currentBaseUrl) {
-            res.url = res.url.replace(/\{\{baseurl\}\}/g, currentBaseUrl);
+        };
+      }
+      
+      createResponseInterceptor() {
+        return (res) => {
+          if (res && res.url && typeof res.url === 'string' && this.currentBaseUrl) {
+            res.url = res.url.replace(/\{\{baseurl\}\}/g, this.currentBaseUrl);
+            // Clean up any double protocols in response URLs
+            res.url = res.url.replace(/^https?:\/\/(https?:\/\/)/, '$1');
+            res.url = res.url.replace(/^(https?:\/\/)+/, 'https://');
           }
           return res;
-        }
-      });
-      
-      window.ui = ui;
-      
-      // Handle apply button click
-      document.getElementById('apply-base-url').addEventListener('click', function() {
-        currentBaseUrl = document.getElementById('base-url').value.trim();
-        
-        // Store in sessionStorage for consistency
-        if (currentBaseUrl) {
-          sessionStorage.setItem('swagger_baseurl', currentBaseUrl);
-        } else {
-          sessionStorage.removeItem('swagger_baseurl');
-        }
-        
-        alert('Base URL set to: ' + (currentBaseUrl || 'None (using relative paths)'));
-        
-        // Force reload the page to ensure all components use the new baseURL
-        window.location.reload();
-      });
-      
-      // Load saved baseURL from sessionStorage if available
-      const savedBaseUrl = sessionStorage.getItem('swagger_baseurl');
-      if (savedBaseUrl) {
-        document.getElementById('base-url').value = savedBaseUrl;
-        currentBaseUrl = savedBaseUrl;
-        console.log('Loaded saved baseURL:', savedBaseUrl);
+        };
       }
       
-      // Function to update logout button visibility
-      function updateLogoutButtonVisibility() {
-        const authToken = sessionStorage.getItem('swagger_auth_token');
-        const logoutButton = document.getElementById('logout-button');
-        if (authToken) {
-          logoutButton.style.display = 'inline-block';
-        } else {
-          logoutButton.style.display = 'none';
+      setActiveTag(tagName) {
+        // Remove previous active state
+        document.querySelectorAll('.nav-folder.active').forEach(el => {
+          el.classList.remove('active');
+        });
+        
+        // Set new active state
+        const activeFolder = document.querySelector(`[data-tag="${tagName}"]`);
+        if (activeFolder) {
+          activeFolder.classList.add('active');
+        }
+        
+        this.currentTag = tagName;
+      }
+      
+      updateBreadcrumb(section) {
+        const breadcrumb = document.getElementById('breadcrumb');
+        if (breadcrumb) {
+          breadcrumb.textContent = section;
         }
       }
       
-      // Handle logout button click
-      document.getElementById('logout-button').addEventListener('click', function() {
-        // Clear both token and baseURL from sessionStorage
-        sessionStorage.removeItem('swagger_auth_token');
-        sessionStorage.removeItem('swagger_baseurl');
-        console.log('Cleared auth token and baseURL from sessionStorage');
-        
-        // Update UI immediately
-        updateLogoutButtonVisibility();
-        
-        // Show confirmation to user
-        alert('Successfully logged out. Authorization details have been cleared.');
-        
-        // Reload the page to ensure all components update
-        window.location.reload();
-      });
+      updateContentTitle(title, subtitle = '') {
+        // Content title updates disabled
+      }
       
-      // Initialize logout button visibility
-      updateLogoutButtonVisibility();
+      showLoading() {
+        this.createFreshSwaggerContainer();
+        const swaggerContainer = document.getElementById('swagger-ui');
+        swaggerContainer.innerHTML = '<div class="status-message"><div>Loading documentation...</div></div>';
+      }
       
-      // Monitor for authorization changes
-      const originalAuthorize = ui.authActions.authorize;
-      ui.authActions.authorize = function(payload) {
-        console.log('Authorization payload:', payload);
-        
-        // Store the token in sessionStorage
-        try {
-          // Extract the token from the payload
-          const authData = Object.values(payload)[0];
-          if (authData && authData.value) {
-            // Store the full token including the scheme (Bearer, etc.)
-            const scheme = authData.schema?.type === 'apiKey' ? '' : 
-                          (authData.schema?.scheme ? authData.schema.scheme + ' ' : 'Bearer ');
-            const token = scheme + authData.value;
-            sessionStorage.setItem('swagger_auth_token', token);
-            console.log('Saved auth token:', token);
+      showError(message) {
+        this.createFreshSwaggerContainer();
+        const swaggerContainer = document.getElementById('swagger-ui');
+        swaggerContainer.innerHTML = `<div class="error-message">${message}</div>`;
+      }
+      
+      setupEventListeners() {
+        // Introduction button
+        document.getElementById('introduction-button').addEventListener('click', () => {
+          this.showIntroduction();
+        });
+
+        // Base URL management
+        document.getElementById('apply-base-url').addEventListener('click', () => {
+          let baseUrl = document.getElementById('base-url').value.trim();
+          
+          if (baseUrl) {
+            // Normalize the base URL
+            // Add https:// if no protocol is specified
+            if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
+              baseUrl = 'https://' + baseUrl;
+            }
             
-            // Show confirmation to user
-            alert('Authorization token set successfully! This will be used for all API requests.');
+            // Remove trailing slash
+            baseUrl = baseUrl.replace(/\/$/, '');
             
-            // Update logout button visibility
-            updateLogoutButtonVisibility();
+            // Update the input field with normalized URL
+            document.getElementById('base-url').value = baseUrl;
             
-            // Reload the page to ensure all components use the new token
-            window.location.reload();
+            this.currentBaseUrl = baseUrl;
+            sessionStorage.setItem('swagger_baseurl', baseUrl);
+          } else {
+            this.currentBaseUrl = '';
+            sessionStorage.removeItem('swagger_baseurl');
           }
-        } catch (e) {
-          console.error('Error storing auth token:', e);
+          
+          // Show feedback
+          this.showFeedback('Base URL updated successfully!', '#49cc90');
+          
+          // Reload current documentation with new base URL
+          if (this.currentTag) {
+            const tag = this.allTags.find(t => t.name === this.currentTag);
+            if (tag) this.loadTagDocumentation(tag);
+          }
+        });
+
+        // Authorization management
+        document.getElementById('authorize-button').addEventListener('click', () => {
+          const authToken = document.getElementById('auth-token').value.trim();
+          
+          if (authToken) {
+            // Ensure token has Bearer prefix if not already present
+            const formattedToken = authToken.startsWith('Bearer ') ? authToken : `Bearer ${authToken}`;
+            sessionStorage.setItem('swagger_auth_token', formattedToken);
+            this.showFeedback('Authorization token set successfully!', '#49cc90');
+            this.updateLogoutButtonVisibility();
+            
+            // Reload current documentation with new auth
+            if (this.currentTag) {
+              const tag = this.allTags.find(t => t.name === this.currentTag);
+              if (tag) this.loadTagDocumentation(tag);
+            }
+          } else {
+            sessionStorage.removeItem('swagger_auth_token');
+            this.showFeedback('Authorization token cleared!', '#f44336');
+            this.updateLogoutButtonVisibility();
+          }
+        });
+        
+        // Logout button
+        document.getElementById('logout-button').addEventListener('click', () => {
+          sessionStorage.removeItem('swagger_auth_token');
+          sessionStorage.removeItem('swagger_baseurl');
+          document.getElementById('auth-token').value = '';
+          document.getElementById('base-url').value = '';
+          this.updateLogoutButtonVisibility();
+          
+          this.showFeedback('Successfully logged out!', '#f44336');
+          
+          window.location.reload();
+        });
+        
+        // Search functionality
+        const searchBox = document.getElementById('search-box');
+        let searchTimeout;
+        searchBox.addEventListener('input', (e) => {
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(() => {
+            this.filterNavigation(e.target.value);
+          }, 300);
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            searchBox.value = '';
+            this.filterNavigation('');
+          }
+        });
+      }
+      
+      filterNavigation(query) {
+        const navItems = document.querySelectorAll('.nav-item');
+        const searchTerm = query.toLowerCase().trim();
+        
+        if (!searchTerm) {
+          // Show all items and reset display
+          navItems.forEach(item => {
+            item.style.display = 'block';
+            const folderName = item.querySelector('.folder-name');
+            folderName.innerHTML = folderName.textContent;
+            
+            // Reset endpoint items
+            const endpointList = item.querySelector('.endpoint-list');
+            if (endpointList) {
+              endpointList.classList.remove('expanded');
+              const endpoints = endpointList.querySelectorAll('.endpoint-item');
+              endpoints.forEach(endpoint => {
+                endpoint.style.display = 'flex';
+                const pathText = endpoint.querySelector('.endpoint-path');
+                pathText.innerHTML = pathText.textContent;
+              });
+            }
+          });
+          return;
         }
         
-        return originalAuthorize.apply(this, arguments);
-      };
+        let hasResults = false;
+        
+        navItems.forEach(item => {
+          const folderName = item.querySelector('.folder-name');
+          const tagName = folderName.textContent.toLowerCase();
+          const endpointList = item.querySelector('.endpoint-list');
+          let folderHasMatch = false;
+          
+          // Search in folder name
+          if (tagName.includes(searchTerm)) {
+            folderHasMatch = true;
+            hasResults = true;
+            // Highlight matching text in folder name
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            folderName.innerHTML = folderName.textContent.replace(regex, '<span class="search-highlight">$1</span>');
+          } else {
+            folderName.innerHTML = folderName.textContent;
+          }
+          
+          // Search in endpoints
+          if (endpointList) {
+            const endpoints = endpointList.querySelectorAll('.endpoint-item');
+            endpoints.forEach(endpoint => {
+              const pathText = endpoint.querySelector('.endpoint-path');
+              const methodText = endpoint.querySelector('.http-method');
+              const endpointContent = (pathText.textContent + ' ' + methodText.textContent).toLowerCase();
+              
+              if (endpointContent.includes(searchTerm)) {
+                endpoint.style.display = 'flex';
+                folderHasMatch = true;
+                hasResults = true;
+                // Highlight matching text in endpoint
+                const regex = new RegExp(`(${searchTerm})`, 'gi');
+                pathText.innerHTML = pathText.textContent.replace(regex, '<span class="search-highlight">$1</span>');
+              } else {
+                endpoint.style.display = 'none';
+                pathText.innerHTML = pathText.textContent;
+              }
+            });
+          }
+          
+          // Show/hide folder based on matches
+          if (folderHasMatch) {
+            item.style.display = 'block';
+            if (endpointList) {
+              endpointList.classList.add('expanded');
+            }
+          } else {
+            item.style.display = 'none';
+            if (endpointList) {
+              endpointList.classList.remove('expanded');
+            }
+          }
+        });
+        
+        // Show/hide no results message
+        const navigation = document.getElementById('navigation');
+        let noResults = navigation.querySelector('.no-results');
+        
+        if (!hasResults && searchTerm) {
+          if (!noResults) {
+            noResults = document.createElement('div');
+            noResults.className = 'no-results';
+            noResults.textContent = 'No matching endpoints found';
+            navigation.appendChild(noResults);
+          }
+        } else if (noResults) {
+          noResults.remove();
+        }
+      }
       
-      // Also handle logout to clear the token
-      const originalLogout = ui.authActions.logout;
-      ui.authActions.logout = function(payload) {
-        console.log('Logout payload:', payload);
-        sessionStorage.removeItem('swagger_auth_token');
-        sessionStorage.removeItem('swagger_baseurl');
-        console.log('Cleared auth token and baseURL');
+      loadSavedSettings() {
+        // Load saved base URL
+        const savedBaseUrl = sessionStorage.getItem('swagger_baseurl');
+        if (savedBaseUrl) {
+          document.getElementById('base-url').value = savedBaseUrl;
+          this.currentBaseUrl = savedBaseUrl;
+        }
+        
+        // Load saved auth token
+        const savedAuthToken = sessionStorage.getItem('swagger_auth_token');
+        if (savedAuthToken) {
+          // Remove Bearer prefix for display
+          const displayToken = savedAuthToken.replace('Bearer ', '');
+          document.getElementById('auth-token').value = displayToken;
+        }
         
         // Update logout button visibility
-        updateLogoutButtonVisibility();
-        
-        alert('Authorization details cleared.');
-        
-        // Reload the page to ensure all components update
-        window.location.reload();
-        
-        return originalLogout.apply(this, arguments);
-      };
+        this.updateLogoutButtonVisibility();
+      }
       
-      // Add a notification about global authorization if needed
-      setTimeout(() => {
+      showFeedback(message, color) {
+        const feedback = document.createElement('div');
+        feedback.style.cssText = `position:fixed;top:80px;right:20px;background:${color};color:white;padding:10px 15px;border-radius:4px;z-index:10000;box-shadow:0 2px 10px rgba(0,0,0,0.2);`;
+        feedback.textContent = message;
+        document.body.appendChild(feedback);
+        
+        setTimeout(() => feedback.remove(), 3000);
+      }
+      
+      updateLogoutButtonVisibility() {
         const authToken = sessionStorage.getItem('swagger_auth_token');
-        if (!authToken) {
-          // Create a notification banner
-          const banner = document.createElement('div');
-          banner.style.backgroundColor = '#ff9800';
-          banner.style.color = 'white';
-          banner.style.padding = '10px';
-          banner.style.textAlign = 'center';
-          banner.style.position = 'fixed';
-          banner.style.top = '0';
-          banner.style.left = '0';
-          banner.style.right = '0';
-          banner.style.zIndex = '9999';
-          banner.innerHTML = '<strong>Note:</strong> Please set global authorization using the Authorize button at the top.';
-          
-          // Add a close button
-          const closeBtn = document.createElement('button');
-          closeBtn.innerHTML = '&times;';
-          closeBtn.style.marginLeft = '10px';
-          closeBtn.style.background = 'transparent';
-          closeBtn.style.border = 'none';
-          closeBtn.style.color = 'white';
-          closeBtn.style.fontSize = '20px';
-          closeBtn.style.cursor = 'pointer';
-          closeBtn.onclick = function() {
-            document.body.removeChild(banner);
-          };
-          banner.appendChild(closeBtn);
-          
-          document.body.appendChild(banner);
+        const logoutButton = document.getElementById('logout-button');
+        logoutButton.style.display = authToken ? 'inline-block' : 'none';
+      }
+
+      getEndpointFriendlyName(path) {
+        // Remove leading and trailing slashes
+        path = path.replace(/^\/|\/$/g, '');
+        
+        // Split the path into segments
+        const segments = path.split('/');
+        
+        // Get the last meaningful segment (ignoring parameters)
+        let lastSegment = segments[segments.length - 1];
+        if (lastSegment.startsWith('{') && segments.length > 1) {
+          lastSegment = segments[segments.length - 2];
         }
-      }, 1000);
+        
+        // Convert to friendly name
+        return lastSegment
+          .split(/[-_]/)
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+      }
+    }
+    
+    // Initialize the application
+    // Debug function to verify JSON highlighting
+    function debugHighlighting() {
+      const codeBlocks = document.querySelectorAll('pre code, .swagger-ui pre code');
+      console.log(`Found ${codeBlocks.length} code blocks for highlighting`);
+      
+      codeBlocks.forEach((block, index) => {
+        const text = block.textContent || block.innerText;
+        const isHighlighted = block.dataset.highlighted === 'true';
+        const hasJsonClasses = block.querySelector('.json-key, .json-string, .json-number, .json-boolean, .json-null');
+        
+        console.log(`Block ${index}: Highlighted=${isHighlighted}, HasJsonClasses=${!!hasJsonClasses}, Length=${text?.length || 0}`);
+      });
+    }
+
+    // Enhanced JSON Syntax Highlighter
+    function highlightJSON() {
+      // Target all possible containers for JSON content
+      const selectors = [
+        'pre code',
+        '.swagger-ui .renderedMarkdown pre code',
+        '.swagger-ui .response-col_description pre code',
+        '.swagger-ui .request-body pre code',
+        '.swagger-ui .model-example pre code',
+        '.swagger-ui .example pre code',
+        '.swagger-ui .highlight-code pre code',
+        '.swagger-ui .microlight',
+        '.swagger-ui pre.microlight',
+        'code.language-json',
+        'pre.language-json code',
+        '.json-example',
+        '.response-example pre code',
+        '.request-example pre code',
+        // Additional selectors for documentation and info text (only pre code blocks)
+        '.swagger-ui .info pre code',
+        '.swagger-ui .description pre code',
+        '.swagger-ui .markdown pre code',
+        'pre code',
+        // Target documentation blocks and info sections (only pre blocks)
+        '.swagger-ui .info .renderedMarkdown pre code',
+        '.swagger-ui .description .renderedMarkdown pre code',
+        '.swagger-ui .tag-description pre code',
+        '.swagger-ui .opblock-description pre code'
+      ];
+      
+      const codeBlocks = document.querySelectorAll(selectors.join(', '));
+      
+      codeBlocks.forEach(block => {
+        // Skip if already highlighted
+        if (block.dataset.highlighted === 'true') return;
+        
+        const text = block.textContent || block.innerText;
+        if (!text) return;
+        
+        const trimmedText = text.trim();
+        
+        // Enhanced JSON detection for all contexts including documentation
+        const isJSON = trimmedText.startsWith('[') || 
+                      trimmedText.startsWith('{') ||
+                      /^\s*[\[\{]/.test(trimmedText) ||
+                      block.closest('.json-example') ||
+                      block.classList.contains('language-json') ||
+                      /application\/json/i.test(block.textContent) ||
+                      // Additional patterns for documentation examples
+                      /"[^"]*":\s*[\{\[]/.test(trimmedText) ||  // Contains JSON key-value patterns
+                      /"[^"]*":\s*"[^"]*"/.test(trimmedText) ||  // Contains string key-value pairs
+                      /"[^"]*":\s*\d+/.test(trimmedText) ||      // Contains numeric key-value pairs
+                      /"[^"]*":\s*(true|false|null)/.test(trimmedText) || // Contains boolean/null values
+                      // Check if parent container suggests JSON content
+                      block.closest('.info') ||
+                      block.closest('.description') ||
+                      block.closest('.tag-description') ||
+                      block.closest('.opblock-description') ||
+                      // Check for common JSON patterns in the text
+                      /^\s*"[^"]+"\s*:\s*\{/.test(trimmedText) || // Object property
+                      /^\s*\[\s*\{/.test(trimmedText);           // Array of objects
+        
+        if (isJSON) {
+          // Reset to plain text first
+          let html = text;
+          
+          // Escape HTML entities
+          html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          
+          // Highlight JSON keys first (property names in quotes followed by colon)
+          html = html.replace(/"([^"\\]*(\\.[^"\\]*)*)"\s*:/g, '<span class="json-key">"$1"</span>:');
+          
+          // Highlight string values (quotes not preceded by colon, and not already highlighted as keys)
+          // This handles all string values including dates, times, URLs, etc.
+          html = html.replace(/:\s*"([^"\\]*(\\.[^"\\]*)*)"/g, ': <span class="json-string">"$1"</span>');
+          html = html.replace(/\[\s*"([^"\\]*(\\.[^"\\]*)*)"/g, '[<span class="json-string">"$1"</span>');
+          html = html.replace(/,\s*"([^"\\]*(\\.[^"\\]*)*)"/g, ', <span class="json-string">"$1"</span>');
+          
+          // Highlight numbers ONLY when they are NOT inside quotes (to avoid highlighting parts of date strings)
+          // Match numbers that are not preceded by quotes and not followed by quotes
+          html = html.replace(/:\s*(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)(?=\s*[,\]\}])/g, ': <span class="json-number">$1</span>');
+          html = html.replace(/\[\s*(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)(?=\s*[,\]\}])/g, '[<span class="json-number">$1</span>');
+          html = html.replace(/,\s*(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)(?=\s*[,\]\}])/g, ', <span class="json-number">$1</span>');
+          
+          // Additional number patterns for standalone numbers at end of lines or before closing brackets
+          html = html.replace(/:\s*(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)(\s*$)/gm, ': <span class="json-number">$1</span>$2');
+          html = html.replace(/:\s*(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)(\s*\n)/g, ': <span class="json-number">$1</span>$2');
+          
+          // Highlight booleans
+          html = html.replace(/:\s*(true|false)/g, ': <span class="json-boolean">$1</span>');
+          html = html.replace(/\[\s*(true|false)/g, '[<span class="json-boolean">$1</span>');
+          html = html.replace(/,\s*(true|false)/g, ', <span class="json-boolean">$1</span>');
+          
+          // Highlight null
+          html = html.replace(/:\s*(null)/g, ': <span class="json-null">$1</span>');
+          html = html.replace(/\[\s*(null)/g, '[<span class="json-null">$1</span>');
+          html = html.replace(/,\s*(null)/g, ', <span class="json-null">$1</span>');
+          
+          // Highlight JSON structural elements (brackets, braces, colons, commas)
+          html = html.replace(/(\{|\}|\[|\])/g, '<span class="json-punctuation">$1</span>');
+          html = html.replace(/(\s*:\s*)/g, '<span class="json-punctuation">$1</span>');
+          html = html.replace(/(\s*,\s*)/g, '<span class="json-punctuation">$1</span>');
+          
+          // Apply the highlighted HTML
+          block.innerHTML = html;
+          block.dataset.highlighted = 'true';
+        }
+      });
+    }
+
+    window.onload = async () => {
+      try {
+        const app = new ApiDocumentation();
+        await app.init();
+        
+        // Apply JSON highlighting after content loads
+        setTimeout(() => {
+          highlightJSON();
+          
+          // Debug highlighting (can be removed in production)
+          if (window.location.search.includes('debug=true')) {
+            setTimeout(debugHighlighting, 500);
+          }
+          
+          // Re-apply highlighting when content changes with improved observer
+          const observer = new MutationObserver((mutations) => {
+            let shouldHighlight = false;
+            
+            mutations.forEach(mutation => {
+              if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach(node => {
+                  if (node.nodeType === Node.ELEMENT_NODE) {
+                    // Check if added node contains code blocks or is a code block
+                    if (node.tagName === 'PRE' || 
+                        node.tagName === 'CODE' || 
+                        node.querySelector('pre, code') ||
+                        node.classList.contains('swagger-ui') ||
+                        node.classList.contains('response-col_description') ||
+                        node.classList.contains('request-body') ||
+                        node.classList.contains('model-example')) {
+                      shouldHighlight = true;
+                    }
+                  }
+                });
+              }
+            });
+            
+            if (shouldHighlight) {
+              setTimeout(highlightJSON, 50);
+            }
+          });
+          
+          // Observe multiple containers for better coverage
+          const containersToObserve = [
+            document.getElementById('swagger-ui'),
+            document.body,
+            document.querySelector('.swagger-ui')
+          ].filter(Boolean);
+          
+          containersToObserve.forEach(container => {
+            observer.observe(container, {
+              childList: true,
+              subtree: true,
+              attributes: false,
+              attributeOldValue: false,
+              characterData: false,
+              characterDataOldValue: false
+            });
+          });
+          
+          // Also highlight on window resize and focus (for dynamic content)
+          window.addEventListener('resize', () => setTimeout(highlightJSON, 100));
+          window.addEventListener('focus', () => setTimeout(highlightJSON, 100));
+          
+          // Highlight on scroll events (for lazy-loaded content)
+          let scrollTimeout;
+          window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(highlightJSON, 200);
+          });
+          
+        }, 1000);
+        
+        // Additional highlighting trigger for user interactions
+        document.addEventListener('click', (e) => {
+          // If user clicks on swagger UI elements, re-highlight after a delay
+          if (e.target.closest('.swagger-ui') || 
+              e.target.closest('.opblock') || 
+              e.target.closest('.responses-wrapper') ||
+              e.target.closest('.request-body-wrapper')) {
+            setTimeout(highlightJSON, 300);
+          }
+        });
+        
+      } catch (error) {
+        console.error('Failed to initialize application:', error);
+      }
     };
   </script>
 </body>

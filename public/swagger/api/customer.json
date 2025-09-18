@@ -1,0 +1,1535 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Leap API - Customer",
+    "description": "Help Leap users manage their customer data.\n\n# Customer Object\n\n| Key | Description |\n| --- | --- |\n| id | Customer's id |\n| first_name | First name |\n| last_name | Last Name |\n| email | Customer's email |\n| additional_emails | Customer's added additional emails |\n| referred_by_type | Referred by user |\n| referred_by_note | Referred note |\n| call_required | If call required or not |\n| appointment_required | If appointment required or not |\n| note | Customer note |\n| is_commercial | Specify whether the customer is a commercial customer |\n| company_name | company name of the commercial customers |\n| created_at | The date and time when the customer was created. |\n| management_company | Customer's Management Company |\n| property_name | Property Name |\n| canvasser | Canvasser Name |\n| canvasser_type | Canvasser Type : user, other |\n| canvasser_id | Canvasser's Id if type is user |\n| call_center_rep | Call centre representative |\n| call_center_rep_type | Call centre representative Type: user, other |\n| call_center_rep_id | Call centre representative's Id if type is user |",
+    "version": ""
+  },
+  "servers": [
+    {
+      "url": "{{baseurl}}",
+      "description": "Leap API Server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "noauthAuth": {
+        "type": "http",
+        "scheme": "noauth"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Customer"
+    }
+  ],
+  "paths": {
+    "/customers": {
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Create Customer",
+        "description": "Create a new Customer",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "properties": {
+                  "first_name": {
+                    "type": "string",
+                    "example": "Roger"
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "example": "Binny"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "roger.doe@gmail.com"
+                  },
+                  "is_commercial": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "company_name": {
+                    "type": "string",
+                    "example": "Roger Company"
+                  },
+                  "phones[0][label]": {
+                    "type": "string",
+                    "example": "cell"
+                  },
+                  "phones[0][number]": {
+                    "type": "integer",
+                    "example": "7656565757"
+                  },
+                  "note": {
+                    "type": "string",
+                    "example": "First note"
+                  },
+                  "referred_by_type": {
+                    "type": "string",
+                    "example": "customer"
+                  },
+                  "referred_by_id": {
+                    "type": "integer",
+                    "example": "19"
+                  },
+                  "referred_by_note": {
+                    "type": "string",
+                    "example": "Test"
+                  },
+                  "address[address]": {
+                    "type": "string",
+                    "example": "Test Address "
+                  },
+                  "address[city]": {
+                    "type": "string",
+                    "example": "California"
+                  },
+                  "address[state_id]": {
+                    "type": "integer",
+                    "example": "3"
+                  },
+                  "address[country_id]": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "address[zip]": {
+                    "type": "integer",
+                    "example": "123654"
+                  },
+                  "address[lat]": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "address[long]": {
+                    "type": "integer",
+                    "example": "012"
+                  },
+                  "billing[place_id]": {
+                    "type": "string",
+                    "example": "ChIJ31h8CwgyR4YRzmHGl02ozio"
+                  },
+                  "billing[company_name]": {
+                    "type": "string",
+                    "example": "John Lane"
+                  },
+                  "billing[address]": {
+                    "type": "string",
+                    "example": "John Lane"
+                  },
+                  "billing[country]": {
+                    "type": "string",
+                    "example": "United States"
+                  },
+                  "billing[city]": {
+                    "type": "string",
+                    "example": "California"
+                  },
+                  "billing[state_id]": {
+                    "type": "integer",
+                    "example": "43"
+                  },
+                  "billing[country_id]": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "billing[zip]": {
+                    "type": "integer",
+                    "example": "123654"
+                  },
+                  "billing[same_as_customer_address]": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "billing[lat]": {
+                    "type": "integer",
+                    "example": "456"
+                  },
+                  "billing[long]": {
+                    "type": "integer",
+                    "example": "789"
+                  },
+                  "canvasser_type": {
+                    "type": "string",
+                    "example": "user"
+                  },
+                  "canvasser_id": {
+                    "type": "integer",
+                    "example": "278"
+                  },
+                  "canvasser": {
+                    "type": "string",
+                    "example": "other description"
+                  },
+                  "call_center_rep_type": {
+                    "type": "string",
+                    "example": "user"
+                  },
+                  "call_center_rep_id": {
+                    "type": "integer",
+                    "example": "278"
+                  },
+                  "call_center_rep": {
+                    "type": "string",
+                    "example": "other description"
+                  },
+                  "customer_contacts[0][first_name]": {
+                    "type": "string",
+                    "example": "Test contact first name"
+                  },
+                  "customer_contacts[0][last_name]": {
+                    "type": "string",
+                    "example": "Test contact last name"
+                  },
+                  "management_company": {
+                    "type": "string",
+                    "example": "Test Company"
+                  },
+                  "property_name": {
+                    "type": "string",
+                    "example": "Test Property"
+                  },
+                  "call_required": {
+                    "type": "integer",
+                    "example": "0"
+                  },
+                  "appointment_required": {
+                    "type": "integer",
+                    "example": "0"
+                  },
+                  "additional_emails[]": {
+                    "type": "string",
+                    "example": "john@example.com"
+                  },
+                  "rep_id": {
+                    "type": "integer",
+                    "example": "25"
+                  }
+                },
+                "example": {
+                  "first_name": "Roger",
+                  "last_name": "Binny",
+                  "email": "roger.doe@gmail.com",
+                  "is_commercial": 1,
+                  "company_name": "Roger Company",
+                  "phones": [
+                    {
+                      "label": "cell",
+                      "number": "7656565757"
+                    }
+                  ],
+                  "note": "First note",
+                  "address[address]": "Test Address ",
+                  "address[city]": "California",
+                  "address[state_id]": 3,
+                  "address[country_id]": 1,
+                  "address[zip]": 123654,
+                  "address[lat]": 1,
+                  "address[long]": "012",
+                  "billing[place_id]": "ChIJ31h8CwgyR4YRzmHGl02ozio",
+                  "billing[company_name]": "John Lane",
+                  "billing[address]": "John Lane",
+                  "billing[country]": "United States",
+                  "billing[city]": "California",
+                  "billing[state_id]": 43,
+                  "billing[country_id]": 1,
+                  "billing[zip]": 123654,
+                  "billing[same_as_customer_address]": 1,
+                  "billing[lat]": 456,
+                  "billing[long]": 789,
+                  "customer_contacts[0][first_name]": "Test contact first name",
+                  "customer_contacts[0][last_name]": "Test contact last name",
+                  "management_company": "Test Company",
+                  "property_name": "Test Property",
+                  "call_required": 0,
+                  "appointment_required": 0,
+                  "additional_emails[]": "john@example.com"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Host": {
+                "schema": {
+                  "type": "string",
+                  "example": "localhost:8000"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 26 Nov 2019 11:53:13 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "close"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "PHP/7.3.11-1+ubuntu18.04.1+deb.sury.org+1"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache, private"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "X-RateLimit-Limit": {
+                "schema": {
+                  "type": "integer",
+                  "example": "60"
+                }
+              },
+              "X-RateLimit-Remaining": {
+                "schema": {
+                  "type": "integer",
+                  "example": "59"
+                }
+              },
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string",
+                  "example": "jobprogress_session=<session_value>;=eyJpdiI6InhBUVwvSm9WYnV2dldrNmkrdzVYbmVRPT0iLCJ2YWx1ZSI6InI5c0hLV2x; expires=Tue, 26-Nov-2019 13:53:13 GMT; Max-Age=7200; path=/; httponly"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "message": "Prospect / Customer saved successfully.",
+                  "customer": {
+                    "id": 73,
+                    "company_name": "",
+                    "first_name": "John",
+                    "last_name": "Doe",
+                    "email": "john.doe@gmail.com",
+                    "additional_emails": [],
+                    "referred_by_type": "",
+                    "referred_by_note": "",
+                    "call_required": false,
+                    "appointment_required": false,
+                    "note": "",
+                    "is_commercial": "",
+                    "created_at": "2019-11-26 11:53:12",
+                    "deleted_at": null,
+                    "management_company": "",
+                    "property_name": "",
+                    "canvasser": null,
+                    "call_center_rep": null
+                  },
+                  "status": 200
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Customers",
+        "description": "This endpoint retrieves all customers of the company.\n\n#### Request Params\n\n| Name | Value |\n| --- | --- |\n| **includes\\[\\]** | Options available: `phones, address, billing, rep, jobs, contacts, canvasser, call_center_rep, referred_by` |\n\n> Example \n  \n\n#### includes\\[\\] Details\n\n> phones \n  \n\nThe Phone number information will be returned by includes in the format below:\n\n``` json\n\"phones\": {\n    \"data\": [\n        {\n            \"label\": \"home\",\n            \"number\": \"1111122222\",\n            \"ext\": null\n        }\n    ]\n}\n\n ```\n\nphones field will have the list of Phone numbers associated with the customer.\n\n##### Phones field detail\n\n- **label**: Phone number label for example. Home, office.\n    \n- **number**: Phone number.\n    \n- **ext**: Optional phone number extension for example. +1.\n    \n\n> address \n  \n\nThe customer address information will be returned by includes in the format below:\n\n``` json\n\"address\": {\n      \"id\": 327,\n      \"address\": \"Teasley Lane\",\n      \"address_line_1\": \"\",\n      \"city\": \"\",\n      \"state_id\": 5,\n      \"state\": {\n          \"id\": 5,\n          \"name\": \"California\",\n          \"code\": \"CA\",\n          \"country_id\": 1\n      },\n      \"country_id\": 1,\n      \"country\": {\n          \"id\": 1,\n          \"name\": \"United States\",\n          \"code\": \"US\",\n          \"phone_code\": \"+1\"\n      },\n      \"zip\": \"77375\",\n      \"lat\": 10.812973,\n      \"long\": -16.978363\n  }\n\n ```\n\nAddress will have all the information related job like address id, state country, postcode etc.\n\n##### Address field detail\n\n- **id**: Unique address id\n    \n- **address**: The street address\n    \n- **address_line_1**: An optional additional field for the street address\n    \n- **city**: The city, town, or village of the address\n    \n- **state**: State information of the address\n    \n- **country_id**: Id of the Country associated with the address\n    \n- **country**: Country information of the address with all the details.\n    \n- **lat**: The latitude of the address.\n    \n- **long**: The longitude of the address.\n    \n\n> billing \n  \n\nThe billing address of the customer and fields will be the same as customer address.\n\n> rep \n  \n\nThe Representative information will be returned by includes in the format below:\n\n``` json\n\"rep\": {\n    \"id\": 25,\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john@example.com\",\n    \"company_id\": 6,\n    \"company\": \"John Constructions\",\n    \"admin_privilege\": false,\n    \"group\": {\n        \"id\": 5,\n        \"name\": \"owner\"\n    },\n    \"added_date\": \"2019-11-15 05:53:09\",\n    \"profile_pic\": null,\n    \"active\": true,\n    \"company_name\": null,\n    \"color\": \"blue\",\n    \"role\": [\n        {\n            \"name\": \"plus-admin\"\n        }\n    ]  \n}\n\n ```\n\nrep field will have information of Representative associated with the customer.\n\n##### Rep field detail\n\n- **id**: Unique representative id\n    \n- **first_name**: First name of the representative.\n    \n- **last_name**: Last name of the representative.\n    \n- **email**: Email of the representative.\n    \n- **company_id**: Company id of the representative associated with.\n    \n- **company**: Company details of the representative.\n    \n- **admin_privilege**: shows if representative has admin privileges or not.\n    \n- **group**: User group information of the representative.\n    \n- **added_date**: The date and time when the representative was created in the system.\n    \n- **profile_pic**: Profile picture of the representative.\n    \n- **active**: Shows if representative is active or not.\n    \n- **company_name**: Company name of the representative if user is commercial.\n    \n- **color**: Color information associated with representative.\n    \n- **role**: Role information of the representative.\n    \n\n> jobs \n  \n\nThe Job information will be returned by includes in the format below:\n\n``` json\n\"jobs\": {\n     \"data\": [\n         {\n             \"id\": 175,\n             \"name\": \"Test Job\",\n             \"number\": \"1911-170-01\",\n             \"customer_id\": 170,\n             \"description\": \"Job test 023456789\",\n             \"same_as_customer_address\": 1,\n             \"other_trade_type_description\": null,\n             \"created_by\": 27,\n             \"created_at\": \"2019-11-29 13:33:00\",\n             \"created_date\": \"2019-11-29 13:33:00\",\n             \"updated_at\": \"2019-11-29 13:33:01\",\n             \"deleted_at\": null,\n             \"call_required\": false,\n             \"appointment_required\": false,\n             \"tax_rate\": null,\n             \"alt_id\": \"1\",\n             \"lead_number\": \"\",\n             \"duration\": \"0:0:0\",\n             \"completion_date\": null,\n             \"contract_signed_date\": null,\n             \"current_stage\": {\n                 \"name\": \"Lead\",\n                 \"color\": \"cl-red\",\n                 \"code\": \"1866233278\"\n             },\n             \"contact_same_as_customer\": 1,\n             \"insurance\": 0,\n             \"archived\": null,\n             \"multi_job\": 0\n         }\n     ]\n }\n\n ```\n\njobs field will have the list of jobs associated with the customer.\n\n##### Jobs field detail\n\n- **id**: Unique job id\n    \n- **name**: Job name.\n    \n- **number**: Job number\n    \n- **customer_id**: Customer id associated with job.\n    \n- **description**: Job description.\n    \n- **same_as_customer_address**: If job address is same as customer address.\n    \n- **other_trade_type_description**: if `trades` is `other` then this field will have other trade note.\n    \n- **created_by**: User id who created the job.\n    \n- **created_at**: The date and time when the customer was created.\n    \n- **updated_at**: The date and time when the job last updated.\n    \n- **deleted_at**: The date and time when the job as deleted.\n    \n- **call_required**: If call required or not when added.\n    \n- **appointment_required**: If appointment required or not when added.\n    \n- **tax_rate**: Tax rate information.\n    \n- **alt_id**: Alternate job id.\n    \n- **lead_number**: Lead number.\n    \n- **duration**: Duration of the job.\n    \n- **completion_date**: Date time when job was completed.\n    \n- **contract_signed_date**: Date time when contract was signed.\n    \n- **current_stage**: Job stage information.\n    \n- **contact_same_as_customer**: If Contact user is same as customer.\n    \n- **insurance**: If job has insurance or not.\n    \n- **archived**: If job is archived or not.\n    \n- **multi_job**: if job is multiple jobs in single jobs.\n    \n\n> contacts \n  \n\nThe contacts information will be returned by includes in the format below:\n\n``` json\n \"contacts\": {\n     \"data\": [\n         {\n             \"id\": 85,\n             \"first_name\": \"John\",\n             \"last_name\": \"doe\"\n         }\n     ]\n }\n\n ```\n\ncontacts field will have the list of contacts associated with the customer.\n\n##### Contacts field detail\n\n- **id**: Unique contact id\n    \n- **first_name**: Contact first name.\n    \n- **last_name**: Contact last name.\n    \n\n#### Request Params (for filtering)\n\n| Name | Value |\n| --- | --- |\n| **trades\\[\\]** | Array of trades ids |\n| **stages\\[\\]** | Array of stage codes |\n| **rep_ids** | Array of customer's **rep Ids** or **(string) unassigned** |\n| **job_number** | Job number |\n| **address** | Customers address |\n| **job_address** | Job address |\n| **phone** | customers phone number |\n| **email** | customers email address |\n| **name** | customers full name |\n| **id** | Customer id |\n| **states\\[\\]** | Array of State ids e.g, \\[1,2\\] |\n| **has_jobs** | Boolean **1 (true) or 0 (false)** |\n| **zip_code** | customer address zip code |\n| **city** | city name |\n| **cities\\[\\]** | name of cities |\n| **referred_by_type** | referred by type \\[**referred_by** : referred by id\\] |\n| **job_contact_person** | first name, last name(job contact) |\n| **commercial** | (optional, boolean)(0/1) |\n| **deleted_customers_duration** | (optional, boolean)(0/1) |\n| **date_range_type** | Date range type filter (options: customer_created_date or customer_updated_date). This filter will only work when start date or end date filter will come. |\n| **start_date** | Start date (optional: date, The date format must be Y-m-d) |\n| **end_date** | End date (optional: date, The date format must be Y-m-d) |\n| **job_alt_id** | Customer Job's Alt id (Job #) |\n| **first_name** | Customer's First Name |\n| **last_name** | Customer's Last Name |\n| **country_id** | Country id of the customer's address |\n| **customer_note** | Customer's Note |\n| **job_rep_ids\\[\\]** | Array of job's rep ids |\n| **flag_ids\\[\\]** | Customer’s Flag Ids |\n| **company_name** | Customer's company name |\n| **property_name** | Customer's Property Name |\n| **management_company** | Customer's Management Company |\n\n> Example id=25&commercial=1&start_date=2019-12-03 \n  \n\n### Request Params (for sorting)\n\n| Name | Value |\n| --- | --- |\n| **sort_by** | Options available: `id, created_at, first_name, last_name` |\n| **sort_order** | Options available: `asc, desc` |\n\n> Example",
+        "parameters": [
+          {
+            "name": "includes[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "phones",
+                  "address",
+                  "billing",
+                  "rep",
+                  "jobs",
+                  "contacts",
+                  "canvasser",
+                  "call_center_rep",
+                  "referred_by"
+                ]
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "description": "Include related data in the response (select multiple values)"
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "id",
+                "created_at",
+                "first_name",
+                "last_name"
+              ]
+            },
+            "required": false,
+            "description": "Field to sort by"
+          },
+          {
+            "name": "sort_order",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            },
+            "required": false,
+            "description": "Sort order (ascending or descending)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            },
+            "required": false,
+            "description": "Number of items to return (max 100)"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            },
+            "required": false,
+            "description": "Page number for pagination"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Search customers by full name or address"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Search customers by email and full name"
+          },
+          {
+            "name": "has_jobs",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Filter customers by whether they have jobs (true) or not (false)"
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            },
+            "required": false,
+            "description": "Latitude for distance-based filtering (requires long and distance)"
+          },
+          {
+            "name": "long",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            },
+            "required": false,
+            "description": "Longitude for distance-based filtering (requires lat and distance)"
+          },
+          {
+            "name": "distance",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            },
+            "required": false,
+            "description": "Maximum distance in miles (requires lat and long)"
+          },
+          {
+            "name": "trades[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "description": "Array of trade IDs to filter customers by job trades"
+          },
+          {
+            "name": "stages[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "description": "Array of workflow stage codes to filter customers by job stages"
+          },
+          {
+            "name": "job_number",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by specific job number"
+          },
+          {
+            "name": "job_alt_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by job alternative ID (partial match)"
+          },
+          {
+            "name": "job_address",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by job address (partial match)"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by phone number"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by email address"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by full name (search)"
+          },
+          {
+            "name": "first_name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by first name (partial match)"
+          },
+          {
+            "name": "last_name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by last name (partial match)"
+          },
+          {
+            "name": "or_last_name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Alternative last name search (used with first_name)"
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by city"
+          },
+          {
+            "name": "cities[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "description": "Array of cities to filter customers"
+          },
+          {
+            "name": "country_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Filter customers by country ID"
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by address (partial match)"
+          },
+          {
+            "name": "rep_ids[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "unassigned"
+                    ]
+                  }
+                ]
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "description": "Array of customer representative IDs or 'unassigned' for unassigned customers"
+          },
+          {
+            "name": "call_center_rep_ids[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string",
+                    "enum": [
+                      "unassigned",
+                      "other"
+                    ]
+                  }
+                ]
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "description": "Array of call center representative IDs, 'unassigned', or 'other'"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Filter by specific customer ID"
+          },
+          {
+            "name": "customer_note",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Search customers by notes"
+          },
+          {
+            "name": "states[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "description": "Array of state IDs to filter customers"
+          },
+          {
+            "name": "job_rep_ids[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "description": "Array of job representative IDs"
+          },
+          {
+            "name": "not_required",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Exclude specific customer ID from results"
+          },
+          {
+            "name": "zip_code",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by ZIP code"
+          },
+          {
+            "name": "flag_ids[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "description": "Array of customer flag IDs"
+          },
+          {
+            "name": "referred_by_type[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "referral",
+                  "google",
+                  "facebook",
+                  "angi",
+                  "thumbtack",
+                  "other"
+                ]
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "description": "Array of referral types"
+          },
+          {
+            "name": "referred_by[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "description": "Array of referral source IDs (used with referred_by_type=referral)"
+          },
+          {
+            "name": "company_name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by company name (partial match)"
+          },
+          {
+            "name": "property_name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by property name (partial match)"
+          },
+          {
+            "name": "management_company",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by management company (partial match)"
+          },
+          {
+            "name": "job_contact_person",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter customers by job contact person"
+          },
+          {
+            "name": "commercial",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Filter commercial (true) or residential (false) customers"
+          },
+          {
+            "name": "date_range_type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "customer_created_date",
+                "customer_updated_date"
+              ],
+              "default": "customer_created_date"
+            },
+            "required": false,
+            "description": "Type of date range filter to apply"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": false,
+            "description": "Start date for date range filtering (YYYY-MM-DD)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": false,
+            "description": "End date for date range filtering (YYYY-MM-DD)"
+          },
+          {
+            "name": "deleted_customers_duration",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Filter deleted customers by duration (0 or 1)"
+          },
+          {
+            "name": "canvasser_type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "user",
+                "other"
+              ]
+            },
+            "required": false,
+            "description": "Filter by canvasser type (user or other)"
+          },
+          {
+            "name": "canvasser_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Filter by specific canvasser user ID (when canvasser_type is user)"
+          },
+          {
+            "name": "canvasser",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by canvasser name or description (partial match)"
+          },
+          {
+            "name": "call_center_rep_type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "user",
+                "other"
+              ]
+            },
+            "required": false,
+            "description": "Filter by call center representative type (user or other)"
+          },
+          {
+            "name": "call_center_rep_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Filter by specific call center representative user ID (when call_center_rep_type is user)"
+          },
+          {
+            "name": "call_center_rep",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Filter by call center representative name or description (partial match)"
+          },
+          {
+            "name": "additional_emails[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "description": "Array of additional email addresses to filter customers"
+          },
+          {
+            "name": "rep_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Filter by single customer representative ID (alternative to rep_ids[])"
+          },
+          {
+            "name": "is_active",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Filter by customer active status (true for active, false for inactive)"
+          },
+          {
+            "name": "has_notes",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Filter customers by whether they have notes (true) or not (false)"
+          },
+          {
+            "name": "has_address",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Filter customers by whether they have an address (true) or not (false)"
+          },
+          {
+            "name": "has_phone",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Filter customers by whether they have phone numbers (true) or not (false)"
+          },
+          {
+            "name": "created_by",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Filter customers by the user who created them"
+          },
+          {
+            "name": "updated_by",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Filter customers by the user who last updated them"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Host": {
+                "schema": {
+                  "type": "string",
+                  "example": "localhost:8000"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 05 Dec 2019 07:00:50 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "close"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "PHP/7.3.11-1+ubuntu18.04.1+deb.sury.org+1"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache, private"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "X-RateLimit-Limit": {
+                "schema": {
+                  "type": "integer",
+                  "example": "60"
+                }
+              },
+              "X-RateLimit-Remaining": {
+                "schema": {
+                  "type": "integer",
+                  "example": "59"
+                }
+              },
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string",
+                  "example": "jobprogress_session=<session_value>;=eyJpdiI6InhBUVwvSm9WYnV2dldrNmkrdzVYbmVRPT0iLCJ2YWx1ZSI6InI5c0hLV2x; expires=Thu, 05-Dec-2019 09:00:50 GMT; Max-Age=7200; path=/; httponly"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 171,
+                      "company_name": "Teasley Lane",
+                      "first_name": "John",
+                      "last_name": "doe",
+                      "email": "john@example.com",
+                      "additional_emails": [],
+                      "referred_by_type": " customer",
+                      "referred_by_note": "",
+                      "call_required": false,
+                      "appointment_required": false,
+                      "note": "",
+                      "is_commercial": 1,
+                      "created_at": "2019-11-29 13:54:24",
+                      "deleted_at": null,
+                      "management_company": "",
+                      "property_name": "",
+                      "canvasser": null,
+                      "call_center_rep": null
+                    }
+                  ],
+                  "meta": {
+                    "pagination": {
+                      "total": 1,
+                      "count": 1,
+                      "per_page": 10,
+                      "current_page": 1,
+                      "total_pages": 1,
+                      "links": {}
+                    }
+                  },
+                  "status": 200
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{customerId}": {
+      "put": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Edit Customer",
+        "description": "Update customer details",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "properties": {
+                  "first_name": {
+                    "type": "string",
+                    "description": "(Required)  First name of the customer ",
+                    "example": "John"
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "(Conditionaly Required:  is_commercial is not available or false)  Last name of the customer",
+                    "example": "Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "(Optional)  Customer email",
+                    "example": "john.doe@gmail.com"
+                  },
+                  "company_name": {
+                    "type": "string",
+                    "description": "(Conditionally Required) if customer type is commercial ",
+                    "example": "Test Company"
+                  },
+                  "phones[0][label]": {
+                    "type": "string",
+                    "description": "(Required)  Array of phone label:- e.g:- [ [ label : string ] ]",
+                    "example": "home"
+                  },
+                  "phones[0][number]": {
+                    "type": "integer",
+                    "description": "(Required)  Array of phone numbers:- e.g:- [ [ number: ext ] ]",
+                    "example": "1236547890"
+                  },
+                  "note": {
+                    "type": "string",
+                    "description": "(Optional) Customer note",
+                    "example": "First note"
+                  },
+                  "referred_by_type": {
+                    "type": "string",
+                    "description": "(Optional) Options :- referral ,customer, other",
+                    "example": "customer"
+                  },
+                  "referred_by_id": {
+                    "type": "integer",
+                    "description": "(if referred_by_type is referral or customer)  Referred user id ",
+                    "example": "19"
+                  },
+                  "referred_by_note": {
+                    "type": "string",
+                    "description": "(Conditionally Required)  if referred_by_type is other ",
+                    "example": "Test"
+                  },
+                  "is_commercial": {
+                    "type": "integer",
+                    "description": "(Optional) If individual or commercial ",
+                    "example": 1
+                  },
+                  "address[address]": {
+                    "type": "string",
+                    "description": "(Optional)  Address",
+                    "example": "Test Address "
+                  },
+                  "address[city]": {
+                    "type": "string",
+                    "description": "(Optional)  City",
+                    "example": "California"
+                  },
+                  "address[state_id]": {
+                    "type": "integer",
+                    "description": "(Optional)  State Id",
+                    "example": "3"
+                  },
+                  "address[country_id]": {
+                    "type": "integer",
+                    "description": "(Optional)  Country Id",
+                    "example": 1
+                  },
+                  "address[zip]": {
+                    "type": "integer",
+                    "description": "(Optional)  Zipcode",
+                    "example": "123654"
+                  },
+                  "address[lat]": {
+                    "type": "integer",
+                    "description": "(Optional) Latitude ",
+                    "example": 1
+                  },
+                  "address[long]": {
+                    "type": "integer",
+                    "description": "(Optional) Longitude ",
+                    "example": "012"
+                  },
+                  "billing[place_id]": {
+                    "type": "string",
+                    "description": "(Optional) Place id ",
+                    "example": "ChIJ31h8CwgyR4YRzmHGl02ozio"
+                  },
+                  "billing[company_name]": {
+                    "type": "string",
+                    "description": "(Optional) Company name",
+                    "example": "John Lane"
+                  },
+                  "billing[address]": {
+                    "type": "string",
+                    "description": "(Optional) Address",
+                    "example": "John Lane"
+                  },
+                  "billing[country]": {
+                    "type": "string",
+                    "description": "(Optional) Country",
+                    "example": "United States"
+                  },
+                  "billing[city]": {
+                    "type": "string",
+                    "description": "(Optional)  City",
+                    "example": "California"
+                  },
+                  "billing[state_id]": {
+                    "type": "integer",
+                    "description": "(Optional)  State id",
+                    "example": "43"
+                  },
+                  "billing[country_id]": {
+                    "type": "integer",
+                    "description": "(Optional)  Country Id",
+                    "example": 1
+                  },
+                  "billing[zip]": {
+                    "type": "integer",
+                    "description": "(Optional)  Zipcode",
+                    "example": "123654"
+                  },
+                  "billing[same_as_customer_address]": {
+                    "type": "integer",
+                    "description": "If billing address is same as customer address",
+                    "example": 1
+                  },
+                  "billing[lat]": {
+                    "type": "integer",
+                    "description": "(Optional) Latitude",
+                    "example": "456"
+                  },
+                  "billing[long]": {
+                    "type": "integer",
+                    "description": "(Optional) Longitude",
+                    "example": "789"
+                  },
+                  "canvasser": {
+                    "type": "string",
+                    "description": "(Optional) String ",
+                    "example": "Test 123"
+                  },
+                  "call_center_rep": {
+                    "type": "string",
+                    "description": "(Optional) Call center representative ",
+                    "example": "Test 321"
+                  },
+                  "customer_contacts[0][first_name]": {
+                    "type": "string",
+                    "description": "Customer contact information ",
+                    "example": "Test contact first name"
+                  },
+                  "customer_contacts[0][last_name]": {
+                    "type": "string",
+                    "description": "Customer contact information",
+                    "example": "Test contact last name"
+                  },
+                  "management_company": {
+                    "type": "string",
+                    "description": "(Optional) Customer management company",
+                    "example": "Test Company"
+                  },
+                  "property_name": {
+                    "type": "string",
+                    "description": "(Optional) Customer Property",
+                    "example": "Test Property"
+                  },
+                  "call_required": {
+                    "type": "integer",
+                    "description": "(Optional) If call required",
+                    "example": "0"
+                  },
+                  "appointment_required": {
+                    "type": "integer",
+                    "description": "Optional) If appointment required ",
+                    "example": "0"
+                  },
+                  "additional_emails[]": {
+                    "type": "string",
+                    "description": "(Optional) Customer additional emails",
+                    "example": "john@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Host": {
+                "schema": {
+                  "type": "string",
+                  "example": "localhost:8000"
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 26 Nov 2019 12:56:20 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "close"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "PHP/7.3.11-1+ubuntu18.04.1+deb.sury.org+1"
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "example": "no-cache, private"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json"
+                }
+              },
+              "X-RateLimit-Limit": {
+                "schema": {
+                  "type": "integer",
+                  "example": "60"
+                }
+              },
+              "X-RateLimit-Remaining": {
+                "schema": {
+                  "type": "integer",
+                  "example": "59"
+                }
+              },
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string",
+                  "example": "jobprogress_session=<session_value>;=eyJpdiI6InhBUVwvSm9WYnV2dldrNmkrdzVYbmVRPT0iLCJ2YWx1ZSI6InI5c0hLV2x; expires=Tue, 26-Nov-2019 14:56:20 GMT; Max-Age=7200; path=/; httponly"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "message": "Prospect / Customer updated successfully.",
+                  "customer": {
+                    "id": 70,
+                    "company_name": "",
+                    "first_name": "John",
+                    "last_name": "Doe",
+                    "email": "john.doe@gmail.com",
+                    "additional_emails": [],
+                    "referred_by_type": "",
+                    "referred_by_note": "",
+                    "call_required": false,
+                    "appointment_required": false,
+                    "note": "",
+                    "is_commercial": "",
+                    "created_at": "2019-11-25 12:18:43",
+                    "deleted_at": null,
+                    "management_company": "",
+                    "property_name": "",
+                    "canvasser": null,
+                    "call_center_rep": null
+                  },
+                  "status": 200
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "View Customer",
+        "description": "This endpoint retrieves all customers of the company.\n\n#### Request Params\n\n| Name | Value |\n| --- | --- |\n| **includes\\[\\]** | Options available: `phones, address, billing, rep, jobs, contacts, canvasser, call_center_rep, referred_by` |\n\n> Example `includes[]=phones&includes[]=address` \n  \n\n#### includes\\[\\] Details\n\n> phones \n  \n\nThe Phone number information will be returned by includes in the format below:\n\n``` json\n\"phones\": {\n    \"data\": [\n        {\n            \"label\": \"home\",\n            \"number\": \"1111122222\",\n            \"ext\": null\n        }\n    ]\n}\n\n ```\n\nphones field will have the list of Phone numbers associated with the customer.\n\n##### Phones field detail\n\n\\* **label**: Phone number label for example. Home, office.  \n\\* **number**: Phone number.  \n\\* **ext**: Optional phone number extension for example. +1.\n\n> address \n  \n\nThe customer address information will be returned by includes in the format below:\n\n``` json\n\"address\": {\n      \"id\": 327,\n      \"address\": \"Teasley Lane\",\n      \"address_line_1\": \"\",\n      \"city\": \"\",\n      \"state_id\": 5,\n      \"state\": {\n          \"id\": 5,\n          \"name\": \"California\",\n          \"code\": \"CA\",\n          \"country_id\": 1\n      },\n      \"country_id\": 1,\n      \"country\": {\n          \"id\": 1,\n          \"name\": \"United States\",\n          \"code\": \"US\",\n          \"phone_code\": \"+1\"\n      },\n      \"zip\": \"77375\",\n      \"lat\": 10.812973,\n      \"long\": -16.978363\n  }\n\n ```\n\nAddress will have all the information related job like address id, state country, postcode etc.\n\n##### Address field detail\n\n\\* **id**: Unique address id  \n\\* **address**: The street address  \n\\* **address_line_1**: An optional additional field for the street address  \n\\* **city**: The city, town, or village of the address  \n\\* **state**: State information of the address  \n\\* **country_id**: Id of the Country associated with the address  \n\\* **country**: Country information of the address with all the details.  \n\\* **lat**: The latitude of the address.  \n\\* **long**: The longitude of the address.\n\n> billing \n  \n\nThe billing address of the customer and fields will be the same as customer address.\n\n> rep \n  \n\nThe Representative information will be returned by includes in the format below:\n\n``` json\n\"rep\": {\n    \"id\": 25,\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john@example.com\",\n    \"company_id\": 6,\n    \"company\": \"John Constructions\",\n    \"admin_privilege\": false,\n    \"group\": {\n        \"id\": 5,\n        \"name\": \"owner\"\n    },\n    \"added_date\": \"2019-11-15 05:53:09\",\n    \"profile_pic\": null,\n    \"active\": true,\n    \"company_name\": null,\n    \"color\": \"blue\",\n    \"role\": [\n        {\n            \"name\": \"plus-admin\"\n        }\n    ]  \n}\n\n ```\n\nrep field will have information of Representative associated with the customer.\n\n##### Rep field detail\n\n\\* **id**: Unique representative id  \n\\* **first_name**: First name of the representative.  \n\\* **last_name**: Last name of the representative.  \n\\* **email**: Email of the representative.  \n\\* **company_id**: Company id of the representative associated with.  \n\\* **company**: Company details of the representative.  \n\\* **admin_privilege**: shows if representative has admin privileges or not.  \n\\* **group**: User group information of the representative.  \n\\* **added_date**: The date and time when the representative was created in the system.  \n\\* **profile_pic**: Profile picture of the representative.  \n\\* **active**: Shows if representative is active or not.  \n\\* **company_name**: Company name of the representative if user is commercial.  \n\\* **color**: Color information associated with representative.  \n\\* **role**: Role information of the representative.\n\n> jobs \n  \n\nThe Job information will be returned by includes in the format below:\n\n``` json\n\"jobs\": {\n     \"data\": [\n         {\n             \"id\": 175,\n             \"name\": \"Test Job\",\n             \"number\": \"1911-170-01\",\n             \"customer_id\": 170,\n             \"description\": \"Job test 023456789\",\n             \"same_as_customer_address\": 1,\n             \"other_trade_type_description\": null,\n             \"created_by\": 27,\n             \"created_at\": \"2019-11-29 13:33:00\",\n             \"created_date\": \"2019-11-29 13:33:00\",\n             \"updated_at\": \"2019-11-29 13:33:01\",\n             \"deleted_at\": null,\n             \"call_required\": false,\n             \"appointment_required\": false,\n             \"tax_rate\": null,\n             \"alt_id\": \"1\",\n             \"lead_number\": \"\",\n             \"duration\": \"0:0:0\",\n             \"completion_date\": null,\n             \"contract_signed_date\": null,\n             \"current_stage\": {\n                 \"name\": \"Lead\",\n                 \"color\": \"cl-red\",\n                 \"code\": \"1866233278\"\n             },\n             \"contact_same_as_customer\": 1,\n             \"insurance\": 0,\n             \"archived\": null,\n             \"multi_job\": 0\n         }\n     ]\n }\n\n ```\n\njobs field will have the list of jobs associated with the customer.\n\n##### Jobs field detail\n\n\\* **id**: Unique job id  \n\\* **name**: Job name.  \n\\* **number**: Job number  \n\\* **customer_id**: Customer id associated with job.  \n\\* **description**: Job description.  \n\\* **same_as_customer_address**: If job address is same as customer address.  \n\\* **other_trade_type_description**: if `trades` is `other` then this field will have other trade note.  \n\\* **created_by**: User id who created the job.  \n\\* **created_at**: The date and time when the customer was created.  \n\\* **updated_at**: The date and time when the job last updated.  \n\\* **deleted_at**: The date and time when the job as deleted.  \n\\* **call_required**: If call required or not when added.  \n\\* **appointment_required**: If appointment required or not when added.  \n\\* **tax_rate**: Tax rate information.  \n\\* **alt_id**: Alternate job id.  \n\\* **lead_number**: Lead number.  \n\\* **duration**: Duration of the job.  \n\\* **completion_date**: Date time when job was completed.  \n\\* **contract_signed_date**: Date time when contract was signed.  \n\\* **current_stage**: Job stage information.  \n\\* **contact_same_as_customer**: If Contact user is same as customer.  \n\\* **insurance**: If job has insurance or not.  \n\\* **archived**: If job is archived or not.  \n\\* **multi_job**: if job is multiple jobs in single jobs.\n\n> contacts \n  \n\nThe contacts information will be returned by includes in the format below:\n\n``` json\n \"contacts\": {\n     \"data\": [\n         {\n             \"id\": 85,\n             \"first_name\": \"John\",\n             \"last_name\": \"doe\"\n         }\n     ]\n }\n\n ```\n\ncontacts field will have the list of contacts associated with the customer.\n\n##### Contacts field detail\n\n\\* **id**: Unique contact id  \n\\* **first_name**: Contact first name.  \n\\* **last_name**: Contact last name",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "includes[]",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "phones",
+                  "address",
+                  "billing",
+                  "rep",
+                  "jobs",
+                  "contacts",
+                  "canvasser",
+                  "call_center_rep",
+                  "referred_by"
+                ]
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "description": "Include related data in the response (select multiple values)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "data": {
+                    "id": 375,
+                    "company_name": "Test it company",
+                    "first_name": "Rachna",
+                    "last_name": "Verma",
+                    "email": "rachna@gmail.com",
+                    "additional_emails": [],
+                    "referred_by_type": "referral",
+                    "referred_by_note": "",
+                    "call_required": false,
+                    "appointment_required": false,
+                    "note": "test customer data",
+                    "is_commercial": "0",
+                    "created_at": "2022-04-13 07:07:14",
+                    "updated_at": "2022-04-13 07:07:14",
+                    "deleted_at": null,
+                    "management_company": "jp test",
+                    "property_name": "roofing",
+                    "canvasser": null,
+                    "call_center_rep": null
+                  },
+                  "status": 200
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

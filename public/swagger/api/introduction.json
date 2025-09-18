@@ -1,0 +1,28 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Leap API Documentation",
+    "description": "Welcome to the Leap API Documentation. This comprehensive guide will help you understand and integrate with our customer management system.\n\n## Getting Started\n\n1. **Authentication**: Use Bearer token authentication for all API requests\n2. **Base URL**: Configure your base URL in the top bar\n3. **Customer Management**: Use the Customer endpoints to manage customer data\n\n## Key Features\n\n- **Customer CRUD Operations**: Create, read, update customer information\n- **Flexible Data Structure**: Support for both individual and commercial customers\n- **Rich Metadata**: Track canvassers, call center reps, and management companies\n- **Search and Filter**: Advanced querying capabilities\n\n## API Structure\n\nThis API follows RESTful principles and uses standard HTTP methods:\n- `GET` - Retrieve data\n- `POST` - Create new resources\n- `PUT` - Update existing resources\n- `DELETE` - Remove resources\n\n## Response Format\n\nAll responses are returned in JSON format with appropriate HTTP status codes.\n\n## Rate Limiting\n\nPlease be mindful of rate limits when making API requests.\n\n## Support\n\nFor additional support, please contact our development team.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "{{baseurl}}",
+      "description": "Leap API Server"
+    }
+  ],
+  "paths": {},
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}

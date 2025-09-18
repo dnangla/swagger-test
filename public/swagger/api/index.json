@@ -1,0 +1,12 @@
+{
+  "tags": [
+    {
+      "name": "Customer",
+      "description": "Customer management endpoints",
+      "filename": "customer.json"
+    }
+  ],
+  "title": "Leap API Documentation",
+  "description": "Complete API documentation for Leap platform",
+  "version": "1.0.0"
+}
