@@ -1367,13 +1367,17 @@
         
         // Check if we're on GitHub Pages
         if (currentHost.includes('github.io')) {
+          console.log('Detected GitHub Pages host');
           // Extract repository name from the path
           const pathParts = currentPath.split('/').filter(part => part.length > 0);
+          console.log('Path parts:', pathParts);
           if (pathParts.length > 0) {
             const repoName = pathParts[0];
             basePath = `/${repoName}/public/swagger/api/`;
+            console.log('Using repository name:', repoName);
           } else {
             basePath = '/public/swagger/api/';
+            console.log('No repository name found, using default path');
           }
         } else if (currentPath.includes('/api/swagger')) {
           basePath = '/api/swagger/api/';
@@ -1415,9 +1419,14 @@
           console.log('docBasePath:', this.docBasePath);
           console.log('Full URL:', `${this.docBasePath}${filename}`);
           
-          const response = await fetch(`${this.docBasePath}${filename}`);
+          // Add cache-busting parameter to ensure fresh requests
+          const url = `${this.docBasePath}${filename}?v=${Date.now()}`;
+          console.log('Fetching URL with cache-busting:', url);
+          
+          const response = await fetch(url);
           console.log('Response status:', response.status);
           console.log('Response ok:', response.ok);
+          console.log('Response URL:', response.url);
           
           if (!response.ok) {
             throw new Error(`Failed to load ${filename}: ${response.status} ${response.statusText}`);
