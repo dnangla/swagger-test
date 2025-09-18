@@ -1,0 +1,2603 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Leap API - Job",
+      "description": "Help Leap users to manage their jobs data.\n\n# Job Object\n\n| Key | Type and Description |\n| --- | --- |\n| id | Job id |\n| name | Job name |\n| number | Job number |\n| customer_id | Id of the customers to which this job belongs |\n| description | Description of the jobs |\n| same_as_customer_address | Boolean value which specifies whether the job address is same as customer address. |\n| other_trade_type_description | Other trade type description |\n| created_by | Id of the user who created the job in the system. |\n| created_at | The date and time when the job was created in the system. |\n| updated_at | The date and time when the job was last updated in the system. |\n| call_required | Boolean flag which specify whether there is call to be scheduled with the customer |\n| appointment_required | Boolean flag which specify whether there an appointment to be scheduled with the customer |\n| tax_rate | Percentage Tax rate applied for the job |\n| alt_id | Manually entered ID for the job. |\n| lead_number | Manually entered Lead Number for the job. |\n| duration | Approximate time required for the job (format 0:0:0) |\n| completion_date | Approximate completetion date for the job. |\n| contract_signed_date | The date and time when the job proposal was signed by the customer. |\n| current_stage | Stage Object of the current stage of the job. |\n| contact_same_as_customer | 1 or 0 |",
+      "version": ""
+    },
+    "servers": [
+      {
+        "url": "{{baseurl}}",
+        "description": "Leap API Server"
+      }
+    ],
+    "components": {
+      "securitySchemes": {
+        "noauthAuth": {
+          "type": "http",
+          "scheme": "noauth"
+        },
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer"
+        }
+      }
+    },
+    "security": [
+      {
+        "bearerAuth": []
+      }
+    ],
+    "tags": [
+      {
+        "name": "Job"
+      }
+    ],
+    "paths": {
+      "/jobs": {
+        "post": {
+          "tags": [
+            "Job"
+          ],
+          "summary": "Create Job",
+          "description": "Create a new job",
+          "requestBody": {
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "properties": {
+                    "customer_id": {
+                      "type": "integer",
+                      "example": "25"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Carpentry Job"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Test"
+                    },
+                    "trades[]": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "call_required": {
+                      "type": "integer",
+                      "example": "0"
+                    },
+                    "appointment_required": {
+                      "type": "integer",
+                      "example": "0"
+                    },
+                    "duration": {
+                      "type": "string",
+                      "example": "0:0:0"
+                    },
+                    "sub_contractor_ids[]": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "same_as_customer_address": {
+                      "type": "integer",
+                      "example": "0"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "15721 Carlton Oaks"
+                    },
+                    "city": {
+                      "type": "string",
+                      "example": "Fort Worth"
+                    },
+                    "state_id": {
+                      "type": "integer",
+                      "example": "48"
+                    },
+                    "country_id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "zip": {
+                      "type": "integer",
+                      "example": "7617"
+                    },
+                    "insurance": {
+                      "type": "integer",
+                      "example": "0"
+                    },
+                    "rep_ids[]": {
+                      "type": "string"
+                    },
+                    "estimator_ids[]": {
+                      "type": "integer",
+                      "example": "33"
+                    },
+                    "address_line_1": {
+                      "type": "string",
+                      "example": "15721 Carlton Oaks"
+                    },
+                    "work_types[]": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "job_types[]": {
+                      "type": "integer",
+                      "example": "2"
+                    },
+                    "alt_id": {
+                      "type": "string",
+                      "example": "adsfasdf"
+                    },
+                    "lead_number": {
+                      "type": "string",
+                      "example": "asddas"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {
+                "Host": {
+                  "schema": {
+                    "type": "string",
+                    "example": "localhost:8000"
+                  }
+                },
+                "Date": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Tue, 26 Nov 2019 10:54:58 GMT"
+                  }
+                },
+                "Connection": {
+                  "schema": {
+                    "type": "string",
+                    "example": "close"
+                  }
+                },
+                "X-Powered-By": {
+                  "schema": {
+                    "type": "string",
+                    "example": "PHP/7.3.11-1+ubuntu18.04.1+deb.sury.org+1"
+                  }
+                },
+                "Cache-Control": {
+                  "schema": {
+                    "type": "string",
+                    "example": "no-cache, private"
+                  }
+                },
+                "Content-Type": {
+                  "schema": {
+                    "type": "string",
+                    "example": "application/json"
+                  }
+                },
+                "X-RateLimit-Limit": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "60"
+                  }
+                },
+                "X-RateLimit-Remaining": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "59"
+                  }
+                },
+                "Set-Cookie": {
+                  "schema": {
+                    "type": "string",
+                    "example": "jobprogress_session=<session_value>;=eyJpdiI6InhBUVwvSm9WYnV2dldrNmkrdzVYbmVRPT0iLCJ2YWx1ZSI6InI5c0hLV2x; expires=Tue, 26-Nov-2019 12:54:58 GMT; Max-Age=7200; path=/; httponly"
+                  }
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object"
+                  },
+                  "example": {
+                    "message": "Job saved successfully.",
+                    "job": {
+                      "id": 97,
+                      "name": "",
+                      "number": "1911-025-32",
+                      "trades": [
+                        {
+                          "id": 1,
+                          "name": "CARPENTRY",
+                          "pivot": {
+                            "job_id": 97,
+                            "trade_id": 1
+                          }
+                        }
+                      ],
+                      "work_types": [],
+                      "customer_id": 25,
+                      "description": "Carpentry Job",
+                      "same_as_customer_address": 1,
+                      "other_trade_type_description": null,
+                      "created_by": 27,
+                      "created_at": "2019-11-26 10:54:56",
+                      "created_date": "2019-11-26 10:54:56",
+                      "updated_at": "2019-11-26 10:54:57",
+                      "deleted_at": null,
+                      "call_required": false,
+                      "appointment_required": false,
+                      "tax_rate": null,
+                      "alt_id": "",
+                      "lead_number": "",
+                      "duration": null,
+                      "completion_date": null,
+                      "contract_signed_date": null,
+                      "current_stage": {
+                        "name": "Lead",
+                        "color": "cl-red",
+                        "code": "1866233278",
+                        "resource_id": 114
+                      },
+                      "contact_same_as_customer": 0,
+                      "insurance": 0,
+                      "archived": null,
+                      "multi_job": 0
+                    },
+                    "status": 200
+                  }
+                }
+              }
+            },
+            "412": {
+              "description": "Precondition Failed",
+              "headers": {
+                "Host": {
+                  "schema": {
+                    "type": "string",
+                    "example": "localhost:8000"
+                  }
+                },
+                "Date": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Tue, 26 Nov 2019 10:46:37 GMT"
+                  }
+                },
+                "Connection": {
+                  "schema": {
+                    "type": "string",
+                    "example": "close"
+                  }
+                },
+                "X-Powered-By": {
+                  "schema": {
+                    "type": "string",
+                    "example": "PHP/7.3.11-1+ubuntu18.04.1+deb.sury.org+1"
+                  }
+                },
+                "Cache-Control": {
+                  "schema": {
+                    "type": "string",
+                    "example": "no-cache, private"
+                  }
+                },
+                "Content-Type": {
+                  "schema": {
+                    "type": "string",
+                    "example": "application/json"
+                  }
+                },
+                "X-RateLimit-Limit": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "60"
+                  }
+                },
+                "X-RateLimit-Remaining": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "59"
+                  }
+                },
+                "Set-Cookie": {
+                  "schema": {
+                    "type": "string",
+                    "example": "jobprogress_session=<session_value>;=eyJpdiI6InhBUVwvSm9WYnV2dldrNmkrdzVYbmVRPT0iLCJ2YWx1ZSI6InI5c0hLV2x; expires=Tue, 26-Nov-2019 12:46:37 GMT; Max-Age=7200; path=/; httponly"
+                  }
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object"
+                  },
+                  "example": {
+                    "error": {
+                      "status_code": 412,
+                      "validation": {
+                        "trades": [
+                          "The trades field is required when multi job is 0."
+                        ]
+                      },
+                      "message": "Validation Failed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "Job"
+          ],
+          "summary": "Jobs",
+          "description": "# Get the list of jobs\n\n#### Request Params\n\n| Name | Value |\n| --- | --- |\n| **includes\\[\\]** | Options of options: `address, estimators, reps, customer, sub_contractors, projects, work_types, trades, division, deleted_by` |\n\nExample `includes[]=address&includes[]=customer`\n\n#### includes\\[\\] Details\n\nIncludes\\[\\] information returned will be same as in the view single job section.\n\n### Request Parameters (for filtering):-\n\n| Name | Value |\n| --- | --- |\n| **job_number** | Job number |\n| **trades\\[\\]** | Array of trade ids |\n| **work_types\\[\\]** | Array of ids(job types 2) |\n| **rep_ids** | Array of customer's **rep Ids** or **(string) unassigned** |\n| **job_rep_ids** | Array of job's **rep Ids** or **(string) unassigned** |\n| **estimator_ids** | Array of job's **estimator Ids** or **(string) unassigned** |\n| **labor_ids** | Array of **labour Ids** or **(string) unassigned** |\n| **sub_ids** | Array of job's **sub contractors Ids** or **(string) unassigned** |\n| **stages\\[\\]** | Array of stage codes |\n| **name** | Job name |\n| **address** | Address field of customer |\n| **customer_name** | Customer first name |\n| **customer_id** | ID associate to customer |\n| **zip_code** | customer address zip code |\n| **job_types\\[\\]** | Array of ids(job types 1) |\n| **work_types\\[\\]** | Array of ids(job types 1) |\n| **include_lost_jobs** | Send 1 to include lost jobs or projects forcefully |\n| **exclude_pb_jobs** | boolean(1 or 0)true or false |\n| **priority\\[\\]** | array of values(low, medium, high) |\n| **with_archived** | boolean(1 or 0)true or false |\n| **only_archived** | boolean(1 or 0)true or false |\n| **with_archived_project** | boolean(1 or 0)true or false |\n| **only_archived_project** | boolean(1 or 0)true or false |\n| **multi_jobs_only** | boolean(1, 0)for multi jobs only |\n| **exclude_multijobs** | boolean(1, 0)for single jobs only (exclude projects and multi job) |\n| **date_range_type** | (optional)(job_created_date, job_stage_changed_date, job_updated_date) by default is job_created_date |\n| **start_date** | (optional)(Y-m-d) |\n| **end_date** | (optional)(Y-m-d) |\n| **job_city** | (optional)(name of the city) |\n| **job_cities\\[\\]** | (optional)(array of cities) |\n| **customer_type** | 'commercial' or 'residential' |\n| **unassigned** | boolean(1 or 0)true or false to get unassigned jobs |\n| **start_date** | start date |\n| **end_date** | end date |\n| **awarded_jobs** | boolean(1, 0) 1 for awarded jobs only |\n| **awarded_from** | Awarded From (Y-m-d) - this filter will work in case of awarded_jobs is sent as 1 |\n| **awarded_to** | Awarded To (Y-m-d) - this filter will work in case of awarded_jobs is sent as 1 |\n| **parent_ids\\[\\]** | Array of parent Job ids |\n| **job_ids\\[\\]** | Array of Job ids |\n| **exclude_parent** | boolean(1, 0) 1 to exclude parent jobs from the listing |\n| **projects_only** | boolean(1, 0) 1 to get only projects in the listing |\n| **project_ids\\[\\]** | Array of project ids |\n| **exclude_job_types\\[\\]** | Array of ids(job types 1) whose jobs need to be excluded from the list |\n| **sales_performance_for\\[\\]** | Array of options (customer_rep, estimator) |\n| **user_ids\\[\\]** | Array of use ids(assosiate to customer rep or estimator)  <br>Note: This filter will not work without sales_performance_for |\n| **first_name** | First Name of the job's customer |\n| **last_name** | Last Name of the job's customer |\n| **job_address** | Job's address (Any one from address, city or zip) |\n| **cities\\[\\]** | Array of Customer's city |\n| **wp_jobs** | boolean(1, 0) 1 to get only wordpress leads in the listing |\n| **job_zip_code** | Job's zip code |\n| **for_bid_proposal** | boolean(1, 0) 1 to Get only bid proposal's jobs |\n| **for_accepted_proposal** | boolean(1, 0) 1 to Get only accepted proposal's jobs |\n| **has_change_orders** | boolean(1, 0) 1 to Get only those jobs who have change orders |\n| **job_contact_person** | Job's contact person's name |\n| **project_number** | Project Number |\n| **project_alt_id** | Project Alt ID (#) |\n| **exclude_bad_leads** | boolean(1, 0) 1 to exclude bad leads from the listing  <br>(To exclude those jobs whose customer has assigned with bad lead flag)  <br>  <br>Note: Awarded Jobs will be returned in the listing, even the customer has bad lead flag |\n| **bad_leads** | boolean(1, 0) 1 to get only bad leads in the listing  <br>(To whose customer has assigned with bad lead flag)  <br>  <br>Note: Awarded Jobs will not be returned in the listing |\n| **unassigned_cr** | boolean(1, 0) 1 to get Jobs which don't have any customer representative |\n| **job_flag_ids\\[\\]** | Array of flag ids |\n| **referred_type\\[\\]** | Array of types (customer, other, referral) |\n| **without_schedules** | boolean(1, 0) 1 to get Jobs without schedule in the listing |\n| **created_date** | Job's created date (Y-m-d) |\n| **updated_date** | Job's updated date (Y-m-d) |\n| **stage_changed_date** | Job's stage change date (Y-m-d) |\n| **include_deleted_jobs** | boolean(1, 0), 1 to include deleted jobs in the listing. |\n\nExample `job_number=62515`",
+          "security": [
+            {
+              "noauthAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "includes[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "address",
+                    "estimators",
+                    "reps",
+                    "customer",
+                    "sub_contractors",
+                    "projects",
+                    "work_types",
+                    "trades",
+                    "division",
+                    "deleted_by"
+                  ]
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Include related data in the response (select multiple values)"
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "schema": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100,
+                "default": 10
+              },
+              "required": false,
+              "description": "Number of items to return (max 100)"
+            },
+            {
+              "name": "page",
+              "in": "query",
+              "schema": {
+                "type": "integer",
+                "minimum": 1,
+                "default": 1
+              },
+              "required": false,
+              "description": "Page number for pagination"
+            },
+            {
+              "name": "sort_by",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Field to sort by"
+            },
+            {
+              "name": "sort_order",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "asc",
+                  "desc"
+                ]
+              },
+              "required": false,
+              "description": "Sort order (ascending or descending)"
+            },
+            {
+              "name": "keyword",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Search jobs by keyword"
+            },
+            {
+              "name": "awarded_jobs",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Filter for awarded jobs only"
+            },
+            {
+              "name": "awarded_from",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              },
+              "required": false,
+              "description": "Start date for awarded jobs filter (YYYY-MM-DD)"
+            },
+            {
+              "name": "awarded_to",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              },
+              "required": false,
+              "description": "End date for awarded jobs filter (YYYY-MM-DD)"
+            },
+            {
+              "name": "parent_id",
+              "in": "query",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false,
+              "description": "Filter jobs by parent job ID"
+            },
+            {
+              "name": "parent_ids[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of parent job IDs"
+            },
+            {
+              "name": "job_ids[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of specific job IDs to filter"
+            },
+            {
+              "name": "exclude_parent",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Exclude parent jobs from results"
+            },
+            {
+              "name": "include_projects",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Include project jobs in results"
+            },
+            {
+              "name": "projects_only",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Return only project jobs"
+            },
+            {
+              "name": "project_ids[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of project IDs"
+            },
+            {
+              "name": "exclude_multijobs",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Exclude multi-jobs from results"
+            },
+            {
+              "name": "multi_jobs_only",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Return only multi-jobs"
+            },
+            {
+              "name": "users[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of user IDs to filter jobs"
+            },
+            {
+              "name": "job_number",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter by specific job number"
+            },
+            {
+              "name": "job_alt_id",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter by job alternative ID (partial match)"
+            },
+            {
+              "name": "trades[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of trade IDs"
+            },
+            {
+              "name": "job_types[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of job type IDs"
+            },
+            {
+              "name": "work_types[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of work type IDs"
+            },
+            {
+              "name": "exclude_job_types[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of job type IDs to exclude"
+            },
+            {
+              "name": "category_ids[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of category IDs"
+            },
+            {
+              "name": "rep_ids[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "unassigned"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of customer representative IDs or 'unassigned'"
+            },
+            {
+              "name": "job_rep_ids[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "unassigned"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of job representative IDs or 'unassigned'"
+            },
+            {
+              "name": "estimator_ids[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "unassigned"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of estimator IDs or 'unassigned'"
+            },
+            {
+              "name": "sales_performance_for[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "customer_rep",
+                    "estimator"
+                  ]
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of sales performance types"
+            },
+            {
+              "name": "user_id",
+              "in": "query",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false,
+              "description": "User ID for sales performance filtering"
+            },
+            {
+              "name": "user_ids[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of user IDs for sales performance filtering"
+            },
+            {
+              "name": "sub_ids[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of sub-contractor IDs"
+            },
+            {
+              "name": "job_name",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter jobs by job name (partial match)"
+            },
+            {
+              "name": "name",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter jobs by name (partial match)"
+            },
+            {
+              "name": "customer_name",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter jobs by customer name"
+            },
+            {
+              "name": "first_name",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter jobs by customer first name"
+            },
+            {
+              "name": "last_name",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter jobs by customer last name"
+            },
+            {
+              "name": "job_address",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter jobs by job address (partial match)"
+            },
+            {
+              "name": "job_city",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter jobs by job city"
+            },
+            {
+              "name": "job_cities[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of job cities"
+            },
+            {
+              "name": "address",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter jobs by customer address (partial match)"
+            },
+            {
+              "name": "city",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter jobs by customer city"
+            },
+            {
+              "name": "cities[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of customer cities"
+            },
+            {
+              "name": "stages[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of workflow stage codes"
+            },
+            {
+              "name": "id",
+              "in": "query",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false,
+              "description": "Filter by customer ID"
+            },
+            {
+              "name": "customer_id",
+              "in": "query",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false,
+              "description": "Filter by specific customer ID"
+            },
+            {
+              "name": "wp_jobs",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Filter for WordPress jobs only"
+            },
+            {
+              "name": "wp_unseen_jobs",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Filter for unseen WordPress jobs only"
+            },
+            {
+              "name": "date_range_type",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "job_created_date",
+                  "job_stage_changed_date",
+                  "job_completion_date",
+                  "contract_signed_date",
+                  "job_awarded_date",
+                  "job_updated_date",
+                  "job_lost_date",
+                  "job_invoiced_date"
+                ],
+                "default": "job_created_date"
+              },
+              "required": false,
+              "description": "Type of date range filter to apply"
+            },
+            {
+              "name": "start_date",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              },
+              "required": false,
+              "description": "Start date for date range filtering (YYYY-MM-DD)"
+            },
+            {
+              "name": "end_date",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              },
+              "required": false,
+              "description": "End date for date range filtering (YYYY-MM-DD)"
+            },
+            {
+              "name": "created_date",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              },
+              "required": false,
+              "description": "Filter by specific job creation date (YYYY-MM-DD)"
+            },
+            {
+              "name": "updated_date",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              },
+              "required": false,
+              "description": "Filter by specific job update date (YYYY-MM-DD)"
+            },
+            {
+              "name": "stage_changed_date",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              },
+              "required": false,
+              "description": "Filter by specific stage change date (YYYY-MM-DD)"
+            },
+            {
+              "name": "zip_code",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter jobs by customer ZIP code"
+            },
+            {
+              "name": "job_zip_code",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter jobs by job ZIP code"
+            },
+            {
+              "name": "unassigned_jr",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Filter for jobs without job representatives"
+            },
+            {
+              "name": "unassigned_cr",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Filter for jobs without customer representatives"
+            },
+            {
+              "name": "job_flag_ids[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of job flag IDs"
+            },
+            {
+              "name": "follow_up_marks[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "call1",
+                    "call2",
+                    "call3_or_more",
+                    "undecided",
+                    "lost_job",
+                    "reminder",
+                    "no_follow_up",
+                    "no_action_required"
+                  ]
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of follow-up mark types"
+            },
+            {
+              "name": "lost_job_from",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              },
+              "required": false,
+              "description": "Start date for lost job filter (YYYY-MM-DD)"
+            },
+            {
+              "name": "lost_job_to",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "date"
+              },
+              "required": false,
+              "description": "End date for lost job filter (YYYY-MM-DD)"
+            },
+            {
+              "name": "include_lost_jobs",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Include lost jobs in results"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "schema": {
+                "type": "number",
+                "format": "float"
+              },
+              "required": false,
+              "description": "Latitude for distance-based filtering (requires long and distance)"
+            },
+            {
+              "name": "long",
+              "in": "query",
+              "schema": {
+                "type": "number",
+                "format": "float"
+              },
+              "required": false,
+              "description": "Longitude for distance-based filtering (requires lat and distance)"
+            },
+            {
+              "name": "distance",
+              "in": "query",
+              "schema": {
+                "type": "number",
+                "format": "float"
+              },
+              "required": false,
+              "description": "Maximum distance in miles (requires lat and long)"
+            },
+            {
+              "name": "referred_type",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "all",
+                  "referral",
+                  "google",
+                  "facebook",
+                  "angi",
+                  "thumbtack",
+                  "other"
+                ]
+              },
+              "required": false,
+              "description": "Filter by customer referral type"
+            },
+            {
+              "name": "referred_by",
+              "in": "query",
+              "schema": {
+                "type": "integer"
+              },
+              "required": false,
+              "description": "Filter by specific referral source ID"
+            },
+            {
+              "name": "without_schedules",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Filter jobs without schedules"
+            },
+            {
+              "name": "job_contact_person",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter by job contact person"
+            },
+            {
+              "name": "exclude_pb_jobs",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Exclude production board jobs"
+            },
+            {
+              "name": "priority[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "low",
+                    "medium",
+                    "high"
+                  ]
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Array of job priorities"
+            },
+            {
+              "name": "with_archived",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Include archived jobs"
+            },
+            {
+              "name": "only_archived",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Return only archived jobs"
+            },
+            {
+              "name": "project_number",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter by project number"
+            },
+            {
+              "name": "project_alt_id",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter by project alternative ID"
+            },
+            {
+              "name": "exclude_bad_leads",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Exclude bad lead jobs"
+            },
+            {
+              "name": "bad_leads",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Return only bad lead jobs"
+            },
+            {
+              "name": "awarded",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Filter for awarded jobs only"
+            },
+            {
+              "name": "for_bid_proposal",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Filter for jobs with bid proposals"
+            },
+            {
+              "name": "for_accepted_proposal",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Filter for jobs with accepted proposals"
+            },
+            {
+              "name": "has_change_orders",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Filter for jobs with change orders"
+            },
+            {
+              "name": "include_deleted_jobs",
+              "in": "query",
+              "schema": {
+                "type": "boolean"
+              },
+              "required": false,
+              "description": "Include deleted jobs in results"
+            },
+            {
+              "name": "financial_status",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "receivable",
+                  "payable",
+                  "cleared",
+                  "received",
+                  "amount_owed",
+                  "credits",
+                  "unapplied_credits",
+                  "applied_credits",
+                  "total_invoice_amount",
+                  "total_amount_without_invoice",
+                  "total_invoice_received_payment",
+                  "received_payment_without_invoice",
+                  "invoice_receivable",
+                  "receivable_without_invoice",
+                  "net_receivable",
+                  "receivable_credits"
+                ]
+              },
+              "required": false,
+              "description": "Filter jobs by financial status"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {
+                "Date": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Fri, 10 Jul 2020 12:58:01 GMT"
+                  }
+                },
+                "Content-Type": {
+                  "schema": {
+                    "type": "string",
+                    "example": "application/json"
+                  }
+                },
+                "Content-Length": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "1044"
+                  }
+                },
+                "Connection": {
+                  "schema": {
+                    "type": "string",
+                    "example": "keep-alive"
+                  }
+                },
+                "Server": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Apache/2.4.29 (Ubuntu)"
+                  }
+                },
+                "Vary": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Authorization"
+                  }
+                },
+                "Cache-Control": {
+                  "schema": {
+                    "type": "string",
+                    "example": "no-cache, private"
+                  }
+                },
+                "X-RateLimit-Limit": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "60"
+                  }
+                },
+                "X-RateLimit-Remaining": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "59"
+                  }
+                },
+                "Set-Cookie": {
+                  "schema": {
+                    "type": "string",
+                    "example": "jobprogress_session=<session_value>;=eyJpdiI6InhBUVwvSm9WYnV2dldrNmkrdzVYbmVRPT0iLCJ2YWx1ZSI6InI5c0hLV2x; expires=Fri, 10-Jul-2020 14:58:01 GMT; Max-Age=7200; path=/; httponly"
+                  }
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object"
+                  },
+                  "example": {
+                    "data": [
+                      {
+                        "id": 969377,
+                        "name": "",
+                        "number": "2007-1506655-01",
+                        "customer_id": 1506655,
+                        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
+                        "same_as_customer_address": 1,
+                        "other_trade_type_description": null,
+                        "created_by": 19933,
+                        "created_at": "2020-07-10 12:35:53",
+                        "created_date": "2020-07-10 12:35:53",
+                        "updated_at": "2020-07-10 12:57:34",
+                        "deleted_at": null,
+                        "call_required": false,
+                        "appointment_required": false,
+                        "tax_rate": null,
+                        "alt_id": "101",
+                        "lead_number": "120",
+                        "duration": "0:0:0",
+                        "completion_date": null,
+                        "contract_signed_date": null,
+                        "current_stage": {
+                          "name": "Lead",
+                          "color": "cl-red",
+                          "code": "1120982856"
+                        },
+                        "contact_same_as_customer": 1,
+                        "insurance": 0,
+                        "archived": null,
+                        "hover_job_id": null,
+                        "awarded_date": null,
+                        "stage_last_modified": "2020-07-10 12:35:53",
+                        "multi_job": 0
+                      }
+                    ],
+                    "meta": {
+                      "pagination": {
+                        "total": 234,
+                        "count": 1,
+                        "per_page": 1,
+                        "current_page": 1,
+                        "total_pages": 234,
+                        "links": {
+                          "next": "http://api.jobprogress.com/api/v3/jobs?limit=1&page=2"
+                        }
+                      }
+                    },
+                    "status": 200
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/jobs/{jobId}": {
+        "put": {
+          "tags": [
+            "Job"
+          ],
+          "summary": "Update Job",
+          "requestBody": {
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "properties": {
+                    "customer_id": {
+                      "type": "integer",
+                      "description": "(Required) id associates to job's customer",
+                      "example": "167"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "(Required) description",
+                      "example": "Carpentry Job"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "(Optional) Name",
+                      "example": "Test"
+                    },
+                    "trades[]": {
+                      "type": "integer",
+                      "description": "(Required) Array of trades Ids associates trades",
+                      "example": 1
+                    },
+                    "call_required": {
+                      "type": "integer",
+                      "description": "(Optional) (bool) send 1 for true , 0 for false",
+                      "example": "0"
+                    },
+                    "appointment_required": {
+                      "type": "integer",
+                      "description": "(Optional) (bool) send 1 for true , 0 for false",
+                      "example": "0"
+                    },
+                    "duration": {
+                      "type": "string",
+                      "description": "(Optional) Duration ",
+                      "example": "0:0:0"
+                    },
+                    "sub_contractor_ids[]": {
+                      "type": "integer",
+                      "description": "(Optional) Array of sub contractors ids",
+                      "example": 1
+                    },
+                    "same_as_customer_address": {
+                      "type": "integer",
+                      "description": "(Optional) (Bool) To check whether the address is same as customer or not (If value is true next address fields not required)",
+                      "example": "0"
+                    },
+                    "address[address]": {
+                      "type": "string",
+                      "description": "(Optional) Address",
+                      "example": "15721 Carlton Oaks"
+                    },
+                    "address[city]": {
+                      "type": "string",
+                      "description": "(Optional) City name",
+                      "example": "Fort Worth"
+                    },
+                    "address[state_id]": {
+                      "type": "integer",
+                      "description": "(Optional) State",
+                      "example": "2"
+                    },
+                    "address[country_id]": {
+                      "type": "integer",
+                      "description": "(Optional) Country id",
+                      "example": 1
+                    },
+                    "address[zip]": {
+                      "type": "integer",
+                      "description": "(Optional) Zip or postal code",
+                      "example": "7617"
+                    },
+                    "insurance": {
+                      "type": "integer",
+                      "description": "(Optional) (Boolean)",
+                      "example": "0"
+                    },
+                    "rep_ids[]": {
+                      "type": "string",
+                      "description": "(Optional) Array of Ids associates to users (optional)"
+                    },
+                    "estimator_ids[]": {
+                      "type": "integer",
+                      "description": "(Optional) Array of Ids associates to users (optional)",
+                      "example": "33"
+                    },
+                    "address_line_1": {
+                      "type": "string",
+                      "description": "(Optional) Address line 1",
+                      "example": "15721 Carlton Oaks"
+                    },
+                    "work_types[]": {
+                      "type": "integer",
+                      "description": "(Optional) id like [1,2]",
+                      "example": 1
+                    },
+                    "job_types[]": {
+                      "type": "integer",
+                      "description": "(Optional) id like [3,4]",
+                      "example": "2"
+                    },
+                    "alt_id": {
+                      "type": "string",
+                      "description": "(Optional) Alternate Id",
+                      "example": "adsfasdf"
+                    },
+                    "lead_number": {
+                      "type": "string",
+                      "description": "(Optional) Lead number",
+                      "example": "asddas"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "parameters": [
+            {
+              "name": "jobId",
+              "in": "path",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  },
+                  "example": "{\n    \"message\": \"Job updated successfully.\",\n    \"data\": {\n        \"id\": 178,\n        \"name\": \"Updated Job\",\n        \"number\": \"2004-167-01\",\n        \"customer_id\": 167,\n        \"description\": \"Carpentry Job\",\n        \"same_as_customer_address\": 0,\n        \"other_trade_type_description\": null,\n        \"created_by\": 32,\n        \"created_at\": \"2020-04-13 11:35:48\",\n        \"created_date\": \"2020-04-13 11:35:48\",\n        \"updated_at\": \"2020-04-14 13:26:35\",\n        \"deleted_at\": null,\n        \"call_required\": false,\n        \"appointment_required\": false,\n        \"tax_rate\": null,\n        \"alt_id\": \"1256\",\n        \"lead_number\": \"562\",\n        \"duration\": \"0:0:0\",\n        \"completion_date\": null,\n        \"contract_signed_date\": null,\n        \"current_stage\": {\n            \"name\": \"Lead\",\n            \"color\": \"cl-red\",\n            \"code\": \"976605272\"\n        },\n        \"contact_same_as_customer\": 1,\n        \"insurance\": 0,\n        \"archived\": null,\n        \"stage_last_modified\": \"2020-04-13 11:35:51\",\n        \"multi_job\": 0\n    },\n    \"status\": 200\n}"
+                }
+              }
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "Job"
+          ],
+          "summary": "View Job",
+          "description": "Get a single job by id\n\n#### Request Parameters\n\n| Name | Value |\n| --- | --- |\n| **includes\\[\\]** | Options Available: `address, estimators, reps, customer, sub_contractors, projects, work_types, trades, job_notes, division` |\n\n> Example `includes[]=address&includes[]=customer` \n  \n\n#### Includes\\[\\] Details\n\n> address \n  \n\nThe address information will be returned by includes in the format below:\n\n``` json\n\"address\": {\n      \"id\": 327,\n      \"address\": \"Teasley Lane\",\n      \"address_line_1\": \"\",\n      \"city\": \"\",\n      \"state_id\": 5,\n      \"state\": {\n          \"id\": 5,\n          \"name\": \"California\",\n          \"code\": \"CA\",\n          \"country_id\": 1\n      },\n      \"country_id\": 1,\n      \"country\": {\n          \"id\": 1,\n          \"name\": \"United States\",\n          \"code\": \"US\",\n          \"phone_code\": \"+1\"\n      },\n      \"zip\": \"77375\",\n      \"lat\": 10.812973,\n      \"long\": -16.978363\n  }\n\n ```\n\nAddress will have all the information related to Address like address id, state country, postcode etc.\n\n##### Address field detail\n\n- **id**: Unique address id\n    \n- **address**: The street address\n    \n- **address_line_1**: An optional additional field for the street address\n    \n- **city**: The city, town, or village of the address\n    \n- **state**: State information of the address\n    \n- **country_id**: Id of the Country associated with the address\n    \n- **country**: Country information of the address with all the details.\n    \n- **lat**: The latitude of the address.\n    \n- **long**: The longitude of the address.\n    \n\n> reps \n  \n\nThe representative information will be returned by includes in the format below:\n\n``` json\n\"reps\": {\n      \"data\": [\n          {\n              \"id\": 25,\n              \"first_name\": \"John\",\n              \"last_name\": \"Doe\",\n              \"email\": \"john@example.com\",\n              \"company_id\": 6,\n              \"company\": \"John Constructions\",\n              \"admin_privilege\": false,\n              \"group\": {\n                  \"id\": 5,\n                  \"name\": \"owner\"\n              },\n              \"added_date\": \"2019-11-15 05:53:09\",\n              \"profile_pic\": null,\n              \"active\": true,\n              \"company_name\": null,\n              \"color\": \"blue\",\n              \"role\": [\n                  {\n                      \"name\": \"plus-admin\"\n                  }\n              ]\n          }\n      ]\n  }\n\n ```\n\nReps will have the list of representatives associated with the job.\n\n##### Reps field detail\n\n- **id**: Unique representative id\n    \n- **first_name**: First name of the representative.\n    \n- **last_name**: Last name of the representative.\n    \n- **email**: Email of the representative.\n    \n- **company_id**: Company id of the representative associated with.\n    \n- **company**: Company details of the representative.\n    \n- **admin_privilege**: shows if representative has admin privileges or not.\n    \n- **group**: User group information of the representative.\n    \n- **added_date**: The date and time when the representative was created in the system.\n    \n- **profile_pic**: Profile picture of the representative.\n    \n- **active**: Shows if representative is active or not.\n    \n- **company_name**: Company name of the representative if user is commercial.\n    \n- **color**: Color information associated with representative.\n    \n- **role**: Role information of the representative.\n    \n\n> customer \n  \n\nThe customer information that will be returned by includes in the format below:\n\n``` json\n\"customer\": {\n    \"id\": 6158400,\n    \"company_name\": \"\",\n    \"first_name\": \"Calvin\",\n    \"last_name\": \"Lowell\",\n    \"email\": \"234@gmail.com\",\n    \"additional_emails\": [],\n    \"referred_by_type\": \"\",\n    \"referred_by_note\": \"\",\n    \"call_required\": false,\n    \"appointment_required\": false,\n    \"note\": \"\",\n    \"is_commercial\": 0,\n    \"created_at\": \"2024-09-18 14:56:42\",\n    \"updated_at\": \"2024-09-23 11:24:17\",\n    \"deleted_at\": null,\n    \"management_company\": \"\",\n    \"property_name\": \"\",\n    \"canvasser_type\": \"\",\n    \"canvasser\": \"\",\n    \"call_center_rep_type\": \"\",\n    \"call_center_rep\": \"\",\n    \"phones\": {\n        \"data\": [\n            {\n                \"label\": \"phone\",\n                \"number\": \"1111111111\",\n                \"ext\": \"\"\n            }\n        ]\n    }\n}\n\n ```\n\nCustomer field will have customer data associated with the job.\n\n##### Customer field detail\n\n- **id**: Unique customer id\n    \n- **first_name**: First name of the customer.\n    \n- **last_name**: Last name of the customer.\n    \n- **email**: Email of the customer.\n    \n- **additional_emails**: Additional emails of the customer.\n    \n- **referred_by_type**: Customer referral type (referral, customer, other).\n    \n- **referred_by_note**: if `referred_by_type` is `other` then this field will have referral note.\n    \n- **call_required**: If call required or not when added.\n    \n- **appointment_required**: If appointment required or not when added.\n    \n- **note**: Note will have notes about the customer.\n    \n- **is_commercial**: If individual or commercial.\n    \n- **created_at**: The date and time when the customer was created.\n    \n- **deleted_at**: The date and time when the customer was deleted.\n    \n- **management_company**: Management company of the customer.\n    \n- **canvasser**: Canvasser Name.\n    \n- **call_center_rep**: Call centre representative.\n    \n- **phones**: Phones field will have the list of Phone numbers associated with the customer.  \n    Phones field detail\n    \n    - **label**: Phone number label for example. Home, office.\n        \n    - **number**: Phone number.\n        \n    - **ext**: Optional phone number extension for example. +1.\n        \n\n> sub_contractors \n  \n\nThe Sub Contractor Users information will be returned by includes in the format below:\n\n``` json\n  \"sub_contractors\": {\n     \"data\": [\n        {\n            \"id\": 28,\n            \"first_name\": \"Sub\",\n            \"last_name\": \"Contractor 1\",\n            \"email\": \"example@gmail.com\",\n            \"company_name\": \"\",\n            \"additional_phone\": [],\n            \"address\": \"422 Massachusetts Avenue\",\n            \"address_line_1\": \"\",\n            \"zip\": \"10\",\n            \"city\": \"Alabama\",\n            \"country\": {\n                \"id\": 4,\n                \"name\": \"Canada\",\n                \"code\": \"CA\",\n                \"phone_code\": \"+1\"\n            },\n            \"country_id\": \"4\",\n            \"state\": {\n                \"id\": 4,\n                \"name\": \"Arkansas\",\n                \"code\": \"AR\",\n                \"country_id\": 1\n            },\n            \"state_id\": 4,\n            \"type\": \"sub_contractor\",\n            \"is_active\": true,\n            \"profile_pic\": null,\n            \"trades\": [],\n            \"created_at\": \"2019-11-22 05:21:34\",\n            \"updated_at\": \"2019-11-22 05:21:34\",\n            \"note\": \"\",\n            \"rating\": 0,\n            \"work_types\": [],\n            \"color\": \"#FE6F5E\"\n        }\n     ]\n }\n\n ```\n\nsub_contractors field will have the list of Sub Contractor Users associated with the job.\n\n##### Sub Contractor user field detail\n\n- **id**: Unique user id\n    \n- **first_name**: First name of the user.\n    \n- **last_name**: Last name of the user.\n    \n- **email**: Email of the user.\n    \n- **company_name**: Company name of the user.\n    \n- **additional_phone**: Additional phones details of the user.\n    \n- **address**: Street address of the user.\n    \n- **address_line_1**: An optional additional field for the street address\n    \n- **zip**: The postal code (zip, postcode) of the user address.\n    \n- **city**: City of the user.\n    \n- **country**: Country information of the address with all the details.\n    \n- **country_id**: Country id of the user.\n    \n- **state**: State information of the address\n    \n- **state_id**: State id of the user.\n    \n- **type**: User type information\n    \n- **is_active**: Shows if user is active or not\n    \n- **profile_pic**: profile picture of the user\n    \n- **trades**: Trades of the of the user\n    \n- **created_at**: The date and time when the user was created.\n    \n- **updated_at**: The date and time when the user was last updated.\n    \n- **note**: User notes\n    \n- **rating**: Rating of the user\n    \n- **work_types**: Work types of the user\n    \n- **color**: Color information attached with the user\n    \n    > projects \n      \n    \n\nThe Projects information will be returned by includes in the format below:\n\n``` json\n \"projects\": {\n    \"data\": [\n        {\n          \"id\": 105,\n          \"number\": \"1911-085-01-P1\",\n          \"alt_id\": \"1551\",\n          \"duration\": \"0:0:0\",\n          \"created_at\": \"2019-11-27 10:42:11\",\n          \"updated_at\": \"2019-11-28 14:20:28\",\n          \"description\": \"asd\",\n          \"parent_id\": 104,\n          \"status\": null,\n          \"awarded\": 1\n        }\n    ]\n}\n\n ```\n\nprojects field will have the list of Projects associated with the job.\n\n##### Project field detail\n\n- **id**: Unique project id\n    \n- **number**: Unique project number.\n    \n- **alt_id**: Alternate id.\n    \n- **duration**: Duration of the project.\n    \n- **created_at**: The date and time when the project was created.\n    \n- **updated_at**: The date and time when the project was last updated.\n    \n- **description**: Project description.\n    \n- **parent_id**: Parent job id associated with project.\n    \n- **status**: Status information of the project.\n    \n- **awarded**: Shows if job was awarded or not.\n    \n\n> work_types \n  \n\nThe Work type information will be returned by includes in the format below:\n\n``` json\n \"work_types\": {\n     \"data\": [\n         {\n           \"id\": 12,\n           \"name\": \"asdf\",\n           \"trade_id\": 31,\n           \"color\": \"#0D98BA\"\n         }\n     ]\n }\n\n ```\n\nwork_types field will have the list of work types associated with the job.\n\n##### Work type field detail\n\n- **id**: Unique project id\n    \n- **name**: Work type name.\n    \n- **trade_id**: Trade id associated with work type.\n    \n- **color**: Color information associated with work type.\n    \n\n> job_notes \n  \n\nThe job note information will be returned by includes in the format below:\n\n``` json\n \"job_notes\": {\n     \"data\": [\n         {\n           \"id\": 1,\n           \"stage_code\": \"300966607\",\n           \"note\": \"This is an example of a job note\",\n           \"created_at\": \"2020-02-28 09:26:28\",\n           \"updated_at\": \"2020-02-28 09:26:28\"\n         }\n     ]\n }\n\n ```\n\njob_notes field will have the list of notes associated with the job.\n\n##### Job note field detail\n\n- **id**: Unique job note id.\n    \n- **stage_code**: Unique code of job workflow stage when job note was created.\n    \n- **note**: Job note detail.\n    \n- **created_at**: The date and time when the job note was created.\n    \n- **updated_at**: The date and time when the job note was last updated.",
+          "security": [
+            {
+              "noauthAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "jobId",
+              "in": "path",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            },
+            {
+              "name": "includes[]",
+              "in": "query",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "address",
+                    "estimators",
+                    "reps",
+                    "customer",
+                    "sub_contractors",
+                    "projects",
+                    "work_types",
+                    "trades",
+                    "job_notes",
+                    "division"
+                  ]
+                }
+              },
+              "style": "form",
+              "explode": true,
+              "required": false,
+              "description": "Include related data in the response (select multiple values)"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {
+                "Host": {
+                  "schema": {
+                    "type": "string",
+                    "example": "localhost:8000"
+                  }
+                },
+                "Date": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Wed, 12 Feb 2020 06:44:48 GMT"
+                  }
+                },
+                "Connection": {
+                  "schema": {
+                    "type": "string",
+                    "example": "close"
+                  }
+                },
+                "X-Powered-By": {
+                  "schema": {
+                    "type": "string",
+                    "example": "PHP/7.3.14-1+ubuntu18.04.1+deb.sury.org+1"
+                  }
+                },
+                "Cache-Control": {
+                  "schema": {
+                    "type": "string",
+                    "example": "no-cache, private"
+                  }
+                },
+                "Content-Type": {
+                  "schema": {
+                    "type": "string",
+                    "example": "application/json"
+                  }
+                },
+                "X-RateLimit-Limit": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "60"
+                  }
+                },
+                "X-RateLimit-Remaining": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "59"
+                  }
+                },
+                "Set-Cookie": {
+                  "schema": {
+                    "type": "string",
+                    "example": "jobprogress_session=<session_value>;=eyJpdiI6InhBUVwvSm9WYnV2dldrNmkrdzVYbmVRPT0iLCJ2YWx1ZSI6InI5c0hLV2x; expires=Wed, 12-Feb-2020 08:44:48 GMT; Max-Age=7200; path=/; httponly"
+                  }
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object"
+                  },
+                  "example": {
+                    "data": {
+                      "id": 60,
+                      "name": "",
+                      "number": "1911-025-10",
+                      "customer_id": 25,
+                      "description": "",
+                      "same_as_customer_address": 1,
+                      "other_trade_type_description": null,
+                      "created_by": 27,
+                      "created_at": "2019-11-21 11:50:32",
+                      "created_date": "2019-11-21 11:50:32",
+                      "updated_at": "2019-11-21 11:50:33",
+                      "deleted_at": null,
+                      "call_required": false,
+                      "appointment_required": false,
+                      "tax_rate": null,
+                      "alt_id": "",
+                      "lead_number": "",
+                      "duration": null,
+                      "completion_date": null,
+                      "contract_signed_date": null,
+                      "current_stage": {
+                        "name": "Lead",
+                        "color": "cl-red",
+                        "code": "1866233278"
+                      },
+                      "contact_same_as_customer": 0,
+                      "insurance": 0,
+                      "archived": null,
+                      "stage_last_modified": "2019-11-21 11:50:33",
+                      "multi_job": 0
+                    },
+                    "status": 200
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/jobs/{jobId}/financial_summary": {
+        "get": {
+          "tags": [
+            "Job"
+          ],
+          "summary": "Financial Summary",
+          "description": "Get financial summary of job",
+          "parameters": [
+            {
+              "name": "jobId",
+              "in": "path",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {
+                "Date": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Mon, 23 Sep 2024 11:13:44 GMT"
+                  }
+                },
+                "Content-Type": {
+                  "schema": {
+                    "type": "string",
+                    "example": "application/json"
+                  }
+                },
+                "Content-Length": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "234"
+                  }
+                },
+                "Connection": {
+                  "schema": {
+                    "type": "string",
+                    "example": "keep-alive"
+                  }
+                },
+                "Set-Cookie": {
+                  "schema": {
+                    "type": "string",
+                    "example": "jobprogress_session=<session_value>;=eyJpdiI6InhBUVwvSm9WYnV2dldrNmkrdzVYbmVRPT0iLCJ2YWx1ZSI6InI5c0hLV2x; expires=Mon, 23-Sep-2024 13:13:44 GMT; Max-Age=7200; path=/; httponly"
+                  }
+                },
+                "Server": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Apache/2.4.29 (Ubuntu)"
+                  }
+                },
+                "Vary": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Authorization"
+                  }
+                },
+                "Cache-Control": {
+                  "schema": {
+                    "type": "string",
+                    "example": "no-cache, private"
+                  }
+                },
+                "X-RateLimit-Limit": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "60"
+                  }
+                },
+                "X-RateLimit-Remaining": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "59"
+                  }
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object"
+                  },
+                  "example": {
+                    "data": [
+                      {
+                        "job_id": 5368305,
+                        "total_job_price": 30881.71,
+                        "total_change_order_amount": 0,
+                        "total_payment_received": 30081,
+                        "total_amount_owed": 800.71,
+                        "total_credit_amount": 0,
+                        "total_refund_amount": 0,
+                        "total_job_revenue": 30881.71
+                      }
+                    ],
+                    "status": 200
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/jobs/{jobId}/measurements/upload": {
+        "post": {
+          "tags": [
+            "Job"
+          ],
+          "summary": "Measurement Upload",
+          "description": "Upload Measurement  file",
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "description": "(Required_if:file_url is not available) File",
+                      "format": "binary"
+                    },
+                    "file_url": {
+                      "type": "string",
+                      "description": "Optional (Public File URL)",
+                      "example": "Public URL"
+                    },
+                    "file_name": {
+                      "type": "string",
+                      "description": "Optional, File Name, The character limit is 30",
+                      "example": "File Name"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "parameters": [
+            {
+              "name": "jobId",
+              "in": "path",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {
+                "Date": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Wed, 27 May 2020 09:47:57 GMT"
+                  }
+                },
+                "Content-Type": {
+                  "schema": {
+                    "type": "string",
+                    "example": "application/json"
+                  }
+                },
+                "Content-Length": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "668"
+                  }
+                },
+                "Connection": {
+                  "schema": {
+                    "type": "string",
+                    "example": "keep-alive"
+                  }
+                },
+                "Server": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Apache/2.4.29 (Ubuntu)"
+                  }
+                },
+                "Vary": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Authorization"
+                  }
+                },
+                "Cache-Control": {
+                  "schema": {
+                    "type": "string",
+                    "example": "no-cache, private"
+                  }
+                },
+                "X-RateLimit-Limit": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "60"
+                  }
+                },
+                "X-RateLimit-Remaining": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "59"
+                  }
+                },
+                "Set-Cookie": {
+                  "schema": {
+                    "type": "string",
+                    "example": "jobprogress_session=<session_value>;=eyJpdiI6InhBUVwvSm9WYnV2dldrNmkrdzVYbmVRPT0iLCJ2YWx1ZSI6InI5c0hLV2x;  expires=Wed, 27-May-2020 11:41:15 GMT; Max-Age=7200; path=/; httponly"
+                  }
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object"
+                  },
+                  "example": {
+                    "message": "File uploaded successfully.",
+                    "data": {
+                      "id": 54714,
+                      "job_id": "866620",
+                      "file_name": "206.jpg",
+                      "url": "https://s3.us-west-2.amazonaws.com/jp.company.resources/public/uploads/measurements/15905724745ece35baee0e8_206.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIBTK6IZBMLWXCRNA%2F20200527%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20200527T094115Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=5bfdcdcafdf35df0d0eca6498f4b9da2be62d46e5e6526316c2e4c8f43049952",
+                      "file_mime_type": "image/jpeg",
+                      "file_size": 3504,
+                      "created_at": "2020-05-27 09:41:15",
+                      "updated_at": "2020-05-27 09:41:15"
+                    },
+                    "status": 200
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/jobs/{jobId}/workflow_history": {
+        "get": {
+          "tags": [
+            "Job"
+          ],
+          "summary": "Get Job Workflow History",
+          "parameters": [
+            {
+              "name": "jobId",
+              "in": "path",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object"
+                  },
+                  "example": {
+                    "data": [
+                      {
+                        "id": 6,
+                        "stage": "154549950",
+                        "start_date": "2022-04-12 09:57:07",
+                        "completed_date": "2022-04-13 05:17:43",
+                        "modified_by": "640",
+                        "created_at": "2022-04-13 05:17:43",
+                        "updated_at": "2022-04-13 05:17:43"
+                      }
+                    ],
+                    "meta": {
+                      "pagination": {
+                        "total": 1,
+                        "count": 1,
+                        "per_page": 10,
+                        "current_page": 1,
+                        "total_pages": 1,
+                        "links": {}
+                      }
+                    },
+                    "status": 200
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/jobs/stage": {
+        "post": {
+          "tags": [
+            "Job"
+          ],
+          "summary": "Job Stage Update",
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "job_id": {
+                      "type": "integer",
+                      "example": "28666"
+                    },
+                    "stage": {
+                      "type": "integer",
+                      "example": "2006909067"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {
+                "Date": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Thu, 12 Oct 2023 10:09:52 GMT"
+                  }
+                },
+                "Content-Type": {
+                  "schema": {
+                    "type": "string",
+                    "example": "application/json"
+                  }
+                },
+                "Content-Length": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "528"
+                  }
+                },
+                "Connection": {
+                  "schema": {
+                    "type": "string",
+                    "example": "keep-alive"
+                  }
+                },
+                "x-amzn-RequestId": {
+                  "schema": {
+                    "type": "string",
+                    "example": "fa0fb4ee-104f-41c5-84b6-358ce80c3f91"
+                  }
+                },
+                "x-amzn-Remapped-Connection": {
+                  "schema": {
+                    "type": "string",
+                    "example": "keep-alive"
+                  }
+                },
+                "Set-Cookie": {
+                  "schema": {
+                    "type": "string",
+                    "example": "jobprogress_session=<session_value>;=eyJpdiI6InhBUVwvSm9WYnV2dldrNmkrdzVYbmVRPT0iLCJ2YWx1ZSI6InI5c0hLV2x; expires=Thu, 12-Oct-2023 12:09:52 GMT; Max-Age=7200; path=/; httponly"
+                  }
+                },
+                "X-RateLimit-Remaining": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "59"
+                  }
+                },
+                "x-amz-apigw-id": {
+                  "schema": {
+                    "type": "string",
+                    "example": "MrvdXETuhcwFk9g="
+                  }
+                },
+                "Vary": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Authorization"
+                  }
+                },
+                "Cache-Control": {
+                  "schema": {
+                    "type": "string",
+                    "example": "no-cache, private"
+                  }
+                },
+                "x-amzn-Remapped-Server": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Apache/2.4.29 (Ubuntu)"
+                  }
+                },
+                "X-RateLimit-Limit": {
+                  "schema": {
+                    "type": "integer",
+                    "example": "60"
+                  }
+                },
+                "x-amzn-Remapped-Date": {
+                  "schema": {
+                    "type": "string",
+                    "example": "Thu, 12 Oct 2023 10:09:52 GMT"
+                  }
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object"
+                  },
+                  "example": {
+                    "message": "Stage saved successfully.",
+                    "job_workflow": {
+                      "id": 28620,
+                      "stage_code": "2006909067",
+                      "modified_by": 1693,
+                      "stage_last_modified": "2023-10-12 09:52:13",
+                      "created_at": "2023-10-10 12:16:27",
+                      "updated_at": "2023-10-12 09:52:13",
+                      "current_stage": {
+                        "id": 2426,
+                        "code": "2006909067",
+                        "workflow_id": 330,
+                        "name": "Follow Up",
+                        "locked": 0,
+                        "position": 4,
+                        "color": "cl-lime",
+                        "options": null,
+                        "resource_id": 63476,
+                        "send_customer_email": 1,
+                        "send_push_notification": 1,
+                        "send_web_notification": 0,
+                        "create_tasks": 1
+                      },
+                      "last_stage_completed_date": null
+                    },
+                    "status": 200
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/measurements": {
+        "post": {
+          "tags": [
+            "Job"
+          ],
+          "summary": "Create Measurement Form",
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "job_id": {
+                      "type": "integer",
+                      "description": "Unique ID of the Job - Required",
+                      "example": "5293333"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Title of the measurement - Required",
+                      "example": "Measurement"
+                    },
+                    "values[0][attributes][0][attribute_id]": {
+                      "type": "integer",
+                      "description": "ID of an attribute - Required",
+                      "example": "300561"
+                    },
+                    "values[0][attributes][0][value]": {
+                      "type": "integer",
+                      "description": "Value of an attribute - Optional (**Must be a number only**)",
+                      "example": "10"
+                    },
+                    "values[0][trade_id]": {
+                      "type": "integer",
+                      "description": "Unique Trade ID associated with the attribute - Required",
+                      "example": "200"
+                    },
+                    "values[0][attributes][1][attribute_id]": {
+                      "type": "integer",
+                      "description": "ID of an attribute - **Required Only if user wants to add value of the another attribute**",
+                      "example": "303702"
+                    },
+                    "values[0][attributes][1][sub_attributes][0][attribute_id]": {
+                      "type": "integer",
+                      "description": "ID of a sub attribute - **Required Only if sub_attributes' index is passed and user wants to store value of a sub attribute**",
+                      "example": "303703"
+                    },
+                    "values[0][attributes][1][sub_attributes][0][value]": {
+                      "type": "integer",
+                      "description": "Value of a sub attribute (**For sub-attributes, ensure that the value is added only under the sub-attribute and not under the parent attribute.**) - Optional",
+                      "example": "20"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {
+                "Content-Type": {
+                  "schema": {
+                    "type": "string",
+                    "example": "application/json"
+                  }
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object"
+                  },
+                  "example": {
+                    "message": "Measurement saved successfully.",
+                    "data": {
+                      "id": 935455,
+                      "title": "Measurement",
+                      "job_id": 5293333,
+                      "file_name": "Measurement.pdf",
+                      "url": "https://s3.us-west-2.amazonaws.com/jp.company.resources/public/uploads/measurements/935455_1724826762324667255.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEA8aCXVzLXdlc3QtMiJHMEUCIQCaTI96I56C6NfCO6KiyO0wt5KPKWp39abppvL0SSDFzQIgCnh7EnWv2hr8ANNr1HSoq5%2Be8puKgvxNvE2iajtqFQkqsAUIKBAEGgw2MDkzMzcwODc0ODAiDKfqq9pfXbGa5VHxJyqNBYQS9HRMnvPSb9KPzBHETc3e96z0IinTTC2UIe%2BdKA%2FyG773CIaitlNC4W3P%2FL2mycF8eJr1bzt5%2BYspQMSXQAgoiyWavNkOZUmZJRx2%2BqO%2FfuLINnyoUh7SjuFKf7%2Fj0S2rTCScko%2F1h4IVEjqnRrKtBH5DcNTTJtkAbWtH66hMflDysiarhpOMA8ZUzlaRR3AI2E9KsU%2BKMQbqbZggH7bJEHBnzoKXmDRKnY1eLX%2FbUc1%2BBuRx0U0DmqkBvsHk3jKJVi3TnOUlLJJK1k%2BN0%2F6yWEd58kEkOxcG1Z7Er4ukWsJ20sr9%2F%2Fbjs37qhytU7GOoOanRkULNOWRb7MNa%2BZEPs0MvxBVeOEV3waYybPEA4%2FbSp0U0Qui1lSitxpmWGb7s9gHk%2BIW8J6tLGP3FK9VqaaowaWnDtDtxYxMD0sUQwCyipMqnEI1P0SQCh9hq%2Ft52MWNocxn5Lro%2B4msTvB5TnqcjnW1kiodx4%2BbtvqZ4ORr5Bder50oWCKsts7Lsd3GCkNu8OQ96XyNPXryWCmHNOwQWbarrbIoQ01Y1zaG0nTF0kiqzpX7UERoCHcoycTz0Z%2FejstohdKH76PCDIv3upKEA9l3rdcvksgqlxAQS4T5Hps1JVLub6FpKOyvkFf7%2B8Mx%2FRbxKQNpfHQE%2B73K6ejaFZeSDaU5UlY8WcbO%2B2vmbuyn0ykHFr4AorvzJhXRir6j1Bv1PEvlTHBlLH4NM6YqRdb44WiunzS%2F4mYkHdw2SQj%2FeYRRbONX719Y0Ex8kCVyyqrJIcWTbezzrdwXUd2vuNzpTcfIvKD6mLBQ%2BfzAj%2FuoVm855fstczHNqvYaLmPYChq1QmfZI%2BLZtgD4vJaQqPVMHZa8Xl74oML%2BIu7YGOrEBCagHv0Q0zBd79lAePl3Ubbcq76cD%2F1mYokFmrmb7fAOM1fJ%2BvC%2BESqegeZK0ic93h%2FVnJ4CETHxtO2ZIQaeuFl5JAke2lUJXG5ob%2FURZM5WFQRKXWcx2qd9sXSE0bg%2BRibyiX6PbI4UxphFJwyLu4u40R1rJnHOPM8unKuYyXjuJus1to%2Ba6DFtjKQ7jKEWg2Q7UGK3WJ7vTrIL45P%2BJLH%2F7sF7goQI4o%2FahSUJb%2Bf2K&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAY3X2SCX4JEL5DPFH%2F20240828%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240828T063244Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=32d2e08c4954586cfd94c21e11a3eb131ab62bda55a6a2c7fd03b0a90b6f268a",
+                      "file_mime_type": "application/pdf",
+                      "file_size": 27309,
+                      "thumb": null,
+                      "created_at": "2024-08-28 06:32:42",
+                      "updated_at": "2024-08-28 06:32:43",
+                      "note": null
+                    },
+                    "status": 200
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/jobs/{jobId}/photos/upload": {
+        "post": {
+          "tags": [
+            "Job"
+          ],
+          "summary": "Photos Upload",
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "description": "Required if file URL is not present in the request",
+                      "format": "binary"
+                    },
+                    "file_url": {
+                      "type": "string",
+                      "description": "Optional - Pass it if we want to upload a file from a public file URL",
+                      "example": "Public URL"
+                    },
+                    "file_name": {
+                      "type": "string",
+                      "description": "Optional - The file name can not be greater than 50 characters.",
+                      "example": "File Name"
+                    },
+                    "file_note": {
+                      "type": "string",
+                      "description": "Optional - The file note can not be greater than 256 characters.",
+                      "example": "File Note"
+                    },
+                    "directory": {
+                      "type": "string",
+                      "description": "Optional - Specify the directory path for file upload. Subdirectories can be indicated with /. If directory param is not provided, the file will be uploaded to the default \"photos\" folder.",
+                      "example": "Sales Pro/Roofing"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "parameters": [
+            {
+              "name": "jobId",
+              "in": "path",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "headers": {
+                "Content-Type": {
+                  "schema": {
+                    "type": "string",
+                    "example": "application/json"
+                  }
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object"
+                  },
+                  "example": {
+                    "message": "File uploaded successfully.",
+                    "file": {
+                      "id": 66414,
+                      "name": "File Name.jpeg",
+                      "url": "https://qa-dev-commpany-resources.s3.ap-south-1.amazonaws.com/resources/leonard_and_neal_trading_1681731948/jobs/2407-26058-01/photos/1725604918_1201179784_pexels-photo-1766838.jpeg%3Fauto%3Dcompress%26cs%3Dtinysrgb%26w%3D1260%26h%3D750%26dpr%3D1?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEOb%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmFwLXNvdXRoLTEiSDBGAiEAkNC91z5bxSBqRBkVGa8cjqTzdQ5wddNrQEZNfDt4w5MCIQDsomBWBeHLaEzBbJGzVxo3%2F1XW2a9if8clA9BpXf62dSq9BQj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAIaDDQxOTc3ODQzNzcyNCIMRAutZ%2BsK2FpqIWbPKpEFFaH8ZP0waufetthamQSMsblxHoKMUHeuhdKQGVUYp6RepX5icE7mk%2FB78Oo749NzjiSL5UZ6l%2Btltkm6vlO9ar4J8aKMRq49T4RG7RJBZIMnOMM6VBF%2FuCJx8wBQgt%2FSL%2BCd9G5706GC9A%2BYihU2BK74dBmO7zSYrzSsgdCaTYhdC3lDrQzYpfxNI%2BzA5xOWIqXtZhVmE2fUrXo2az39Rhcb45jKCYkpCnfIsnIDXiWowf3h6XmM%2Fil%2FecMpJwthH7Zzsa%2BvN%2FSyJZQgEx0saEDDipLlhH8%2FAxfDdLuD9u7VmVvUeCfhO%2B4XUCVQIHl5EjwDPaScLIFTAl6VMicylx%2F6n72ryUGtQz9FML2FBk6iWydcpMwLq0LBLTByIInpOlqfCZUvaWmxKwkA2k0CXlmE2%2F5UUyOxfp1YwiADwmGz9tMvqVJ7%2FL0h%2B4j0J2YLJbH2Ae8rs7n5ceRdpanxFaL3j%2Bzp%2BvLLt56gAkiWOPtDC7%2FySYqW2buQ32OZs4wtvQDlJfBOfdPKMlZ72AF3lqCoFP5lbbvuruJkoDPmKzOTbi%2BU635KTgIPckRK61AVPzDQe59i5EeACTlghSO5ViM6L5aQ6xbY5zbY08i0VG0kH6g0uQO6fi5%2By3dbS0qH0Sj%2F%2FLzXeEogOTqPRWNZF%2FNYzTOsbMcgwBQxqCRudAoQ8Ssj1wAu6pu3KJBWI1hdwxNn8qdKJP465g1WcDt%2FJASiFWOT57C4HSX8sfqvElls1BH0cPSh9JGx56zeMTfhsenfnMtU7TGieR8sW66bNfb4y2h9x%2Fx1FK43PvfVnAJhRv%2BWGlc6RPDt7PnfXRvjCmk6iz3TRhAkL57MJrMfeDmn6v%2Bxox%2F3tnn2pV19lF9tMOit6rYGOrAB7JGddLEsymPdMBdIZL8XzggGWq0OT44rQPGKjdB0aQRKOEYEPBgUhmv46F9qi%2F%2BeBxAIBlCu2lbAD5Rbt1HeZsZ78P26H6NxE2eh4rTRtC24BVi5ZrFmkCIyG80UVPHeotARipWBu6vnFvtRSevm%2BzoAX%2FX5ZGyQ2UtFUmz4lBF6abSdHGsjCD%2B%2BpFbSTd76SNzIUqkC%2F%2BbjxT4MI0qH6tO0oZP9j%2FJr3fW7mvQkMms%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAWDPF6UJOOKLO5CT2%2F20240906%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20240906T064159Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=de7294090c59df59c3fbf65fca789ec279ad313df3220d72f93a6d9feae1f25a",
+                      "size": 229784,
+                      "mime_type": "image/jpeg",
+                      "thumb_exists": true,
+                      "thumb_url": "https://qa-dev-commpany-resources.s3.ap-south-1.amazonaws.com/resources/leonard_and_neal_trading_1681731948/jobs/2407-26058-01/photos/1725604918_1201179784_pexels-photo-1766838_thumb.jpeg%3Fauto%3Dcompress%26cs%3Dtinysrgb%26w%3D1260%26h%3D750%26dpr%3D1?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEOb%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmFwLXNvdXRoLTEiSDBGAiEAkNC91z5bxSBqRBkVGa8cjqTzdQ5wddNrQEZNfDt4w5MCIQDsomBWBeHLaEzBbJGzVxo3%2F1XW2a9if8clA9BpXf62dSq9BQj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAIaDDQxOTc3ODQzNzcyNCIMRAutZ%2BsK2FpqIWbPKpEFFaH8ZP0waufetthamQSMsblxHoKMUHeuhdKQGVUYp6RepX5icE7mk%2FB78Oo749NzjiSL5UZ6l%2Btltkm6vlO9ar4J8aKMRq49T4RG7RJBZIMnOMM6VBF%2FuCJx8wBQgt%2FSL%2BCd9G5706GC9A%2BYihU2BK74dBmO7zSYrzSsgdCaTYhdC3lDrQzYpfxNI%2BzA5xOWIqXtZhVmE2fUrXo2az39Rhcb45jKCYkpCnfIsnIDXiWowf3h6XmM%2Fil%2FecMpJwthH7Zzsa%2BvN%2FSyJZQgEx0saEDDipLlhH8%2FAxfDdLuD9u7VmVvUeCfhO%2B4XUCVQIHl5EjwDPaScLIFTAl6VMicylx%2F6n72ryUGtQz9FML2FBk6iWydcpMwLq0LBLTByIInpOlqfCZUvaWmxKwkA2k0CXlmE2%2F5UUyOxfp1YwiADwmGz9tMvqVJ7%2FL0h%2B4j0J2YLJbH2Ae8rs7n5ceRdpanxFaL3j%2Bzp%2BvLLt56gAkiWOPtDC7%2FySYqW2buQ32OZs4wtvQDlJfBOfdPKMlZ72AF3lqCoFP5lbbvuruJkoDPmKzOTbi%2BU635KTgIPckRK61AVPzDQe59i5EeACTlghSO5ViM6L5aQ6xbY5zbY08i0VG0kH6g0uQO6fi5%2By3dbS0qH0Sj%2F%2FLzXeEogOTqPRWNZF%2FNYzTOsbMcgwBQxqCRudAoQ8Ssj1wAu6pu3KJBWI1hdwxNn8qdKJP465g1WcDt%2FJASiFWOT57C4HSX8sfqvElls1BH0cPSh9JGx56zeMTfhsenfnMtU7TGieR8sW66bNfb4y2h9x%2Fx1FK43PvfVnAJhRv%2BWGlc6RPDt7PnfXRvjCmk6iz3TRhAkL57MJrMfeDmn6v%2Bxox%2F3tnn2pV19lF9tMOit6rYGOrAB7JGddLEsymPdMBdIZL8XzggGWq0OT44rQPGKjdB0aQRKOEYEPBgUhmv46F9qi%2F%2BeBxAIBlCu2lbAD5Rbt1HeZsZ78P26H6NxE2eh4rTRtC24BVi5ZrFmkCIyG80UVPHeotARipWBu6vnFvtRSevm%2BzoAX%2FX5ZGyQ2UtFUmz4lBF6abSdHGsjCD%2B%2BpFbSTd76SNzIUqkC%2F%2BbjxT4MI0qH6tO0oZP9j%2FJr3fW7mvQkMms%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAWDPF6UJOOKLO5CT2%2F20240906%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20240906T064159Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=0c11cbfd3bf0b419e2e1da132dff1ea32fc6f3b356109ef94516d97833e61019",
+                      "is_expired": 0,
+                      "folder_id": 65593,
+                      "file_note": "File Note"
+                    },
+                    "status": 200
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/jobs/{jobId}/financials/price": {
+        "put": {
+          "tags": [
+            "Job"
+          ],
+          "summary": "Update Price",
+          "requestBody": {
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "properties": {
+                    "amount": {
+                      "type": "integer",
+                      "description": "Required - The Price of the job, It must be a valid number with no more than 8 digits before the decimal and up to 2 digits after the decimal.",
+                      "example": "10"
+                    },
+                    "taxable": {
+                      "type": "integer",
+                      "description": "Optional - Accepts a boolean value (1 or 0). Send 1 to mark the job as taxable and 0 for non-taxable.",
+                      "example": 1
+                    },
+                    "tax_rate": {
+                      "type": "integer",
+                      "description": "Required - If taxable is set to 1 and tax_amount is not provided, it must not exceed 3 digits before the decimal and 3 digits after the decimal.",
+                      "example": "5"
+                    },
+                    "tax_amount": {
+                      "type": "integer",
+                      "description": "Required - If taxable is set to 1 and tax_rate is not provided",
+                      "example": "5"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "parameters": [
+            {
+              "name": "jobId",
+              "in": "path",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "headers": {
+                "Content-Type": {
+                  "schema": {
+                    "type": "string",
+                    "example": "application/json"
+                  }
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object"
+                  },
+                  "examples": {
+                    "example-0": {
+                      "summary": "Update Price",
+                      "value": {
+                        "message": "Job Price updated successfully.",
+                        "job_price": {
+                          "id": 2607063,
+                          "amount": 10,
+                          "taxable": true,
+                          "tax_rate": "5"
+                        },
+                        "status": 200
+                      }
+                    },
+                    "example-1": {
+                      "summary": "Job Price Update Request",
+                      "value": {
+                        "message": "Job Price update request saved successfully.",
+                        "job_price_request": {
+                          "id": 69886,
+                          "amount": "10",
+                          "taxable": true,
+                          "tax_rate": "5"
+                        },
+                        "status": 200
+                      }
+                    },
+                    "example-2": {
+                      "summary": "Validation",
+                      "value": {
+                        "error": {
+                          "status_code": 412,
+                          "message": "The tax rate and tax amount cannot be present at the same time."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/jobs/{jobId}/financials/record_payment": {
+        "post": {
+          "tags": [
+            "Job"
+          ],
+          "summary": "Record Payment",
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "payment": {
+                      "type": "integer",
+                      "description": "Required - Payment amount must not exceed 8 digits before the decimal and 2 digits after the decimal.",
+                      "example": "200"
+                    },
+                    "payment_method_id": {
+                      "type": "integer",
+                      "description": "Required - Refrence ID of the payment method",
+                      "example": "122"
+                    },
+                    "reference_number": {
+                      "type": "string",
+                      "description": "Optional - Payment Reference Number, must not exceed 20 characters.",
+                      "example": "CHG1101110013318"
+                    },
+                    "date": {
+                      "type": "string",
+                      "description": "Optional - Date of the payment, must be in Y-M-D format.",
+                      "example": "2024-10-11"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "parameters": [
+            {
+              "name": "jobId",
+              "in": "path",
+              "schema": {
+                "type": "string"
+              },
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "headers": {
+                "Content-Type": {
+                  "schema": {
+                    "type": "string",
+                    "example": "application/json"
+                  }
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object"
+                  },
+                  "example": {
+                    "message": "Job payment recorded successfully.",
+                    "data": {
+                      "id": 2232742,
+                      "customer_id": 6245301,
+                      "job_id": 5451833,
+                      "canceled": null,
+                      "method": "cash",
+                      "payment": "200",
+                      "echeque_number": "CHG1101110013318",
+                      "serial_number": "12-25252",
+                      "status": "unapplied",
+                      "date": "2024-10-11",
+                      "cancel_note": null,
+                      "unapplied_amount": "200",
+                      "ref_id": null,
+                      "ref_to": null,
+                      "reference_number": "CHG1101110013318"
+                    },
+                    "status": 200
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
