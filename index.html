@@ -1359,10 +1359,23 @@
       getDocumentationBasePath() {
         // Determine the correct base path for API requests based on current URL
         const currentPath = window.location.pathname;
+        const currentHost = window.location.hostname;
         console.log('Current path:', currentPath);
+        console.log('Current host:', currentHost);
         
         let basePath;
-        if (currentPath.includes('/api/swagger')) {
+        
+        // Check if we're on GitHub Pages
+        if (currentHost.includes('github.io')) {
+          // Extract repository name from the path
+          const pathParts = currentPath.split('/').filter(part => part.length > 0);
+          if (pathParts.length > 0) {
+            const repoName = pathParts[0];
+            basePath = `/${repoName}/public/swagger/api/`;
+          } else {
+            basePath = '/public/swagger/api/';
+          }
+        } else if (currentPath.includes('/api/swagger')) {
           basePath = '/api/swagger/api/';
         } else if (currentPath.includes('/api/docs')) {
           basePath = '/api/docs/';  // Fixed: should point to /api/docs/ (Laravel route)
