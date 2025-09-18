@@ -4,6 +4,11 @@
       "name": "Customer",
       "description": "Customer management endpoints",
       "filename": "customer.json"
+    },
+    {
+      "name": "Job",
+      "description": "Job management endpoints",
+      "filename": "job.json"
     }
   ],
   "title": "Leap API Documentation",
